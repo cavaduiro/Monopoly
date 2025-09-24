@@ -3,7 +3,7 @@ package monopoly;
 import partida.*;
 import java.util.ArrayList;
 
-
+//Probando probando probando probandofijoiejfoewijwfoiwj
 public class Casilla {
 
     //Atributos:

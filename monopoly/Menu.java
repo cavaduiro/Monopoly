@@ -6,7 +6,7 @@ import partida.*;
 public class Menu {
 
     //Atributos
-    private ArrayList<Jugador> jugadores; //Jugadores de la partida.
+    private ArrayList<Jugador> jugadores; //Jugadores de la partida owiejfpo
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
