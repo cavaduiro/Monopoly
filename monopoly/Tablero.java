@@ -31,6 +31,9 @@ public class Tablero {
 
     //Método para insertar las casillas del lado sur.
     private void insertarLadoSur() {
+        Casilla salida = new Casilla("Salida", "Especial", 0, banca); //Casilla Especial
+        //public Casilla(String nombre, String tipo, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca)
+        Casilla Solar1 = new Casilla("Solar1", "Especial", 0, banca);
     }
 
     //Método que inserta casillas del lado oeste.
@@ -44,6 +47,7 @@ public class Tablero {
     //Para imprimir el tablero, modificamos el método toString().
     @Override
     public String toString() {
+
     }
     
     //Método usado para buscar la casilla con el nombre pasado como argumento:
