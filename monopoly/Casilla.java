@@ -25,6 +25,11 @@ public class Casilla {
     * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.
      */
     public Casilla(String nombre, String tipo, int posicion, float valor, Jugador duenho) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.posicion = posicion;
+        this.valor = valor;
+        this.duenho = duenho;
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
