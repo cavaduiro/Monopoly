@@ -17,6 +17,13 @@ public class Menu {
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
 
+    public Menu(){
+        this.tablero = new Tablero(this.banca);     
+        System.out.println(tablero);
+
+        //Faltan mill cousas, so estou poñend o imprescindible para imprimir o tablero
+
+    }
 
     // Método para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {

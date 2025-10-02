@@ -2,6 +2,7 @@ package monopoly;
 
 import partida.*;
 import java.util.ArrayList;
+
 //Probando probando probando probandofijoiejfoewijwfoiwj
 public class Casilla {
 
@@ -16,9 +17,10 @@ public class Casilla {
     private float hipoteca; //Valor otorgado por hipotecar una casilla
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
     //HOla
+
     //Constructores:poewjfpowjfowiejfpowiejfpowfpoiwjepiwjepoijwe
     public Casilla() {
-    }//Parámetros vacíose
+    }//Parámetros vacíos
 
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
     * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.
@@ -29,22 +31,21 @@ public class Casilla {
         this.posicion = posicion;
         this.valor = valor;
         this.duenho = duenho;
-        this.avatares = new ArrayList <>();
         this.impuesto = impuesto;
-        //this.hipoteca = hipoteca;
-
+        this.hipoteca = hipoteca;
+        this.avatares = new ArrayList<Avatar>();
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
     * Parámetros: nombre, posición en el tablero, impuesto establecido y dueño.
      */
-    public Casilla(String nombre, int posicion, float impuesto, Jugador duenho) {
+    public Casilla(String nombre, String tipo, int posicion, Jugador duenho, float impuesto) {
         this.nombre = nombre;
+        this.tipo = tipo;
         this.posicion = posicion;
-        this.impuesto = impuesto;
         this.duenho = duenho;
-        this.avatares = new ArrayList <>();
-
+        this.impuesto = impuesto;
+        this.avatares = new ArrayList<Avatar>();
     }
 
     /*Constructor utilizado para crear las otras casillas (Suerte, Caja de comunidad y Especiales):
@@ -55,8 +56,30 @@ public class Casilla {
         this.tipo = tipo;
         this.posicion = posicion;
         this.duenho = duenho;
-        this.avatares = new ArrayList <>();
+        this.avatares = new ArrayList<Avatar>();
     }
+
+    /***********GETTERS**********/
+    public String getNombre() {
+        return this.nombre;
+    }   
+    
+   public Grupo getGrupo() {
+        return this.grupo;
+    }
+
+    public String getTipo() {
+        return this.tipo;
+    }
+    /****************************/
+
+
+
+    /***********SETTERS**********/
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+    /****************************/
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
     public void anhadirAvatar(Avatar av) {
@@ -73,6 +96,7 @@ public class Casilla {
     * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
     * en caso de no cumplirlas.*/
     public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada) {
+        return true;
     }
 
     /*Método usado para comprar una casilla determinada. Parámetros:
@@ -91,12 +115,15 @@ public class Casilla {
     /*Método para mostrar información sobre una casilla.
     * Devuelve una cadena con información específica de cada tipo de casilla.*/
     public String infoCasilla() {
+        return "returnfalsoparaquerunee";
     }
 
     /* Método para mostrar información de una casilla en venta.
      * Valor devuelto: texto con esa información.
      */
     public String casEnVenta() {
+        return "returnfalsoparaquerunee";
+
     }
 
 }

@@ -19,18 +19,40 @@ class Grupo {
     * Requiere como parámetros las dos casillas miembro y el color del grupo.
      */
     public Grupo(Casilla cas1, Casilla cas2, String colorGrupo) {
+        this.miembros = new ArrayList<Casilla>();
+        this.miembros.add(cas1);
+        cas1.setGrupo(this);
+        this.miembros.add(cas2);
+        cas2.setGrupo(this);
+        this.colorGrupo = colorGrupo;
+        this.numCasillas = 2;
     }
 
     /*Constructor para cuando el grupo está formado por TRES CASILLAS:
     * Requiere como parámetros las tres casillas miembro y el color del grupo.
      */
     public Grupo(Casilla cas1, Casilla cas2, Casilla cas3, String colorGrupo) {
+        this.miembros = new ArrayList<Casilla>();
+        this.miembros.add(cas1);
+        cas1.setGrupo(this);
+        this.miembros.add(cas2);
+        cas2.setGrupo(this);
+        this.miembros.add(cas3);
+        cas3.setGrupo(this);
+        this.colorGrupo = colorGrupo;
+        this.numCasillas = 3;
+    }
+
+    public String getColorGrupo() {
+        return colorGrupo;
     }
 
     /* Método que añade una casilla al array de casillas miembro de un grupo.
     * Parámetro: casilla que se quiere añadir.
      */
     public void anhadirCasilla(Casilla miembro) {
+        this.miembros.add(miembro);
+        this.numCasillas++;
     }
 
     /*Método que comprueba si el jugador pasado tiene en su haber todas las casillas del grupo:
@@ -38,6 +60,7 @@ class Grupo {
     * Valor devuelto: true si es dueño de todas las casillas del grupo, false en otro caso.
      */
     public boolean esDuenhoGrupo(Jugador jugador) {
+        return true;
+        
     }
-
 }
