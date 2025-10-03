@@ -168,72 +168,99 @@ public class Tablero {
 
     }
 
-    private String formatoCasilla(Casilla c, int linea) {
-        String nombre = c.getNombre();
-        String color;
-        if(!c.getTipo().equals("Solar")) {
-            color = Valor.WHITE; //Color por defecto para casillas que non son solares
-        } else {
-            color = c.getGrupo().getColorGrupo();
-        }
-        String reset = "\u001B[0m";
+private String[] formatoCasillaFlexible(Casilla c, int ancho, boolean mostrarTapaSuperior, boolean mostrarTapaInferior) {
+    String nombre = c.getNombre();
+    String color;
 
-        switch (linea) {
-            case 0: return color + "________" + reset;
-            case 1: return color + "|      |" + reset;
-            case 2: 
-                String nombreAjustado = String.format("|%-6.6s|", nombre); // corta ou axusta
-                return color + nombreAjustado + reset;
-            case 3: return color + "|      |" + reset;
-            default: return "";
-        }
+    if (!c.getTipo().equals("Solar")) {
+        color = Valor.WHITE;
+    } else {
+        color = c.getGrupo().getColorGrupo();
     }
+    String reset = "\u001B[0m";
 
-    //Para imprimir el tablero, modificamos el método toString().
-    @Override
+    String[] liñas = new String[3];
 
+    liñas[0] = mostrarTapaSuperior
+        ? color + " " + "_".repeat(ancho - 2) + " " + reset
+        : color + " ".repeat(ancho) + reset;
+
+    liñas[1] = color + "|" + center(nombre, ancho - 2) + "|" + reset;
+
+    liñas[2] = mostrarTapaInferior
+        ? color + "|" + "_".repeat(ancho - 2) + "|" + reset
+        : color + "|" + " ".repeat(ancho - 2) + "|" + reset;
+
+    return liñas;
+}
+
+
+        private String center(String texto, int ancho) {
+            int espazos = ancho - texto.length();
+            int esq = espazos / 2;
+            int der = espazos - esq;
+            return " ".repeat(esq) + texto + " ".repeat(der);
+        }
+@Override
 public String toString() {
     StringBuilder builder = new StringBuilder();
 
-    ArrayList<Casilla> sur = posiciones.get(0);
-    ArrayList<Casilla> oeste = posiciones.get(1);
-    ArrayList<Casilla> norte = posiciones.get(2);
-    ArrayList<Casilla> este = posiciones.get(3);
+    ArrayList<Casilla> sur = posiciones.get(0);      // esquerda → dereita
+    ArrayList<Casilla> oeste = posiciones.get(1);    // abaixo → arriba
+    ArrayList<Casilla> norte = posiciones.get(2);    // esquerda → dereita
+    ArrayList<Casilla> este = posiciones.get(3);     // arriba → abaixo
 
-    // Invertimos norte e este para manter orientación visual correcta
-    ArrayList<Casilla> norteRev = new ArrayList<>(norte);
-    ArrayList<Casilla> esteRev = new ArrayList<>(este);
-    Collections.reverse(norteRev);
-    Collections.reverse(esteRev);
+    int ancho = 13;
+    int filas = oeste.size();
 
-    // Parte superior (Norte)
-    for (int linea = 0; linea < 4; linea++) {
-        for (Casilla c : norteRev) {
-            builder.append(formatoCasilla(c, linea));
+    // 🔼 Parte superior (norte)
+    for (int linea = 0; linea < 3; linea++) {
+        for (Casilla c : norte) {
+            String[] bloque = formatoCasillaFlexible(c, ancho, linea == 0, false);
+            builder.append(bloque[linea]);
         }
         builder.append("\n");
     }
 
-    // Laterais (Oeste e Este)
-    int alto = oeste.size(); // ou esteRev.size(), deben coincidir
-    for (int i = 0; i < alto; i++) {
-        Casilla casillaOeste = oeste.get(i);
-        Casilla casillaEste = esteRev.get(i);
+    // ⬅️ Centro con laterais
+    for (int i = 0; i < filas; i++) {
+        Casilla oesteC = oeste.get(filas - 1 - i);
+        Casilla esteC = este.get(i);
 
-        for (int linea = 0; linea < 4; linea++) {
-            builder.append(formatoCasilla(casillaOeste, linea));
+        boolean ultimaFilaLateral = (i == filas - 1);
+        boolean haiSur = !sur.isEmpty(); // Se hai casillas no sur
+
+        // MOSTRAR ou NON tapa inferior: só se é a última fila lateral e NON hai sur
+        boolean mostrarTapaInferior = ultimaFilaLateral && !haiSur;
+
+        String[] bloqueOeste = formatoCasillaFlexible(oesteC, ancho, false, mostrarTapaInferior);
+        String[] bloqueEste = formatoCasillaFlexible(esteC, ancho, false, mostrarTapaInferior);
+
+        for (int linea = 0; linea < 3; linea++) {
+            builder.append(bloqueOeste[linea]);
             for (int j = 0; j < norte.size() - 2; j++) {
-                builder.append("        "); // espazo intermedio
+                builder.append(" ".repeat(ancho));
             }
-            builder.append(formatoCasilla(casillaEste, linea));
+            builder.append(bloqueEste[linea]);
+            builder.append("\n");
+        }
+
+        // Engadir tapa horizontal compartida entre filas de laterais, menos a última
+        if (!ultimaFilaLateral) {
+            builder.append(" ".repeat(ancho));
+            for (int j = 0; j < norte.size() - 2; j++) {
+                builder.append("_".repeat(ancho));
+            }
+            builder.append(" ".repeat(ancho));
             builder.append("\n");
         }
     }
 
-    // Parte inferior (Sur)
-    for (int linea = 0; linea < 4; linea++) {
-        for (Casilla c : sur) {
-            builder.append(formatoCasilla(c, linea));
+    // 🔽 Parte inferior (sur)
+    for (int linea = 0; linea < 3; linea++) {
+        for (int i = sur.size() - 1; i >= 0; i--) {
+            String[] bloque = formatoCasillaFlexible(sur.get(i), ancho, linea == 0, linea == 2);
+            builder.append(bloque[linea]);
         }
         builder.append("\n");
     }
@@ -241,7 +268,6 @@ public String toString() {
     return builder.toString();
 }
 
-    
     //Método usado para buscar la casilla con el nombre pasado como argumento:  
     public Casilla encontrar_casilla(String nombre){
         for (ArrayList<Casilla> lado : this.posiciones) {
