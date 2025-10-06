@@ -3,6 +3,7 @@ package partida;
 import monopoly.*;
 
 import java.util.ArrayList;
+import java.lang.Math;
 
 
 public class Avatar {
@@ -22,10 +23,26 @@ public class Avatar {
     * avatares creados (usado para crear un ID distinto del de los demás avatares).
      */
     public Avatar(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados) {
+            this.tipo = tipo;
+            this.jugador = jugador;
+            this.lugar = lugar;
+            int x = (int) (Math.random()*26+65); //valor aleatorio ascii
+            this.id = String.valueOf(x);
+            if(!avCreados.isEmpty()){
+                x = (int) (Math.random()*26+65); //valor aleatorio ascii
+                this.id = String.valueOf(x);
+                for(int i =0; i< avCreados.size(); i++){
+                    if(avCreados.get(i).id.equals(this.id)){
+                        i = 0;
+                        x = (int)(Math.random()*26+65);
+                    }
+                }
+            }
+
     }
 
     //A continuación, tenemos otros métodos útiles para el desarrollo del juego.
-    /*Método que permite mover a un avatar a una casilla concreta. Parámetros:
+    /*Metodo que permite mover a un avatar a una casilla concreta. Parámetros:
     * - Un array con las casillas del tablero. Se trata de un arrayList de arrayList de casillas (uno por lado).
     * - Un entero que indica el numero de casillas a moverse (será el valor sacado en la tirada de los dados).
     * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
@@ -33,10 +50,10 @@ public class Avatar {
     public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
     }
 
-    /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
+    /*Metodo que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
     * El ID generado será una letra mayúscula. Parámetros:
     * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
     private void generarId(ArrayList<Avatar> avCreados) {
     }
-}
+}       //Non entendo esta función, devolve void pero ten que xerar un número? Donde sabe onde o pon? //Hugo

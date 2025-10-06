@@ -6,7 +6,7 @@ import partida.*;
 public class Menu {
 
     //Atributos
-    private ArrayList<Jugador> jugadores; //Jugadores de la partida owiejfpo
+    private ArrayList<Jugador> jugadores; //Jugadores de la partida
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
@@ -25,61 +25,68 @@ public class Menu {
 
     }
 
-    // Método para inciar una partida: crea los jugadores y avatares.
+    // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
     }
     
-    /*Método que interpreta el comando introducido y toma la accion correspondiente.
+    /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
     * Parámetro: cadena de caracteres (el comando).
     */
     private void analizarComando(String comando) {
+        String[] cmdseparado = comando.split(" "); //separa el comando por espacios y lo mete en array
+        if(comando.contains("crear jugador")){
+            jugadores.add(new Jugador(cmdseparado[2], cmdseparado[3],new Casilla(),avatares)); //Hai que mandar unha casilla pero non sei como mandar a de inicio
+            //NO ESTÁ ACABADO
+        }
     }
 
-    /*Método que realiza las acciones asociadas al comando 'describir jugador'.
+    /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
     private void descJugador(String[] partes) {
+
+        System.out.println("{\nNombre: "+"placeholder");
     }
 
-    /*Método que realiza las acciones asociadas al comando 'describir avatar'.
+    /*Metodo que realiza las acciones asociadas al comando 'describir avatar'.
     * Parámetro: id del avatar a describir.
     */
     private void descAvatar(String ID) {
     }
 
-    /* Método que realiza las acciones asociadas al comando 'describir nombre_casilla'.
+    /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
     * Parámetros: nombre de la casilla a describir.
     */
     private void descCasilla(String nombre) {
     }
 
-    //Método que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
+    //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
     private void lanzarDados() {
     }
 
-    /*Método que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
+    /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */
     private void comprar(String nombre) {
     }
 
-    //Método que ejecuta todas las acciones relacionadas con el comando 'salir carcel'. 
+    //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
     }
 
-    // Método que realiza las acciones asociadas al comando 'listar enventa'.
+    // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
     private void listarVenta() {
     }
 
-    // Método que realiza las acciones asociadas al comando 'listar jugadores'.
+    // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
     }
 
-    // Método que realiza las acciones asociadas al comando 'listar avatares'.
+    // Metodo que realiza las acciones asociadas al comando 'listar avatares'.
     private void listarAvatares() {
     }
 
-    // Método que realiza las acciones asociadas al comando 'acabar turno'.
+    // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
     private void acabarTurno() {
     }
 

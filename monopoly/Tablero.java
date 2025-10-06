@@ -19,10 +19,11 @@ public class Tablero {
         this.grupos = new HashMap<>();
         this.generarCasillas(); //Con este disparador empeza a crear as casillas do tableiro
         //(Este this non sería necesario non, pq non se está referindo a ningún atributo porpio nin nada, non? Ponmo copilot idk)
+        //Hugo: supoño que se usará cando fas tablero monopoly = new tablero() ???
     }
 
     
-    //Método para crear todas las casillas del tablero. Formado a su vez por cuatro métodos (1/lado).
+    //Metodo para crear todas las casillas del tablero. Formado a su vez por cuatro métodos (1/lado).
     private void generarCasillas() {
         this.insertarLadoSur();
         this.insertarLadoOeste();
@@ -30,7 +31,7 @@ public class Tablero {
         this.insertarLadoEste();
     }
     
-    //Método para insertar las casillas del lado sur.
+    //Metodo para insertar las casillas del lado sur.
     private void insertarLadoSur() {
         Casilla salida = new Casilla("Salida", "Especial", 0, this.banca); 
         Casilla solar1 = new Casilla("Solar1", "Solar", 1, 600000, this.banca, 20000, 300000);
@@ -66,7 +67,7 @@ public class Tablero {
         this.grupos.put("Celeste", grupoCeleste);
     }
 
-    //Método que inserta casillas del lado oeste.
+    //Metodo que inserta casillas del lado oeste.
     private void insertarLadoOeste() {
         Casilla solar6 = new Casilla("Solar6", "Solar", 11, 1400000, this.banca, 100000, 700000);
         //NON SEI CANTO COSTA A CASILLA DE SERVICIOS, O VALOR É ARBITRARIO
@@ -135,7 +136,7 @@ public class Tablero {
         this.grupos.put("Morado", grupoMorado);
     }
 
-    //Método que inserta las casillas del lado este.
+    //Metodo que inserta las casillas del lado este.
     private void insertarLadoEste() {
         Casilla solar18 = new Casilla("Solar18", "Solar", 31, 3000000, this.banca, 260000, 1500000);
         Casilla solar19 = new Casilla("Solar19", "Solar", 32, 3000000, this.banca, 260000, 1500000);
@@ -213,7 +214,7 @@ public String toString() {
     int ancho = 13;
     int filas = oeste.size();
 
-    // 🔼 Parte superior (norte)
+    //  Parte superior (norte)
     for (int linea = 0; linea < 3; linea++) {
         for (Casilla c : norte) {
             String[] bloque = formatoCasillaFlexible(c, ancho, linea == 0, false);
@@ -222,7 +223,7 @@ public String toString() {
         builder.append("\n");
     }
 
-    // ⬅️ Centro con laterais
+    // ️ Centro con laterais
     for (int i = 0; i < filas; i++) {
         Casilla oesteC = oeste.get(filas - 1 - i);
         Casilla esteC = este.get(i);
@@ -256,7 +257,7 @@ public String toString() {
         }
     }
 
-    // 🔽 Parte inferior (sur)
+    //  Parte inferior (sur)
     for (int linea = 0; linea < 3; linea++) {
         for (int i = sur.size() - 1; i >= 0; i--) {
             String[] bloque = formatoCasillaFlexible(sur.get(i), ancho, linea == 0, linea == 2);
@@ -268,7 +269,7 @@ public String toString() {
     return builder.toString();
 }
 
-    //Método usado para buscar la casilla con el nombre pasado como argumento:  
+    //Metodo usado para buscar la casilla con el nombre pasado como argumento:
     public Casilla encontrar_casilla(String nombre){
         for (ArrayList<Casilla> lado : this.posiciones) {
             for (Casilla casilla : lado) {

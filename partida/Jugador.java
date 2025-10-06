@@ -27,28 +27,37 @@ public class Jugador {
     * que dos avatares tengan mismo ID). Desde este constructor también se crea el avatar.
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
+        if(tipoAvatar.equals("Coche")|| tipoAvatar.equals("Esfinge") || tipoAvatar.equals("Sombrero") || tipoAvatar.equals("Pelota"))
+        //Comprobamos que o tipo inserido pertence aos permitidos
+        {
+            this.nombre = nombre;
+            this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
+            this.fortuna = 15000000;
+        }
     }
 
     //Otros métodos:
-    //Método para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
+    //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Casilla casilla) {
     }
 
-    //Método para eliminar una propiedad del arraylist de propiedades de jugador.
+    //Metodo para eliminar una propiedad del arraylist de propiedades de jugador.
     public void eliminarPropiedad(Casilla casilla) {
     }
 
-    //Método para añadir fortuna a un jugador
+    //Metodo para añadir fortuna a un jugador
     //Como parámetro se pide el valor a añadir. Si hay que restar fortuna, se pasaría un valor negativo.
     public void sumarFortuna(float valor) {
+        this.fortuna += valor;
     }
 
-    //Método para sumar gastos a un jugador.
+    //Metodo para sumar gastos a un jugador.
     //Parámetro: valor a añadir a los gastos del jugador (será el precio de un solar, impuestos pagados...).
     public void sumarGastos(float valor) {
+        this.gastos += valor;
     }
 
-    /*Método para establecer al jugador en la cárcel. 
+    /*Metodo para establecer al jugador en la cárcel.
     * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
     }
