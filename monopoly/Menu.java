@@ -35,8 +35,11 @@ public class Menu {
     private void analizarComando(String comando) {
         String[] cmdseparado = comando.split(" "); //separa el comando por espacios y lo mete en array
         if(comando.contains("crear jugador")){
-            jugadores.add(new Jugador(cmdseparado[2], cmdseparado[3],new Casilla(),avatares)); //Hai que mandar unha casilla pero non sei como mandar a de inicio
-            //NO ESTÁ ACABADO
+            Casilla auxsal = tablero.encontrar_casilla("Salida");
+            jugadores.add(new Jugador(cmdseparado[2], cmdseparado[3],auxsal,avatares));
+        }else if(comando.contains(("describir jugador")))
+        {
+            descAvatar(cmdseparado[3]);
         }
     }
 
@@ -44,8 +47,11 @@ public class Menu {
     * Parámetro: comando introducido
      */
     private void descJugador(String[] partes) {
-
-        System.out.println("{\nNombre: "+"placeholder");
+        for(Jugador aux:jugadores){
+            if(aux.equals(partes)){
+                System.out.println(aux);
+            }
+        }
     }
 
     /*Metodo que realiza las acciones asociadas al comando 'describir avatar'.

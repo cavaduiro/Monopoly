@@ -62,4 +62,13 @@ public class Jugador {
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+    @Override
+    public String toString()
+    {   //Falta facer un tostring de propiedades
+        return "\n{\nNombre: "+ this.nombre+"\nAvatar: "+this.avatar.getId() + "\nFortuna: "+this.fortuna+"\nPropiedades: "+propiedades+"\n}";
+    }
+
 }

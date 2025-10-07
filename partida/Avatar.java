@@ -55,5 +55,10 @@ public class Avatar {
     * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
     private void generarId(ArrayList<Avatar> avCreados) {
+        //Xa creo os avatares individuales arriba, non entendo como implementalo con esta función
     }
-}       //Non entendo esta función, devolve void pero ten que xerar un número? Donde sabe onde o pon? //Hugo
+
+    public String getId() {
+        return id;
+    }
+}
