@@ -70,6 +70,8 @@ public class Casilla {
     public String getTipo() {
         return this.tipo;
     }
+
+    public Jugador getDuenho(){return this.duenho;}
     /****************************/
 
 
@@ -114,7 +116,15 @@ public class Casilla {
     /*Método para mostrar información sobre una casilla.
     * Devuelve una cadena con información específica de cada tipo de casilla.*/
     public String infoCasilla() {
-        return "returnfalsoparaquerunee";
+        String info = new String();
+        info+= "\n{\nTipo: " + this.tipo;
+        info+= "\nGrupo: " + this.grupo.getColorGrupo();
+        info+= "\nPropietario: " + this.duenho.getNombre();
+        info+= "\nValor: " + this.valor;
+        info+= "\nAlquiler: " + this.impuesto;
+        info+= "\nHipoteca: " + this.hipoteca;
+        info+= "\n}";
+        return info;
     }
 
     /* Método para mostrar información de una casilla en venta.
@@ -125,4 +135,8 @@ public class Casilla {
 
     }
 
+    @Override
+    public String toString() {
+        return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo +"\nvalor=" + this.valor + "\npropietario=" + this.duenho  + "\nalquiler="+ this.impuesto + "\n}";
+    }
 }

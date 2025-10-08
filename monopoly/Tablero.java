@@ -21,7 +21,6 @@ public class Tablero {
         //(Este this non sería necesario non, pq non se está referindo a ningún atributo porpio nin nada, non? Ponmo copilot idk)
         //Hugo: supoño que se usará cando fas tablero monopoly = new tablero() ???
     }
-
     
     //Metodo para crear todas las casillas del tablero. Formado a su vez por cuatro métodos (1/lado).
     private void generarCasillas() {
@@ -279,5 +278,13 @@ public String toString() {
             }
         }
         return null;
+    }
+    //Getters y setters:
+    public ArrayList<ArrayList<Casilla>> getPosiciones() {
+        return posiciones;
+    }
+
+    public Jugador getBanca() {
+        return banca;
     }
 }

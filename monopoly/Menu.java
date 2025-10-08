@@ -1,6 +1,9 @@
 package monopoly;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import org.w3c.dom.ls.LSOutput;
 import partida.*;
 
 public class Menu {
@@ -18,8 +21,18 @@ public class Menu {
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
 
     public Menu(){
-        this.tablero = new Tablero(this.banca);     
+        Scanner scanner = new Scanner(System.in);
+        String comando;
+        this.tablero = new Tablero(this.banca);
+        this.jugadores = new ArrayList<Jugador>();
+        this.avatares = new ArrayList<Avatar>();
         System.out.println(tablero);
+        while(true){
+            System.out.println("\n$: ");
+            comando = scanner.nextLine();
+            analizarComando(comando);
+
+        }
 
         //Faltan mill cousas, so estou poñend o imprescindible para imprimir o tablero
 
@@ -34,21 +47,60 @@ public class Menu {
     */
     private void analizarComando(String comando) {
         String[] cmdseparado = comando.split(" "); //separa el comando por espacios y lo mete en array
-        if(comando.contains("crear jugador")){
-            Casilla auxsal = tablero.encontrar_casilla("Salida");
-            jugadores.add(new Jugador(cmdseparado[2], cmdseparado[3],auxsal,avatares));
-        }else if(comando.contains(("describir jugador")))
-        {
-            descAvatar(cmdseparado[3]);
+        switch (cmdseparado[0]){
+            case "crear":
+                if(cmdseparado[1].equalsIgnoreCase("jugador")){
+                    crearxogador(cmdseparado);
+                }else{
+                    System.out.println("\nComando introducido erróneo.\n");
+                }break;
+            case "describir":
+                if(cmdseparado[1].equalsIgnoreCase("jugador")){
+                    descJugador(cmdseparado);
+                }else if(cmdseparado[1].equalsIgnoreCase("casilla")){
+                    descCasilla(cmdseparado);
+                }else{
+                    System.out.println("\nComando introducido erróneo.\n");}
+                break;
+            default:
+                System.out.println("\nComando introducido erróneo.\n");
+                break;
+
         }
     }
+    private void crearxogador(String[] partes) {
+        if(jugadores.size()==4){
+            System.out.println("Número máximo de jugadores alcanzado.");
+            return;
+        }
+        if(!partes[3].equalsIgnoreCase("coche")&&!partes[3].equalsIgnoreCase("sombrero")&&!partes[3].equalsIgnoreCase("esfinge")&&!partes[3].equalsIgnoreCase("pelota"))    {
+            System.out.println("Tipo de avatar no válido.");
+                return;
+        }
 
+        else{
+            for(Jugador aux:jugadores){
+
+                if(aux.getNombre().equals(partes[2])){
+                    System.out.println("Ya existe un jugador con ese nombre.");
+                    return;
+                }
+                else if(aux.getAvatar().getTipo().equalsIgnoreCase(partes[3])){
+                    System.out.println("Ya existe un jugador con ese avatar.");
+                    return;
+                }
+            }
+            Casilla auxsal = tablero.encontrar_casilla("Salida");
+            jugadores.add(new Jugador(partes[2], partes[3],auxsal,avatares));
+        }
+
+    }
     /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
     private void descJugador(String[] partes) {
         for(Jugador aux:jugadores){
-            if(aux.equals(partes)){
+            if(aux.getNombre().equals(partes[3])){
                 System.out.println(aux);
             }
         }
@@ -58,22 +110,62 @@ public class Menu {
     * Parámetro: id del avatar a describir.
     */
     private void descAvatar(String ID) {
+        for(Avatar aux:avatares){
+            if(aux.getId().equals(ID)){
+                System.out.println(aux.getId());
+            }
+        }
     }
 
     /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
     * Parámetros: nombre de la casilla a describir.
     */
-    private void descCasilla(String nombre) {
+    private void descCasilla(String[] nombre) {
+        Casilla aux =tablero.encontrar_casilla(nombre[2]);
+        if(aux != null){
+            System.out.println(aux.infoCasilla());
+        }else{
+            System.out.println("\nNon existe casilla con ese nome.\n");
+        }
+
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
     private void lanzarDados() {
+        Jugador jugadorActual= jugadores.get(turno);
+        if(tirado){
+            System.out.println("Ya has tirado los dados en este turno.");
+            return;
+        }
+         int valor1=dado1.hacerTirada();
+         int valor2=dado2.hacerTirada();
+        if(jugadorActual.getEnCarcel()){
+            //Caso carcel
+        }
+        lanzamientos++;
+        if(lanzamientos==3){
+            System.out.println("Has sacado tres dobles seguidos. Vas a la cárcel.");
+            jugadorActual.encarcelar(tablero.getPosiciones());
+            lanzamientos=0;
+            tirado=true;
+            return;
+        }
+        jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
+        System.out.println("Has sacado un "+valor1+" y un "+valor2+".");
+        tirado=true;
+        if(valor1==valor2){
+            tirado=false;
+            return;
+        }
+
+
     }
 
     /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */
     private void comprar(String nombre) {
+
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
@@ -86,6 +178,9 @@ public class Menu {
 
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
+        for(Jugador aux:jugadores){
+            System.out.println(aux);
+        }
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar avatares'.

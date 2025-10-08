@@ -27,22 +27,38 @@ public class Jugador {
     * que dos avatares tengan mismo ID). Desde este constructor también se crea el avatar.
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
-        if(tipoAvatar.equals("Coche")|| tipoAvatar.equals("Esfinge") || tipoAvatar.equals("Sombrero") || tipoAvatar.equals("Pelota"))
-        //Comprobamos que o tipo inserido pertence aos permitidos
         {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
             this.fortuna = 15000000;
         }
     }
+    //Getters:
+    public Avatar getAvatar() {
+        return avatar;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public boolean getEnCarcel() {
+        return enCarcel;
+    }
+    //Setters:
 
     //Otros métodos:
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Casilla casilla) {
+        this.propiedades.add(casilla);
     }
 
     //Metodo para eliminar una propiedad del arraylist de propiedades de jugador.
     public void eliminarPropiedad(Casilla casilla) {
+        if(this.propiedades.contains(casilla)){
+            this.propiedades.remove(casilla);
+        }else{
+            System.out.println("\nO xogador non ten esa propiedade.\n");
+        }
+
     }
 
     //Metodo para añadir fortuna a un jugador
@@ -62,9 +78,6 @@ public class Jugador {
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
     }
 
-    public String getNombre() {
-        return nombre;
-    }
     @Override
     public String toString()
     {   //Falta facer un tostring de propiedades
