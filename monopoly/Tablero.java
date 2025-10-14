@@ -283,7 +283,6 @@ public String toString() {
     public ArrayList<ArrayList<Casilla>> getPosiciones() {
         return posiciones;
     }
-
     public Jugador getBanca() {
         return banca;
     }

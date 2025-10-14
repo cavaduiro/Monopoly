@@ -72,6 +72,15 @@ public class Casilla {
     }
 
     public Jugador getDuenho(){return this.duenho;}
+
+    public float getValor() {return this.valor;}
+
+    public float getImpuesto() {return this.impuesto;}
+
+    public float getHipoteca() {return this.hipoteca;}
+
+    public int getPosicion() {return this.posicion;}
+
     /****************************/
 
 
@@ -84,10 +93,12 @@ public class Casilla {
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
     public void anhadirAvatar(Avatar av) {
+        this.avatares.add(av);
     }
 
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
+        this.avatares.remove(av);
     }
 
     /*Método para evaluar qué hacer en una casilla concreta. Parámetros:
@@ -104,6 +115,14 @@ public class Casilla {
     * - Jugador que solicita la compra de la casilla.
     * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
     public void comprarCasilla(Jugador solicitante, Jugador banca) {
+       if(this.getDuenho().getNombre().equals("banca")) {
+           solicitante.anhadirPropiedad(this);
+           this.duenho = solicitante;
+           solicitante.sumarFortuna(-this.valor);
+       }
+       else {
+           System.out.println("\nA casilla xa ten dono.\n");
+       }
     }
 
     /*Método para añadir valor a una casilla. Utilidad:

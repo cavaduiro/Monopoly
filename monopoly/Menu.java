@@ -170,6 +170,15 @@ public class Menu {
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
+        Jugador jugadorActual= jugadores.get(turno);
+        if(!jugadorActual.getEnCarcel()){
+            System.out.println("No estás en la cárcel.");
+            return;
+        }
+        else{
+            jugadorActual.setEnCarcel(false);
+            System.out.println("Has salido de la cárcel.");
+        }
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
@@ -185,6 +194,7 @@ public class Menu {
 
     // Metodo que realiza las acciones asociadas al comando 'listar avatares'.
     private void listarAvatares() {
+
     }
 
     // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
