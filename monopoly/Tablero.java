@@ -1,9 +1,9 @@
 package monopoly;
 
-import partida.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import partida.*;
 
 
 public class Tablero {
@@ -93,7 +93,7 @@ public class Tablero {
         this.posiciones.add(ladoOeste);
 
         //Agora facemos os grupos
-        Grupo grupoRosa = new Grupo(solar6, solar7, solar8, Valor.ORANGE);
+        Grupo grupoRosa = new Grupo(solar6, solar7, solar8, Valor.PINK);
         Grupo grupoNaranja = new Grupo(solar9, solar10, solar11, Valor.ORANGE);
         this.grupos.put("Rosa", grupoRosa);
         this.grupos.put("Naranja", grupoNaranja);
@@ -167,107 +167,148 @@ public class Tablero {
         this.grupos.put("Azul", grupoAzul);
 
     }
-
-private String[] formatoCasillaFlexible(Casilla c, int ancho, boolean mostrarTapaSuperior, boolean mostrarTapaInferior) {
-    String nombre = c.getNombre();
-    String color;
-
-    if (!c.getTipo().equals("Solar")) {
-        color = Valor.WHITE;
-    } else {
-        color = c.getGrupo().getColorGrupo();
+    private StringBuilder imprimirAvatares(StringBuilder sb, String color, ArrayList<Casilla> lado, int indice) {
+    if (lado.get(indice).getNombre().equalsIgnoreCase("Solar22")) {
+        sb.append(Valor.BLACK).append(".");
     }
-    String reset = "\u001B[0m";
-
-    String[] liñas = new String[3];
-
-    liñas[0] = mostrarTapaSuperior
-        ? color + " " + "_".repeat(ancho - 2) + " " + reset
-        : color + " ".repeat(ancho) + reset;
-
-    liñas[1] = color + "|" + center(nombre, ancho - 2) + "|" + reset;
-
-    liñas[2] = mostrarTapaInferior
-        ? color + "|" + "_".repeat(ancho - 2) + "|" + reset
-        : color + "|" + " ".repeat(ancho - 2) + "|" + reset;
-
-    return liñas;
+    
+    sb.append(color).append("|");
+    int espacioLibre = 10;
+    for (int j = 0; j < lado.get(indice).getAvatares().size(); j++) {
+        espacioLibre -= 2;
+    }
+    for (int j = 0; j < espacioLibre; j++) {
+        sb.append("_");
+    }
+    for (Avatar avatar : lado.get(indice).getAvatares()) {
+        sb.append("&").append(avatar.getId());
+    }
+    sb.append(color).append("|");
+    return sb;
 }
 
+private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indice, int inicio, int fin) {
+    String color = lado.get(indice).getColorCasilla();
+    String nombre = lado.get(indice).getNombre();
+    
+    // Primera línea: espacios en blanco
+    if (inicio == 0) {
+        sb.append(color).append("|").append(" ".repeat(10)).append(color).append("|");
+    } 
+    // Segunda línea: mostrar el NOMBRE COMPLETO centrado
+    else if (inicio == 10) {
+        String textoCentrado = centrarTexto(nombre, 10); // Usar el nombre completo
+        sb.append(color).append("|").append(textoCentrado).append(color).append("|");
+    }
+}
+private String centrarTexto(String texto, int ancho) {
+    if (texto.length() >= ancho) {
+        return texto.substring(0, ancho);
+    }
+    
+    int espacios = ancho - texto.length();
+    int espaciosIzquierda = espacios / 2;
+    int espaciosDerecha = espacios - espaciosIzquierda;
+    
+    return " ".repeat(espaciosIzquierda) + texto + " ".repeat(espaciosDerecha);
+}
 
-        private String center(String texto, int ancho) {
-            int espazos = ancho - texto.length();
-            int esq = espazos / 2;
-            int der = espazos - esq;
-            return " ".repeat(esq) + texto + " ".repeat(der);
-        }
+private void imprimirEspaciosCentrales(StringBuilder sb) {
+    int anchoCentral = 11 * 10 - 2;
+    for (int j = 0; j < anchoCentral; j++) {
+        sb.append(" ");
+    }
+}
+
 @Override
 public String toString() {
-    StringBuilder builder = new StringBuilder();
+    ArrayList<Casilla> ladoEste = posiciones.get(1);
+    ArrayList<Casilla> ladoNorte = posiciones.get(2);
+    ArrayList<Casilla> ladoSur = posiciones.get(0);
+    ArrayList<Casilla> ladoOeste = posiciones.get(3);
 
-    ArrayList<Casilla> sur = posiciones.get(0);      // esquerda → dereita
-    ArrayList<Casilla> oeste = posiciones.get(1);    // abaixo → arriba
-    ArrayList<Casilla> norte = posiciones.get(2);    // esquerda → dereita
-    ArrayList<Casilla> este = posiciones.get(3);     // arriba → abaixo
+    StringBuilder sb = new StringBuilder();
 
-    int ancho = 13;
-    int filas = oeste.size();
-
-    //  Parte superior (norte)
-    for (int linea = 0; linea < 3; linea++) {
-        for (Casilla c : norte) {
-            String[] bloque = formatoCasillaFlexible(c, ancho, linea == 0, false);
-            builder.append(bloque[linea]);
-        }
-        builder.append("\n");
+    // Lado Norte
+    for (Casilla casilla : ladoNorte) {
+        sb.append(casilla.getColorCasilla()).append(" ___________");
     }
+    sb.append("\n");
+    
+    // Primera línea: espacios en blanco
+    for (int i = 0; i < ladoNorte.size(); i++) {
+        imprimirLineaCasilla(ladoNorte, sb, i, 0, 10);
+    }
+    sb.append("\n");
+    
+    // Segunda línea: nombres centrados
+    for (int i = 0; i < ladoNorte.size(); i++) {
+        imprimirLineaCasilla(ladoNorte, sb, i, 10, 20);
+    }
+    sb.append("\n");
+    
+    // Tercera línea: avatares
+    for (int i = 0; i < ladoNorte.size(); i++) {
+        imprimirAvatares(sb, ladoNorte.get(i).getColorCasilla(), ladoNorte, i);
+    }
+    sb.append("\n");
 
-    // ️ Centro con laterais
-    for (int i = 0; i < filas; i++) {
-        Casilla oesteC = oeste.get(filas - 1 - i);
-        Casilla esteC = este.get(i);
+    // Lados Oeste y Este
+    for (int fila = 0; fila < ladoOeste.size(); fila++) {
+        int indiceEste = ladoEste.size() - 1 - fila;
+        
+        // Línea 1: espacios en blanco este
+        imprimirLineaCasilla(ladoEste, sb, indiceEste, 0, 10);
+        imprimirEspaciosCentrales(sb);
+        // Línea 1: espacios en blanco oeste
+        imprimirLineaCasilla(ladoOeste, sb, fila, 0, 10);
+        sb.append("\n");
 
-        boolean ultimaFilaLateral = (i == filas - 1);
-        boolean haiSur = !sur.isEmpty(); // Se hai casillas no sur
+        // Línea 2: nombres centrados este
+        imprimirLineaCasilla(ladoEste, sb, indiceEste, 10, 20);
+        imprimirEspaciosCentrales(sb);
+        // Línea 2: nombres centrados oeste
+        imprimirLineaCasilla(ladoOeste, sb, fila, 10, 20);
+        sb.append("\n");
 
-        // MOSTRAR ou NON tapa inferior: só se é a última fila lateral e NON hai sur
-        boolean mostrarTapaInferior = ultimaFilaLateral && !haiSur;
+        // Línea 3: avatares este
+        imprimirAvatares(sb, ladoEste.get(indiceEste).getColorCasilla(), ladoEste, indiceEste);
 
-        String[] bloqueOeste = formatoCasillaFlexible(oesteC, ancho, false, mostrarTapaInferior);
-        String[] bloqueEste = formatoCasillaFlexible(esteC, ancho, false, mostrarTapaInferior);
-
-        for (int linea = 0; linea < 3; linea++) {
-            builder.append(bloqueOeste[linea]);
-            for (int j = 0; j < norte.size() - 2; j++) {
-                builder.append(" ".repeat(ancho));
+        if (fila == ladoOeste.size() - 1) {
+            for (int j = ladoSur.size() - 2; j > 0; j--) {
+                sb.append(ladoSur.get(j).getColorCasilla()).append("___________");
+                if(j != 1) sb.append(" ");
             }
-            builder.append(bloqueEste[linea]);
-            builder.append("\n");
+        } else {
+            imprimirEspaciosCentrales(sb);
         }
 
-        // Engadir tapa horizontal compartida entre filas de laterais, menos a última
-        if (!ultimaFilaLateral) {
-            builder.append(" ".repeat(ancho));
-            for (int j = 0; j < norte.size() - 2; j++) {
-                builder.append("_".repeat(ancho));
-            }
-            builder.append(" ".repeat(ancho));
-            builder.append("\n");
-        }
+        // Línea 3: avatares oeste
+        imprimirAvatares(sb, ladoOeste.get(fila).getColorCasilla(), ladoOeste, fila);
+        sb.append("\n");
     }
 
-    //  Parte inferior (sur)
-    for (int linea = 0; linea < 3; linea++) {
-        for (int i = sur.size() - 1; i >= 0; i--) {
-            String[] bloque = formatoCasillaFlexible(sur.get(i), ancho, linea == 0, linea == 2);
-            builder.append(bloque[linea]);
-        }
-        builder.append("\n");
+    // Lado Sur
+    // Primera línea: espacios en blanco
+    for (int i = ladoSur.size() - 1; i >= 0; i--) {
+        imprimirLineaCasilla(ladoSur, sb, i, 0, 10);
     }
+    sb.append("\n");
+    
+    // Segunda línea: nombres centrados
+    for (int i = ladoSur.size() - 1; i >= 0; i--) {
+        imprimirLineaCasilla(ladoSur, sb, i, 10, 20);
+    }
+    sb.append("\n");
+    
+    // Tercera línea: avatares
+    for (int i = ladoSur.size() - 1; i >= 0; i--) {
+        imprimirAvatares(sb, ladoSur.get(i).getColorCasilla(), ladoSur, i);
+    }
+    sb.append("\n");
 
-    return builder.toString();
+    return sb.toString();
 }
-
     //Metodo usado para buscar la casilla con el nombre pasado como argumento:
     public Casilla encontrar_casilla(String nombre){
         for (ArrayList<Casilla> lado : this.posiciones) {

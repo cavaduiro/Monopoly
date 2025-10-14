@@ -1,9 +1,7 @@
 package partida;
 
-import monopoly.*;
-
 import java.util.ArrayList;
-import java.lang.Math;
+import monopoly.*;
 
 
 public class Avatar {

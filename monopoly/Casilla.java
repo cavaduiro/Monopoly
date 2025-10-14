@@ -71,6 +71,17 @@ public class Casilla {
         return this.tipo;
     }
 
+    public ArrayList<Avatar> getAvatares() {
+        return this.avatares;
+    }
+    
+    public String getColorCasilla() {
+        if (this.grupo != null) {
+            return this.grupo.getColorGrupo();
+        }
+        return Valor.WHITE;
+    }
+
     public Jugador getDuenho(){return this.duenho;}
 
     public float getValor() {return this.valor;}
