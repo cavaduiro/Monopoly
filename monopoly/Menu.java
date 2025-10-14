@@ -62,6 +62,13 @@ public class Menu {
                 }else{
                     System.out.println("\nComando introducido erróneo.\n");}
                 break;
+            case "jugador":
+                xogadorTurno();
+                break;
+            case "lanzar":
+                if(cmdseparado[1].equalsIgnoreCase("dados")){
+
+                }
             default:
                 System.out.println("\nComando introducido erróneo.\n");
                 break;
@@ -129,6 +136,13 @@ public class Menu {
         }
 
     }
+    //Metodo que indica o xogador que ten o turno actual
+
+    private void xogadorTurno(){
+        Jugador jugadorActual = jugadores.get(turno);
+        System.out.println("\n{\nNombre: "+ jugadorActual.getNombre()+"\nAvatar: "+jugadorActual.getAvatar()+"\n}\n");
+    }
+
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
     private void lanzarDados() {
