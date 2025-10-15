@@ -50,18 +50,20 @@ public class Avatar {
     public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
         int posicionActual = this.lugar.getPosicion();
         int nuevaPosicion = posicionActual + valorTirada;
-        if (nuevaPosicion > 40) { //Si se pasa de la última casilla, se da una vuelta al tablero.
-            nuevaPosicion = nuevaPosicion - 40;
+        if (nuevaPosicion > 40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
+            nuevaPosicion = nuevaPosicion %40;
             this.jugador.sumarFortuna(200000); //El jugador recibe 2000000 por pasar por la salida.
         }
         //Ahora buscamos la casilla correspondiente a la nueva posición y movemos el avatar allí.
-        for (Casilla casilla : casillas.get(nuevaPosicion)) {
-            if (casilla.getPosicion() == posicionActual) {
-                casilla.eliminarAvatar(this); //Eliminamos el avatar de la casilla en la que estaba.
-            }
-            if (casilla.getPosicion() == nuevaPosicion) {
-                casilla.anhadirAvatar(this); //Añadimos el avatar a la casilla a la que se mueve.
-                this.lugar = casilla; //Actualizamos el lugar en el que está el avatar.
+        for (ArrayList<Casilla> lado : casillas) {
+            for (Casilla casilla : lado) {
+                if (casilla.getPosicion() == posicionActual) {
+                    casilla.eliminarAvatar(this); //Eliminamos el avatar de la casilla en la que estaba.
+                }
+                if (casilla.getPosicion() == nuevaPosicion) {
+                    casilla.anhadirAvatar(this); //Añadimos el avatar a la casilla a la que se mueve.
+                    this.lugar = casilla; //Actualizamos el lugar en el que está el avatar.
+                }
             }
         }
 
@@ -73,7 +75,7 @@ public class Avatar {
      */
     private void generarId(ArrayList<Avatar> avCreados) {
         int x = (int) (Math.random() * 26 + 65); //valor aleatorio ascii
-        this.id = String.valueOf(x);
+        this.id = Character.toString((char) x);
         if (!avCreados.isEmpty()) {
             for (int i = 0; i < avCreados.size(); i++) {
                 if (avCreados.get(i).id.equals(this.id)) {
@@ -81,7 +83,7 @@ public class Avatar {
                     x = (int) (Math.random() * 26 + 65);
                 }
             }
-            this.id = String.valueOf(x);
+            this.id = Character.toString((char) x);
         }
         //Xa creo os avatares individuales arriba, non entendo como implementalo con esta función
     }

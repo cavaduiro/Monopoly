@@ -31,9 +31,15 @@ public class Jugador {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
             this.fortuna = 15000000;
+            this.propiedades = new ArrayList<Casilla>();
         }
     }
     //Getters:
+
+    public int getTiradasCarcel() {
+        return tiradasCarcel;
+    }
+
     public Avatar getAvatar() {
         return avatar;
     }
@@ -78,6 +84,19 @@ public class Jugador {
     /*Metodo para establecer al jugador en la cárcel.
     * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
+        this.enCarcel = true;
+        this.tiradasCarcel = 0;
+        //Buscamos la casilla de la cárcel y movemos el avatar allí.
+        for (ArrayList<Casilla> lado : pos) {
+            for (Casilla casilla : lado) {
+                if (casilla.getNombre().equals("Cárcel")) {
+                    this.avatar.moverAvatar(pos, casilla.getPosicion() - this.avatar.getLugar().getPosicion());
+                }
+            }
+        }
+    }
+    public void sumartiradascarcel(){
+        this.tiradasCarcel++;
     }
 
     @Override

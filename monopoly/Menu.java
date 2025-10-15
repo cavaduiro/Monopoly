@@ -12,7 +12,7 @@ public class Menu {
     private ArrayList<Jugador> jugadores; //Jugadores de la partida
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
-    private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
+    private int lanzamientos=0; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
@@ -26,8 +26,11 @@ public class Menu {
         this.tablero = new Tablero(this.banca);
         this.jugadores = new ArrayList<Jugador>();
         this.avatares = new ArrayList<Avatar>();
+        this.dado1 = new Dado();
+        this.dado2 = new Dado();
         System.out.println(tablero);
         while(true){
+            System.out.println(tablero);
             System.out.println("\n$: ");
             comando = scanner.nextLine();
             analizarComando(comando);
@@ -65,17 +68,45 @@ public class Menu {
             case "jugador":
                 xogadorTurno();
                 break;
+            case "listar":
+                xestionarListar(cmdseparado);
+                break;
             case "lanzar":
                 if(cmdseparado[1].equalsIgnoreCase("dados")){
+                    lanzarDados(cmdseparado);
 
+                }else{
+                    System.out.println("\nComando introducido erróneo.\n");
                 }
+                break;
+            case "salir":
+                    salirCarcel();
+                break;
+            case "acabar":
+                acabarTurno();
+                break;
             default:
                 System.out.println("\nComando introducido erróneo.\n");
                 break;
 
         }
     }
+
+    private void xestionarListar(String[] partes){
+        if(partes[1].equalsIgnoreCase("jugadores")){
+            listarJugadores();
+        }else if(partes[1].equalsIgnoreCase("enventa")){
+            listarVenta();
+        }else{
+            System.out.println("\nComando introducido erróneo.\n");
+        }
+    }
     private void crearxogador(String[] partes) {
+        if(partes.length !=4){
+            System.out.println("\nNúmero de parámetros incorrecto.\n");
+            System.out.println("Uso: crear jugador nombre tipo_avatar\n");
+            return;
+        }
         if(jugadores.size()==4){
             System.out.println("Número máximo de jugadores alcanzado.");
             return;
@@ -98,7 +129,10 @@ public class Menu {
                 }
             }
             Casilla auxsal = tablero.encontrar_casilla("Salida");
-            jugadores.add(new Jugador(partes[2], partes[3],auxsal,avatares));
+            Jugador nuevo= new Jugador(partes[2],partes[3],auxsal,avatares);
+
+            jugadores.add(nuevo);
+            auxsal.anhadirAvatar(nuevo.getAvatar());
         }
 
     }
@@ -107,7 +141,7 @@ public class Menu {
      */
     private void descJugador(String[] partes) {
         for(Jugador aux:jugadores){
-            if(aux.getNombre().equals(partes[3])){
+            if(aux.getNombre().equals(partes[2])){
                 System.out.println(aux);
             }
         }
@@ -145,25 +179,48 @@ public class Menu {
 
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
-    private void lanzarDados() {
+    private void lanzarDados(String[] partes) {
+
+        boolean forzar=false;
+        if(partes.length == 3) {
+            forzar = true;
+        }
         Jugador jugadorActual= jugadores.get(turno);
+        System.out.println(jugadorActual);
         if(tirado){
             System.out.println("Ya has tirado los dados en este turno.");
             return;
         }
-         int valor1=dado1.hacerTirada();
-         int valor2=dado2.hacerTirada();
-        if(jugadorActual.getEnCarcel()){
-            //Caso carcel
+        int valor1;
+        int valor2;
+        if (forzar) {
+            String[] dadoforzado = partes[2].split("\\+");
+            valor1 = Integer.parseInt(dadoforzado[0]);
+            valor2 = Integer.parseInt(dadoforzado[1]);
+        }else {
+            valor1 = dado1.hacerTirada();
+            valor2 = dado2.hacerTirada();
         }
-        lanzamientos++;
-        if(lanzamientos==3){
+        if(jugadorActual.getEnCarcel()){
+            if (valor1==valor2){ //Para salir da cárcel por turnos, espérase a que acabe o turno
+                jugadorActual.setEnCarcel(false);
+                lanzamientos=0;
+                tirado=false;
+                System.out.println("\nHas sacado un "+valor1+" y un "+valor2+". Has salido de la cárcel.");
+                return;
+            }else{
+                jugadorActual.sumartiradascarcel();
+            }
+        }
+
+        if(lanzamientos==2 && valor1==valor2){
             System.out.println("Has sacado tres dobles seguidos. Vas a la cárcel.");
             jugadorActual.encarcelar(tablero.getPosiciones());
             lanzamientos=0;
             tirado=true;
             return;
         }
+        lanzamientos++;
         jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
         System.out.println("Has sacado un "+valor1+" y un "+valor2+".");
         tirado=true;
@@ -191,6 +248,7 @@ public class Menu {
         }
         else{
             jugadorActual.setEnCarcel(false);
+
             System.out.println("Has salido de la cárcel.");
         }
     }
@@ -213,6 +271,23 @@ public class Menu {
 
     // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
     private void acabarTurno() {
+        //Comprobar que a partida está empezada
+        if(!tirado){
+            System.out.println("No has tirado los dados en este turno.");
+            return;
+        }
+        Jugador jugadorActual= jugadores.get(turno);
+        if(jugadorActual.getEnCarcel() && jugadorActual.getTiradasCarcel()==3){
+            jugadorActual.setEnCarcel(false);
+            System.out.println("Has salido de la cárcel automáticamente tras tres turnos.");
+        }
+        tirado=false;
+        lanzamientos=0;
+        turno++;
+        if(turno==jugadores.size()){
+            turno=0;
+        }
+        System.out.println("Turno acabado. Ahora es el turno de "+jugadores.get(turno).getNombre()+".");
     }
 
 }
