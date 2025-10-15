@@ -119,6 +119,56 @@ public class Casilla {
     * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
     * en caso de no cumplirlas.*/
     public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada) {
+        if (this.duenho == banca) {
+            if (this.tipo != null && this.tipo.equals("Impuesto")) {
+                if (actual.getFortuna() >= this.impuesto) {
+                    actual.sumarFortuna(-this.impuesto);
+                    System.out.println("El jugador " + actual.getNombre() + " ha pagado " + this.impuesto + " a la banca por caer en la casilla " + this.nombre + ".\n");
+                } else {
+                    System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el impuesto de la casilla " + this.nombre + ".\n");
+                    return false;
+                }
+            } else if (this.tipo != null && this.tipo.equals("Especial")) {
+                if (this.nombre != null && this.nombre.equals("Suerte")) {
+                    // Lógica de suerte
+                } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
+                    // Lógica de caja de comunidad
+                } else if (this.nombre != null && this.nombre.equals("Parking")) {
+                    // Lógica de parking
+                } else if (this.nombre != null && this.nombre.equals("IrCarcel")) {
+                    // actual.encarcelar(); //Falta pasarle las casillas del tablero
+                }
+            }
+        } else {
+            if (this.duenho == actual) {
+                // No pasa nada, el jugador es dueño de la casilla.
+            } else {
+                if (this.tipo != null && (this.tipo.equals("Solar") || this.tipo.equals("Transporte"))) {
+                    if (actual.getFortuna() >= this.impuesto) {
+                        actual.sumarFortuna(-this.impuesto);
+                        if (this.duenho != null) {
+                            this.duenho.sumarFortuna(this.impuesto);
+                        }
+                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + this.impuesto + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                    } else {
+                        System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el alquiler de la casilla " + this.nombre + ".\n");
+                        return false;
+                    }
+                } else if (this.tipo != null && this.tipo.equals("Servicios")) {
+                    float impuestoASumar = this.impuesto * tirada;
+                    if (actual.getFortuna() >= impuestoASumar) {
+                        actual.sumarFortuna(-impuestoASumar);
+                        if (this.duenho != null) {
+                            this.duenho.sumarFortuna(impuestoASumar);
+                        }
+                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoASumar + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                    } else {
+                        System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el servicio de la casilla " + this.nombre + ".\n");
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 
@@ -126,10 +176,11 @@ public class Casilla {
     * - Jugador que solicita la compra de la casilla.
     * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
     public void comprarCasilla(Jugador solicitante, Jugador banca) {
-       if(this.getDuenho().getNombre().equals("banca")) {
+       if(this.getDuenho()==banca) {
            solicitante.anhadirPropiedad(this);
            this.duenho = solicitante;
            solicitante.sumarFortuna(-this.valor);
+              System.out.println("\nO xogador " + solicitante.getNombre() + " comprou a casilla " + this.nombre + " por " + this.valor + " euros.\n");
        }
        else {
            System.out.println("\nA casilla xa ten dono.\n");
@@ -167,6 +218,9 @@ public class Casilla {
 
     @Override
     public String toString() {
+        if(this.duenho == null){
+            return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo +"\nvalor=" + this.valor + "\npropietario= Banca"  + "\nalquiler="+ this.impuesto + "\n}";
+        }
         return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo +"\nvalor=" + this.valor + "\npropietario=" + this.duenho  + "\nalquiler="+ this.impuesto + "\n}";
     }
 }

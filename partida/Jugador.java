@@ -34,6 +34,8 @@ public class Jugador {
             this.propiedades = new ArrayList<Casilla>();
         }
     }
+
+
     //Getters:
 
     public int getTiradasCarcel() {
@@ -49,6 +51,9 @@ public class Jugador {
     public boolean getEnCarcel() {
         return enCarcel;
     }
+    public float getFortuna() {
+        return fortuna;
+    }   
     //Setters:
     public void setEnCarcel(boolean enCarcel) {
         this.enCarcel = enCarcel;
@@ -102,7 +107,24 @@ public class Jugador {
     @Override
     public String toString()
     {   //Falta facer un tostring de propiedades
-        return "\n{\nNombre: "+ this.nombre+"\nAvatar: "+this.avatar.getId() + "\nFortuna: "+this.fortuna+"\nPropiedades: "+propiedades+"\n}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n{\nNombre: ").append(this.nombre)
+          .append("\nAvatar: ").append(this.avatar != null ? this.avatar.getId() : "null")
+          .append("\nFortuna: ").append(this.fortuna)
+          .append("\nPropiedades: ");
+        if (this.propiedades != null && !this.propiedades.isEmpty()) {
+            for (int i = 0; i < propiedades.size(); i++) {
+                Casilla p = propiedades.get(i);
+                sb.append(p != null ? p.getNombre() : "null");
+                if (i < propiedades.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+        } else {
+            sb.append("None");
+        }
+        sb.append("\n}");
+        return sb.toString();
     }
 
 }

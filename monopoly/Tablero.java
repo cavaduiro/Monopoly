@@ -181,7 +181,7 @@ public class Tablero {
         sb.append("_");
     }
     for (Avatar avatar : lado.get(indice).getAvatares()) {
-        sb.append("&").append(avatar.getId());
+        sb.append("\u001B[1m").append("&").append(avatar.getId()).append("\u001B[0m");
     }
     sb.append(color).append("|");
     return sb;

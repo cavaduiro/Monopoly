@@ -48,6 +48,7 @@ public class Avatar {
      * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
      */
     public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
+        Casilla casillaActual = this.lugar;
         int posicionActual = this.lugar.getPosicion();
         int nuevaPosicion = posicionActual + valorTirada;
         if (nuevaPosicion > 40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
@@ -66,6 +67,7 @@ public class Avatar {
                 }
             }
         }
+        System.out.println("El jugador " + this.jugador.getNombre() + " se ha movido de la casilla " + casillaActual.getNombre() + " a la casilla " + this.lugar.getNombre() + ".\n");
 
     }
 
