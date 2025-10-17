@@ -121,27 +121,31 @@ public class Casilla {
 
     /*Método para evaluar qué hacer en una casilla concreta. Parámetros:
     * - Jugador cuyo avatar está en esa casilla.
-    * - La banca (para ciertas comprobaciones).
+    * - La banca (para ciertas comprobaciones)-> temos que levar a conta de cantos cartos se recaudan
     * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
     * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
-    * en caso de no cumplirlas.*/
+    * en caso de no cumplirlas.
+    * En caso de non cumprirse, declárase como en bancarrota ao xogador, e dalle todas as súas propiedas ao outro xogador
+    * */
     public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada) {
         if (this.duenho == banca) {
             if (this.tipo != null && this.tipo.equals("Impuesto")) {
                 if (actual.getFortuna() >= this.impuesto) {
                     actual.sumarFortuna(-this.impuesto);
                     System.out.println("El jugador " + actual.getNombre() + " ha pagado " + this.impuesto + " a la banca por caer en la casilla " + this.nombre + ".\n");
+                    banca.sumarFortuna(this.impuesto);
                 } else {
                     System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el impuesto de la casilla " + this.nombre + ".\n");
                     return false;
                 }
             } else if (this.tipo != null && this.tipo.equals("Especial")) {
                 if (this.nombre != null && this.nombre.equals("Suerte")) {
-                    // Lógica de suerte
+                    // Lógica de suerte-> seguintes entregas
                 } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
-                    // Lógica de caja de comunidad
+                    // Lógica de caja de comunidad ->seguintes entregas
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
-                    // Lógica de parking
+                    System.out.println("\nEl jugador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impuestos. \n");
+                    banca.setFortuna(0);
                 } else if (this.nombre != null && this.nombre.equals("IrCarcel")) {
                     // actual.encarcelar(); //Falta pasarle las casillas del tablero
                 }
@@ -179,6 +183,12 @@ public class Casilla {
         return true;
     }
 
+
+
+
+
+
+
     /*Método usado para comprar una casilla determinada. Parámetros:
     * - Jugador que solicita la compra de la casilla.
     * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
@@ -196,7 +206,7 @@ public class Casilla {
 
     /*Método para añadir valor a una casilla. Utilidad:
     * - Sumar valor a la casilla de parking.
-    * - Sumar valor a las casillas de solar al no comprarlas tras cuatro vueltas de todos los jugadores.
+    * - Sumar valor a las casillas de solar al no comprarlas tras cuatro vueltas de todos los jugadores. Esto es porrazo no está en ningún sitio
     * Este método toma como argumento la cantidad a añadir del valor de la casilla.*/
     public void sumarValor(float suma) {
         this.setValor(this.valor + suma);
@@ -223,7 +233,8 @@ public class Casilla {
         if(this.duenho!=null && this.duenho.getNombre().equalsIgnoreCase("Banca")) {
         return "\n{\nTipo: " + this.tipo + "\ngrupo: " + this.grupo.getColorGrupo() + "\nValor: " + this.valor + "\nAlquiler: " + this.impuesto + "\nHipoteca: " + this.hipoteca + "\n}";
         }
-        return "\nA casilla non está en venda.\n";
+        return "";
+        //return "\nA casilla non está en venda.\n";
     }
     @Override
     public String toString() {

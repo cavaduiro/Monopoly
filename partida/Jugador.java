@@ -19,6 +19,7 @@ public class Jugador {
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
+        this.fortuna = 0;
     }
 
     /*Constructor principal. Requiere parámetros:
@@ -53,11 +54,15 @@ public class Jugador {
     }
     public float getFortuna() {
         return fortuna;
-    }   
+    }
+
+    public ArrayList<Casilla> getPropiedades() {return propiedades;}
+
     //Setters:
     public void setEnCarcel(boolean enCarcel) {
         this.enCarcel = enCarcel;
     }
+    public void setFortuna(int novaFortuna){this.fortuna = novaFortuna;}
     //Otros métodos:
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Casilla casilla) {

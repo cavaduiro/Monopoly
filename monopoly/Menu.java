@@ -210,7 +210,7 @@ public class Menu {
 
     private void xogadorTurno(){
         Jugador jugadorActual = jugadores.get(turno);
-        System.out.println("\n{\nNombre: "+ jugadorActual.getNombre()+"\nAvatar: "+jugadorActual.getAvatar()+"\n}\n");
+        System.out.println("\n{\nNombre: "+ jugadorActual.getNombre()+"\nAvatar: "+jugadorActual.getAvatar().getId()+"\n}\n");
     }
 
 
@@ -372,13 +372,19 @@ public class Menu {
             System.out.println("Has salido de la cárcel automáticamente tras tres turnos.");
         }
         if(!solvente){
-            System.out.println("No has pagado todas tus deudas.");
-            //Debería haber algo tipo, pagar de novo ou algo? tipo, aquí outr avez chamar a solvente?
-            solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,0);
-            //Pero, oof, así non poderías pasar a tirada
-            //Dádelle unha volta
-
-            return;
+            Jugador Recaudador = jugadorActual.getAvatar().getLugar().getDuenho();
+            System.out.println("\nNo has pagado todas tus deudas.");
+            bancarrota(jugadorActual, Recaudador);
+            //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,0); <-non ten sentido facer aquí solvente, xa se fai cando tiras os dados.
+            //^^, senón tiras os dados, non cambia o teu estado do xogo. Con saber en que casilla estás xa sabes a quen lle debes os cartos
+            //^^ non lle vas pagar a ningúen máis que ao xogador da casilla que che fixo perder os cartos
+            System.out.println("\nTurno acabado. El jugador "+ jugadorActual.getNombre()+ " ha sido eliminado. \n");
+            jugadores.remove(turno);
+            if(jugadores.size()==1){
+                System.out.println("\nLa partida a finalizado, "+ jugadores.get(turno).getNombre()+". :)");
+                //FUNCIÓN FINALIZAR PARTIDA
+            }
+        //Esto entendo que pode ser exactamente igual, non hai por que facer return realmente (mentres queden xogadores)
         }
         tirado=false;
         lanzamientos=0;
@@ -387,6 +393,18 @@ public class Menu {
             turno=0;
         }
         System.out.println("Turno acabado. Ahora es el turno de "+jugadores.get(turno).getNombre()+".");
+    }
+
+    private void bancarrota(Jugador endeudado, Jugador Recaudador){
+    //Quitaránse todas as propidedades do xogar endeudado e daranse ao outro xogador/banca
+        if(Recaudador == this.banca){
+            System.out.println("\nTodas las propiedades do jugador "+endeudado.getNombre()+" serán traspasadas a la Banca.\n");
+        }else{
+            System.out.println("\nLas propiedades de "+endeudado.getNombre()+" serán revocadas a "+Recaudador.getNombre()+".\n");
+        }
+        for(Casilla aux: endeudado.getPropiedades()){
+            aux.setDueño(Recaudador);
+        }
     }
 
 }
