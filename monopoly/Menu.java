@@ -77,6 +77,10 @@ public class Menu {
                 }
                 break;
             case "salir":
+                if(cmdseparado[1].equalsIgnoreCase("cárcel")){
+                    salirCarcelPagando();
+                    break;
+                }
                     salirCarcel();
                 break;
             case "acabar":
@@ -262,8 +266,6 @@ public class Menu {
         }
         lanzamientos++;
         System.out.println("Has sacado un "+valor1+" y un "+valor2+".\n");
-        jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
-
         solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2);
 
         tirado=true;
@@ -275,7 +277,27 @@ public class Menu {
 
 
     }
-
+    void salirCarcelPagando(){
+        Jugador actual=jugadores.get(turno);
+        if(!actual.getEnCarcel()){
+            System.out.println("El jugador no está en la cárcel");
+            return;
+        }
+        if(actual.getFortuna()<500000){
+            System.out.println("El jugador no tiene dinero para salir de la cárcel");
+            return;
+        }
+        if(tirado){
+            System.out.println("Ya has tirado los dados");
+            return;
+        }
+        else{
+            actual.sumarFortuna(-500000);
+            actual.setEnCarcel(false);
+            System.out.println(actual.getNombre()+"ha pagado 500000 y ha salido de la carcel,puede tirar los dados");
+            return;
+        }
+    }
     /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */

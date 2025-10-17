@@ -100,6 +100,13 @@ public class Casilla {
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
     }
+
+    public void setDueño(Jugador duenho) {
+        this.duenho = duenho;
+    }
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
     /****************************/
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
@@ -192,6 +199,7 @@ public class Casilla {
     * - Sumar valor a las casillas de solar al no comprarlas tras cuatro vueltas de todos los jugadores.
     * Este método toma como argumento la cantidad a añadir del valor de la casilla.*/
     public void sumarValor(float suma) {
+        this.setValor(this.valor + suma);
     }
 
     /*Método para mostrar información sobre una casilla.
@@ -212,15 +220,16 @@ public class Casilla {
      * Valor devuelto: texto con esa información.
      */
     public String casEnVenta() {
-        return "returnfalsoparaquerunee";
-
+        if(this.duenho!=null && this.duenho.getNombre().equalsIgnoreCase("Banca")) {
+        return "\n{\nTipo: " + this.tipo + "\ngrupo: " + this.grupo.getColorGrupo() + "\nValor: " + this.valor + "\nAlquiler: " + this.impuesto + "\nHipoteca: " + this.hipoteca + "\n}";
+        }
+        return "\nA casilla non está en venda.\n";
     }
-
     @Override
     public String toString() {
         if(this.duenho == null){
-            return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo +"\nvalor=" + this.valor + "\npropietario= Banca"  + "\nalquiler="+ this.impuesto + "\n}";
+            return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo.getColorGrupo() +"\nvalor=" + this.valor + "\npropietario= Banca"  + "\nalquiler="+ this.impuesto + "\n}";
         }
-        return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo +"\nvalor=" + this.valor + "\npropietario=" + this.duenho  + "\nalquiler="+ this.impuesto + "\n}";
+        return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo.getColorGrupo() +"\nvalor=" + this.valor + "\npropietario=" + this.duenho.getNombre()  + "\nalquiler="+ this.impuesto + "\n}";
     }
 }

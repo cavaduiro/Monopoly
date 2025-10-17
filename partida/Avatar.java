@@ -36,9 +36,7 @@ public class Avatar {
         return id;
     }
 
-    public Casilla getLugar() {
-        return lugar;
-    }
+    public Casilla getLugar() {return lugar;}
     //Setters:
 
     //A continuación, tenemos otros métodos útiles para el desarrollo del juego.

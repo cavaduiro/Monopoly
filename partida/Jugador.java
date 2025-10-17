@@ -61,7 +61,17 @@ public class Jugador {
     //Otros métodos:
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Casilla casilla) {
-        this.propiedades.add(casilla);
+        if (this.propiedades.contains(casilla)) {
+            System.out.println("\nO xogador xa ten esa propiedade.\n");
+            return;
+        }
+        if(this.fortuna < casilla.getValor()) {
+            System.out.println("\nO xogador non ten suficiente fortuna para comprar esa propiedade.\n");
+            return;
+        }
+        else {
+            this.propiedades.add(casilla);
+        }
     }
 
     //Metodo para eliminar una propiedad del arraylist de propiedades de jugador.
