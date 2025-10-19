@@ -18,6 +18,7 @@ public class Menu {
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
     private Jugador banca; //Jugador que representa a la banca.
     private boolean partidaIniciada=false; //Booleano para comprobar si la partida ha comenzado (mínimo 2 jugadores creados).
+    private boolean partidaFinalizada = false;
 
     public Menu(){
 
@@ -29,16 +30,20 @@ public class Menu {
         this.avatares = new ArrayList<Avatar>();
         this.dado1 = new Dado();
         this.dado2 = new Dado();
-        while(true){
+        while(!partidaFinalizada){
             System.out.println(tablero);
             System.out.println("\n$: ");
             comando = scanner.nextLine();
             analizarComando(comando);
 
         }
+        System.out.println("\n/---------------/\n");
+        System.out.println("Créditos");
 
-        //Faltan mill cousas, so estou poñend o imprescindible para imprimir o tablero
+    }
 
+    public Tablero getTablero() {
+        return tablero;
     }
 
     // Metodo para inciar una partida: crea los jugadores y avatares.
@@ -52,6 +57,10 @@ public class Menu {
         String[] cmdseparado = comando.split(" "); //separa el comando por espacios y lo mete en array
         switch (cmdseparado[0]){
             case "crear":
+                if(cmdseparado.length<2){ //En todos estos comandos tes que comprobar que hay suficientes argumentos, senón intentas acceder a posicións de memoria erróneas
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
                 if(cmdseparado[1].equalsIgnoreCase("jugador")){
                     crearxogador(cmdseparado);
                 }else{
@@ -67,6 +76,10 @@ public class Menu {
                 listar(cmdseparado);
                 break;
             case "lanzar":
+                if(cmdseparado.length<2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
                 if(cmdseparado[1].equalsIgnoreCase("dados")){
                     lanzarDados(cmdseparado);
 
@@ -75,6 +88,10 @@ public class Menu {
                 }
                 break;
             case "salir":
+                if(cmdseparado.length<2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
                 if(cmdseparado[1].equalsIgnoreCase("cárcel")){
                     salirCarcelPagando();
                     break;
@@ -98,6 +115,9 @@ public class Menu {
     }
 
     private void listar(String[] partes){
+        if(partes.length<2){
+            System.out.println("\nNon inseriu o número de comandos suficientes...\n");
+        }
         if(partes[1].equalsIgnoreCase("jugadores")){
             listarJugadores();
         }else if(partes[1].equalsIgnoreCase("enventa")){
@@ -269,17 +289,9 @@ public class Menu {
         System.out.println("Has sacado un "+valor1+" y un "+valor2+".\n");
         jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
 
-        //Como para encarcelar fai falta o tablero, e evaluarCasila non deixa pasar o tablero, facemos o de IrCarcel aquí
-        //CUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRE
-        if(jugadorActual.getAvatar().getLugar().getNombre().equals("IrCarcel")){
-            System.out.println("Has caído en la casilla Ir a la cárcel. Vas a la cárcel.\n");
-            jugadorActual.encarcelar(tablero.getPosiciones());
-            lanzamientos=0;
-            tirado=true;
-            return;
-        }   
 
-        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2);
+
+        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
 
         tirado=true;
         if(valor1==valor2){
@@ -402,8 +414,10 @@ public class Menu {
             System.out.println("\nTurno acabado. El jugador "+ jugadorActual.getNombre()+ " ha sido eliminado. \n");
             jugadores.remove(turno);
             if(jugadores.size()==1){
-                System.out.println("\nLa partida a finalizado, "+ jugadores.get(turno).getNombre()+". :)");
-                //FUNCIÓN FINALIZAR PARTIDA
+                partidaFinalizada = finalizarPartida();
+                return;
+                //Impide inmediatamente que se poida realizar calquera outra acción.
+
             }
         //Esto entendo que pode ser exactamente igual, non hai por que facer return realmente (mentres queden xogadores)
         }
@@ -450,5 +464,13 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
+
+    }
+    private boolean finalizarPartida(){
+        Jugador ganhador = jugadores.getFirst();
+        System.out.println("\n\nO Gañador da partida foi "+ganhador.getNombre() + ", felicidades!\n");
+        System.out.println("Rematou a partida con " + ganhador.getFortuna()+" $, e as súas propiedades son:\n ");
+        System.out.println(ganhador.getPropiedades());
+    return true;
     }
 }

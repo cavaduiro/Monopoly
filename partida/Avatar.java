@@ -77,18 +77,26 @@ public class Avatar {
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    private void generarId(ArrayList<Avatar> avCreados) {
+    private void generarId(ArrayList<Avatar> avCreados)
+    {
         int x = (int) (Math.random() * 26 + 65); //valor aleatorio ascii
         this.id = Character.toString((char) x);
-        if (!avCreados.isEmpty()) {
-            for (int i = 0; i < avCreados.size(); i++) {
-                if (avCreados.get(i).id.equals(this.id)) {
-                    i = 0;
-                    x = (int) (Math.random() * 26 + 65);
-                }
-            }
-            this.id = Character.toString((char) x);
+        if (!avCreados.isEmpty())
+        {
+            do
+            {
+                x = (int) (Math.random() * 26 + 65); //valor aleatorio ascii
+                this.id = Character.toString((char) x);
+            } while (esDupe(avCreados));
+
         }
-        //Xa creo os avatares individuales arriba, non entendo como implementalo con esta función
+    }
+    private boolean esDupe(ArrayList<Avatar> avCreados){
+        for(Avatar aux: avCreados){
+            if(aux.id.equalsIgnoreCase(this.id)){
+                return true;
+            }
+        }
+        return false;
     }
 }

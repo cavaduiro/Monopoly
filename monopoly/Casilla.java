@@ -127,7 +127,7 @@ public class Casilla {
     * en caso de no cumplirlas.
     * En caso de non cumprirse, declárase como en bancarrota ao xogador, e dalle todas as súas propiedas ao outro xogador
     * */
-    public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada) {
+    public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) {
         if (this.duenho == banca) {
             if (this.tipo.equals("Impuesto")) {
                 if (actual.getFortuna() >= this.impuesto) {
@@ -145,9 +145,12 @@ public class Casilla {
                     // Lógica de caja de comunidad ->seguintes entregas
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
                     System.out.println("\nEl jugador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impuestos. \n");
+                    actual.sumarFortuna(banca.getFortuna());
                     banca.setFortuna(0);
                 } else if (this.nombre != null && this.nombre.equals("IrCarcel")) {
-                    // actual.encarcelar(); //Falta pasarle las casillas del tablero
+                    System.out.println("\nHas caído en IrCárcel, irás a la cárcel...\n");
+                    actual.encarcelar(pos);
+                    return true; //O xogador segue solvente aínda se na cárcel.
                 }
             }
         } else {
