@@ -102,6 +102,10 @@ public class Menu {
                 acabarTurno();
                 break;
             case "comprar":
+                if(cmdseparado.length < 2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
                 comprar(cmdseparado[1]);
                 break;
             case "comandos":
@@ -298,7 +302,7 @@ public class Menu {
         solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
 
         tirado=true;
-        if(valor1==valor2){
+        if(valor1==valor2 && jugadorActual.getEnCarcel()==false){
             System.out.println("Has sacado dados dobles.");
             tirado=false;
             return;
@@ -336,7 +340,7 @@ public class Menu {
             System.out.println("No existe ninguna casilla con el nombre."+ nombre);
             return;
         }
-        if(!"Solar".equals(casillaComprar.getTipo()) && !"Transporte".equals(casillaComprar.getTipo()) && casillaComprar.getTipo()!="Servicio"){
+        if(!"Solar".equals(casillaComprar.getTipo()) && !"Transportes".equals(casillaComprar.getTipo()) && casillaComprar.getTipo()!="Servicios"){
             System.out.println("Esa casilla no es comprable.\n Solo puedes comprar casillas de tipo Solar, Transporte o Servicio.");
             return;
         }
