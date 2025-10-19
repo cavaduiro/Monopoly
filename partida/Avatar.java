@@ -65,6 +65,10 @@ public class Avatar {
                 }
             }
         }
+
+        if(casillaActual.getPosicion() > posicionActual && !jugador.getEnCarcel()){
+            this.jugador.sumarFortuna(200000); //El jugador recibe 2000000 por pasar por la salida.
+        }
         System.out.println("El jugador " + this.jugador.getNombre() + " se ha movido de la casilla " + casillaActual.getNombre() + " a la casilla " + this.lugar.getNombre() + ".\n");
 
     }

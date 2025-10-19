@@ -101,7 +101,7 @@ public class Tablero {
 
     //Método para insertar las casillas del lado norte.
     private void insertarLadoNorte() {
-        Casilla parking = new Casilla("Parking", "Especial", 20, this.banca, 0); //O impuesto de Parking vai ser o bote
+        Casilla parking = new Casilla("Parking", "Especial", 20, this.banca); //O impuesto de Parking vai ser o bote
         Casilla solar12 = new Casilla("Solar12", "Solar", 21, 2200000, this.banca, 180000, 1100000);
         Casilla suerte2 = new Casilla("Suerte", "Especial", 22, this.banca);
         Casilla solar13 = new Casilla("Solar13", "Solar", 23, 2200000, this.banca, 180000, 1100000);

@@ -129,7 +129,7 @@ public class Casilla {
     * */
     public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada) {
         if (this.duenho == banca) {
-            if (this.tipo != null && this.tipo.equals("Impuesto")) {
+            if (this.tipo.equals("Impuesto")) {
                 if (actual.getFortuna() >= this.impuesto) {
                     actual.sumarFortuna(-this.impuesto);
                     System.out.println("El jugador " + actual.getNombre() + " ha pagado " + this.impuesto + " a la banca por caer en la casilla " + this.nombre + ".\n");
@@ -152,7 +152,7 @@ public class Casilla {
             }
         } else {
             if (this.duenho == actual) {
-                // No pasa nada, el jugador es dueño de la casilla.
+                //non fai nada, o xogador é dono da casilla xa lol
             } else {
                 if (this.tipo != null && (this.tipo.equals("Solar") || this.tipo.equals("Transporte"))) {
                     if (actual.getFortuna() >= this.impuesto) {
@@ -239,8 +239,9 @@ public class Casilla {
     @Override
     public String toString() {
         if(this.duenho == null){
-            return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo.getColorGrupo() +"\nvalor=" + this.valor + "\npropietario= Banca"  + "\nalquiler="+ this.impuesto + "\n}";
+            return "\n{\n  Tipo=" + this.tipo + "\n  grupo=" + Valor.getNombreColor(this.grupo.getColorGrupo()) +"\n  valor=" + this.valor + "\n  propietario= Banca"  + "\n  alquiler="+ this.impuesto + "\n}";
         }
-        return "\n{\nTipo=" + this.tipo + "\ngrupo=" + this.grupo.getColorGrupo() +"\nvalor=" + this.valor + "\npropietario=" + this.duenho.getNombre()  + "\nalquiler="+ this.impuesto + "\n}";
+        return "\n{\n  Tipo=" + this.tipo + "\n  grupo=" + Valor.getNombreColor(this.grupo.getColorGrupo()) +"\n  valor=" + this.valor + "\n  propietario=" + this.duenho.getNombre()  + "\n  alquiler="+ this.impuesto + "\n}";
     }
 }
+   

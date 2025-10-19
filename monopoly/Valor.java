@@ -22,4 +22,18 @@ public class Valor {
     public static final String ORANGE = "\u001B[38;5;208m";
     public static final String PINK = "\u001B[38;5;213m";
 
+    public static String getNombreColor(String codigo) {
+        if (codigo.equals(GREEN)) return "Verde";
+        if (codigo.equals(RED)) return "Vermello";
+        if (codigo.equals(BLUE)) return "Azul";
+        if (codigo.equals(CYAN)) return "Cian";
+        if (codigo.equals(YELLOW)) return "Amarelo";
+        if (codigo.equals(PURPLE)) return "Púrpura";
+        if (codigo.equals(WHITE)) return "Branco";
+        if (codigo.equals(BLACK)) return "Negro";
+        if (codigo.equals(ORANGE)) return "Laranxa";
+        if (codigo.equals(PINK)) return "Rosa";
+        if (codigo.equals(RESET)) return "RESET";
+        return "DESCONOCIDO";
+    }
 }

@@ -2,8 +2,6 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.w3c.dom.ls.LSOutput;
 import partida.*;
 
 public class Menu {
@@ -18,19 +16,19 @@ public class Menu {
     private Dado dado2;
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
-    private Jugador banca;
+    private Jugador banca; //Jugador que representa a la banca.
     private boolean partidaIniciada=false; //Booleano para comprobar si la partida ha comenzado (mínimo 2 jugadores creados).
 
     public Menu(){
 
         Scanner scanner = new Scanner(System.in);
         String comando;
+        this.banca = new Jugador();
         this.tablero = new Tablero(this.banca);
         this.jugadores = new ArrayList<Jugador>();
         this.avatares = new ArrayList<Avatar>();
         this.dado1 = new Dado();
         this.dado2 = new Dado();
-        System.out.println(tablero);
         while(true){
             System.out.println(tablero);
             System.out.println("\n$: ");
@@ -88,6 +86,9 @@ public class Menu {
                 break;
             case "comprar":
                 comprar(cmdseparado[1]);
+                break;
+            case "comandos":
+                leerArquivo(cmdseparado[1]);
                 break;
             default:
                 System.out.println("\nComando introducido erróneo.\n");
@@ -266,6 +267,18 @@ public class Menu {
         }
         lanzamientos++;
         System.out.println("Has sacado un "+valor1+" y un "+valor2+".\n");
+        jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
+
+        //Como para encarcelar fai falta o tablero, e evaluarCasila non deixa pasar o tablero, facemos o de IrCarcel aquí
+        //CUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRECUTRE
+        if(jugadorActual.getAvatar().getLugar().getNombre().equals("IrCarcel")){
+            System.out.println("Has caído en la casilla Ir a la cárcel. Vas a la cárcel.\n");
+            jugadorActual.encarcelar(tablero.getPosiciones());
+            lanzamientos=0;
+            tirado=true;
+            return;
+        }   
+
         solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2);
 
         tirado=true;
@@ -307,7 +320,7 @@ public class Menu {
             System.out.println("No existe ninguna casilla con el nombre."+ nombre);
             return;
         }
-        if(casillaComprar.getTipo()!="Solar" && casillaComprar.getTipo()!="Transporte" && casillaComprar.getTipo()!="Servicio"){
+        if(!"Solar".equals(casillaComprar.getTipo()) && !"Transporte".equals(casillaComprar.getTipo()) && casillaComprar.getTipo()!="Servicio"){
             System.out.println("Esa casilla no es comprable.\n Solo puedes comprar casillas de tipo Solar, Transporte o Servicio.");
             return;
         }
@@ -345,6 +358,14 @@ public class Menu {
 
     // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
     private void listarVenta() {
+        ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
+        for (ArrayList<Casilla> lado : pos) {
+            for (Casilla casilla : lado) {
+                if (casilla.getDuenho() == banca && ("Solar".equals(casilla.getTipo()) || "Transporte".equals(casilla.getTipo()) || "Servicio".equals(casilla.getTipo()))) {
+                    System.out.println(casilla);
+                }
+            }
+        }
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
@@ -407,4 +428,27 @@ public class Menu {
         }
     }
 
+    private void leerArquivo(String nomeArquivo){
+        try {
+            java.io.File archivo = new java.io.File(nomeArquivo);
+            Scanner lector = new Scanner(archivo);
+            ArrayList<String> comandos = new ArrayList<String>();
+            
+            while(lector.hasNextLine()) {
+                comandos.add(lector.nextLine());
+            }
+            lector.close();
+            
+            for(String comando : comandos) {
+                if(!comando.trim().isEmpty()) {
+                    System.out.println("Ejecutando: " + comando);
+                    analizarComando(comando);
+                }
+            }
+        } catch (java.io.FileNotFoundException e) {
+            System.out.println("No se encontró el archivo: " + nomeArquivo);
+        } catch (Exception e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+        }
+    }
 }
