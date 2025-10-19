@@ -157,25 +157,63 @@ public class Casilla {
             if (this.duenho == actual) {
                 //non fai nada, o xogador é dono da casilla xa lol
             } else {
-                if (this.tipo != null && (this.tipo.equals("Solar") || this.tipo.equals("Transporte"))) {
-                    if (actual.getFortuna() >= this.impuesto) {
-                        actual.sumarFortuna(-this.impuesto);
+                // Si el dueño tiene todas las casillas del grupo, el impuesto es el doble
+                float impuestoSolar = this.impuesto;
+                if (this.grupo != null && this.grupo.esDuenhoGrupo(this.duenho)) {
+                    System.out.println("\nO dono da casilla " + this.nombre + " ten todas as casillas do grupo, polo que o imposto a pagar será o dobre.\n");
+                    impuestoSolar *= 2;
+                }
+                if (this.tipo != null && (this.tipo.equals("Solar"))) {
+                    if (actual.getFortuna() >= impuestoSolar    ) {
+                        actual.sumarFortuna(-impuestoSolar);
                         if (this.duenho != null) {
-                            this.duenho.sumarFortuna(this.impuesto);
+                            this.duenho.sumarFortuna(impuestoSolar);
                         }
-                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + this.impuesto + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoSolar + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
                     } else {
                         System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el alquiler de la casilla " + this.nombre + ".\n");
                         return false;
                     }
-                } else if (this.tipo != null && this.tipo.equals("Servicios")) {
-                    float impuestoASumar = this.impuesto * tirada;
-                    if (actual.getFortuna() >= impuestoASumar) {
-                        actual.sumarFortuna(-impuestoASumar);
-                        if (this.duenho != null) {
-                            this.duenho.sumarFortuna(impuestoASumar);
+                } else if(this.tipo != null && this.tipo.equals("Transporte")) {
+                    int numTransportes = 0;
+                    Jugador propietario = this.duenho;
+                    for (Casilla propiedad : propietario.getPropiedades()) {
+                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Transporte")) {
+                            numTransportes++;
                         }
-                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoASumar + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                    }
+                    System.out.println("\nO dono da casilla " + this.nombre + " ten " + numTransportes + " transportes, polo que o imposto multiplicarase por " + numTransportes + ".\n");
+                    float impuestoTransporte = this.impuesto * numTransportes;
+                    if (actual.getFortuna() >= impuestoTransporte) {
+                        actual.sumarFortuna(-impuestoTransporte);
+                        if (this.duenho != null) {
+                            this.duenho.sumarFortuna(impuestoTransporte);
+                        }
+                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoTransporte + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                    } else {
+                        System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el transporte de la casilla " + this.nombre + ".\n");
+                        return false;
+                    }
+                } else if (this.tipo != null && this.tipo.equals("Servicios")) {
+                    Jugador propietario = this.duenho;
+                    int numServicios = 0;
+                    for (Casilla propiedad : propietario.getPropiedades()) {
+                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Servicios")) {
+                            numServicios++;
+                        }
+                    }
+                    int multiplicador=2;
+                    if(numServicios==2){
+                        multiplicador=4;
+                    }
+                    System.out.println("\nO dono da casilla " + this.nombre + " ten " + numServicios + " servizos, polo que o imposto multiplicarase por " + multiplicador + ".\n");
+                    float impuestoServicios = this.impuesto * tirada * multiplicador;
+                    if (actual.getFortuna() >= impuestoServicios) {
+                        actual.sumarFortuna(-impuestoServicios);
+                        if (this.duenho != null) {
+                            this.duenho.sumarFortuna(impuestoServicios);
+                        }
+                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoServicios + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
                     } else {
                         System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el servicio de la casilla " + this.nombre + ".\n");
                         return false;

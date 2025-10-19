@@ -52,6 +52,7 @@ public class Avatar {
         if (nuevaPosicion > 40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
             nuevaPosicion = nuevaPosicion %40;
             this.jugador.sumarFortuna(200000); //El jugador recibe 2000000 por pasar por la salida.
+            System.out.println("El jugador " + this.jugador.getNombre() + " ha pasado por la salida y ha recibido 2000000€.\n");
         }
         //Ahora buscamos la casilla correspondiente a la nueva posición y movemos el avatar allí.
         for (ArrayList<Casilla> lado : casillas) {

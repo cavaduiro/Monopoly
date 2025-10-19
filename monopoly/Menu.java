@@ -105,6 +105,10 @@ public class Menu {
                 comprar(cmdseparado[1]);
                 break;
             case "comandos":
+                if(cmdseparado.length < 2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
                 leerArquivo(cmdseparado[1]);
                 break;
             default:
@@ -356,6 +360,10 @@ public class Menu {
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
+        if(jugadores.size()==0){
+            System.out.println("No hay jugadores creados todavía.");
+            return;
+        }
         Jugador jugadorActual= jugadores.get(turno);
         if(!jugadorActual.getEnCarcel()){
             System.out.println("No estás en la cárcel.");
