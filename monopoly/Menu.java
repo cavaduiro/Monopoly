@@ -72,8 +72,13 @@ public class Menu {
             case "jugador":
                 xogadorTurno();
                 break;
+            case "ver":
+                break;
             case "listar":
                 listar(cmdseparado);
+                break;
+            case "empezar":
+                iniciarPartida();
                 break;
             case "lanzar":
                 if(cmdseparado.length<2){
@@ -150,7 +155,7 @@ public class Menu {
 
     private void crearxogador(String[] partes) {
         if(partidaIniciada){
-            System.out.println("La partida ya ha comenzado. No se pueden añadir más jugadores.\n");
+            System.out.println("A partida xa comezou. Non se poden engadir máis xogadores.\n");
             return;
         }
         if(partes.length !=4){
@@ -163,7 +168,7 @@ public class Menu {
             return;
         }
         if(!partes[3].equalsIgnoreCase("coche")&&!partes[3].equalsIgnoreCase("sombrero")&&!partes[3].equalsIgnoreCase("esfinge")&&!partes[3].equalsIgnoreCase("pelota"))    {
-            System.out.println("Tipo de avatar no válido.");
+            System.out.println("Tipo de avatar non válido.");
                 return;
         }
 
@@ -171,11 +176,11 @@ public class Menu {
             for(Jugador aux:jugadores){
 
                 if(aux.getNombre().equals(partes[2])){
-                    System.out.println("Ya existe un jugador con ese nombre.");
+                    System.out.println("Xa existe un xogador con ese nome.");
                     return;
                 }
                 else if(aux.getAvatar().getTipo().equalsIgnoreCase(partes[3])){
-                    System.out.println("Ya existe un jugador con ese avatar.");
+                    System.out.println("Xa existe un xogador con ese avatar.");
                     return;
                 }
             }
@@ -193,10 +198,10 @@ public class Menu {
     private void descJugador(String[] partes) {
 
         if(jugadores.size()==0){
-            System.out.println("\nNo hay jugadores creados todavía.\n");
+            System.out.println("\nNon hai xogadores aínda.\n");
             return;
         }
-        System.out.println("Nombre del jugador a describir: "+partes[2] );
+        System.out.println("Nome do xogador a describir: "+partes[2] );
         boolean encontrado = false;
         for(Jugador aux:jugadores){
             if(aux.getNombre().equals(partes[2])){
@@ -206,7 +211,7 @@ public class Menu {
             }
         }
         if(!encontrado){
-            System.out.println("\nNo existe ningún jugador con el nombre " + partes[2] + "\n");
+            System.out.println("\nNon existe un xogador con ese nome " + partes[2] + "\n");
         }
     }
 
@@ -239,7 +244,7 @@ public class Menu {
 
     private void xogadorTurno(){
         Jugador jugadorActual = jugadores.get(turno);
-        System.out.println("\n{\nNombre: "+ jugadorActual.getNombre()+"\nAvatar: "+jugadorActual.getAvatar().getId()+"\n}\n");
+        System.out.println("\n{\nNome: "+ jugadorActual.getNombre()+"\nAvatar: "+jugadorActual.getAvatar().getId()+"\n}\n");
     }
 
 
@@ -247,10 +252,10 @@ public class Menu {
     private void lanzarDados(String[] partes) {
         if(partidaIniciada==false && jugadores.size()>=2){
             partidaIniciada=true;
-            System.out.println("La partida ha comenzado\n");
+            System.out.println("A partida comezou\n");
         }
         else if(partidaIniciada==false && jugadores.size()<2){
-            System.out.println("La partida no ha comenzado. Deben crearse al menos dos jugadores.");
+            System.out.println("A partida aínda non comezou, necesítanse dous xogadores.");
             return;
         }
 
@@ -259,8 +264,9 @@ public class Menu {
             forzar = true;
         }
         Jugador jugadorActual= jugadores.get(turno);
+        System.out.println(jugadorActual);
         if(tirado){
-            System.out.println("Ya has tirado los dados en este turno.");
+            System.out.println("Xa tirou os dados este turno.");
             return;
         }
         int valor1;
@@ -278,7 +284,7 @@ public class Menu {
                 jugadorActual.setEnCarcel(false);
                 lanzamientos=0;
                 tirado=false;
-                System.out.println("\nHas sacado un "+valor1+" y un "+valor2+". Has salido de la cárcel.");
+                System.out.println("\nSacaches un "+valor1+" e un "+valor2+". Saíches do cárcere.");
                 return;
             }else{
                 jugadorActual.sumartiradascarcel();
@@ -286,14 +292,14 @@ public class Menu {
         }
 
         if(lanzamientos==2 && valor1==valor2){
-            System.out.println("Has sacado tres dobles seguidos. Vas a la cárcel.\n");
+            System.out.println("Sacaches tres dobles seguidos, vas ao cárcere.\n");
             jugadorActual.encarcelar(tablero.getPosiciones());
             lanzamientos=0;
             tirado=true;
             return;
         }
         lanzamientos++;
-        System.out.println("Has sacado un "+valor1+" y un "+valor2+".\n");
+        System.out.println("Sacaches un "+valor1+" e un "+valor2+".\n");
         jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
 
 
@@ -302,7 +308,7 @@ public class Menu {
 
         tirado=true;
         if(valor1==valor2 && jugadorActual.getEnCarcel()==false){
-            System.out.println("Has sacado dados dobles.");
+            System.out.println("Sacaches dobles");
             tirado=false;
             return;
         }
@@ -312,21 +318,21 @@ public class Menu {
     void salirCarcelPagando(){
         Jugador actual=jugadores.get(turno);
         if(!actual.getEnCarcel()){
-            System.out.println("El jugador no está en la cárcel");
+            System.out.println("O xogador non está no cárcere");
             return;
         }
         if(actual.getFortuna()<500000){
-            System.out.println("El jugador no tiene dinero para salir de la cárcel");
+            System.out.println("O xogador non ten cartos para saír do cárcere...");
             return;
         }
         if(tirado){
-            System.out.println("Ya has tirado los dados");
+            System.out.println("Xa tiraches os dados");
             return;
         }
         else{
             actual.sumarFortuna(-500000);
             actual.setEnCarcel(false);
-            System.out.println(actual.getNombre()+"ha pagado 500000 y ha salido de la carcel,puede tirar los dados");
+            System.out.println(actual.getNombre()+"pagaches a cuota (500000) e saíches do cárcere, podes tirar os dados.");
             return;
         }
     }
@@ -334,31 +340,31 @@ public class Menu {
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */
     private void comprar(String nombre) {
-        if(solvente = false){
-            System.out.println("\nO xogador non é solvente...");
+        if(!solvente){
+            System.out.println("\nO xogador actual non é solvente, non pode facer compras...");
             return;
         }
         Casilla casillaComprar = tablero.encontrar_casilla(nombre);
         if(casillaComprar == null){
-            System.out.println("No existe ninguna casilla con el nombre."+ nombre);
+            System.out.println("Non existe ningunha casilla co nome."+ nombre);
             return;
         }
         if(!"Solar".equals(casillaComprar.getTipo()) && !"Transportes".equals(casillaComprar.getTipo()) && casillaComprar.getTipo()!="Servicios"){
-            System.out.println("Esa casilla no es comprable.\n Solo puedes comprar casillas de tipo Solar, Transporte o Servicio.");
+            System.out.println("Esa casilla non é mercable.\n So podes comprar casillas de tipo Solar, Transporte o Servicio.");
             return;
         }
         if(casillaComprar.getDuenho() != banca){
-            System.out.println("Esa casilla ya tiene dueño, es de "+casillaComprar.getDuenho().getNombre()+".");
+            System.out.println("Esa casilla xa ten dono, é de "+casillaComprar.getDuenho().getNombre()+".");
             return;
         }
         
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getAvatar().getLugar() != casillaComprar){
-            System.out.println("No estás en esa casilla que quieres comprar.");
+            System.out.println("Non estás nesa casilla que queres comprar.");
             return;
         }
         if(jugadorActual.getFortuna() < casillaComprar.getValor()){
-            System.out.println("No tienes suficiente fortuna para comprar esa casilla.\nLa casilla cuesta "+casillaComprar.getValor()+" y tú tienes ahorrado"+jugadorActual.getFortuna()+".");
+            System.out.println("Non tes suficiente fortuna para comprar a casilla.\nA casilla costa "+casillaComprar.getValor()+" e ti tes aforrado"+jugadorActual.getFortuna()+".");
             return;
         }
         casillaComprar.comprarCasilla(jugadorActual, banca);
@@ -368,18 +374,18 @@ public class Menu {
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
         if(jugadores.size()==0){
-            System.out.println("No hay jugadores creados todavía.");
+            System.out.println("Non hai xogadores creados todavía.");
             return;
         }
         Jugador jugadorActual= jugadores.get(turno);
         if(!jugadorActual.getEnCarcel()){
-            System.out.println("No estás en la cárcel.");
+            System.out.println("Non estás no cárcere.");
             return;
         }
         else{
             jugadorActual.setEnCarcel(false);
 
-            System.out.println("Has salido de la cárcel.");
+            System.out.println("Saíches do cárcere.");
         }
     }
 
@@ -411,24 +417,25 @@ public class Menu {
     private void acabarTurno() {
         //Comprobar que a partida está empezada
         if(!tirado){
-            System.out.println("Aún tienes que tirar los dados.");
+            System.out.println("Aínda tes que tirar os dados.");
             return;
         }
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getEnCarcel() && jugadorActual.getTiradasCarcel()==3){
             jugadorActual.setEnCarcel(false);
-            System.out.println("Has salido de la cárcel automáticamente tras tres turnos.");
+            System.out.println("Saíches automaticamente do cárcere tras tres turnos.");
         }
         if(!solvente){
             Jugador Recaudador = jugadorActual.getAvatar().getLugar().getDuenho();
-            System.out.println("\nNo has pagado todas tus deudas.");
+            System.out.println("\nNon pagaches as deudas.");
             bancarrota(jugadorActual, Recaudador);
             //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,0); <-non ten sentido facer aquí solvente, xa se fai cando tiras os dados.
             //^^, senón tiras os dados, non cambia o teu estado do xogo. Con saber en que casilla estás xa sabes a quen lle debes os cartos
             //^^ non lle vas pagar a ningúen máis que ao xogador da casilla que che fixo perder os cartos
-            System.out.println("\nTurno acabado. El jugador "+ jugadorActual.getNombre()+ " ha sido eliminado. \n");
+            System.out.println("\nTurno acabado. O xogador "+ jugadorActual.getNombre()+ " foi eliminado. \n");
             jugadores.remove(turno);
             if(jugadores.size()==1){
+                turno =0;
                 partidaFinalizada = finalizarPartida();
                 return;
                 //Impide inmediatamente que se poida realizar calquera outra acción.
@@ -442,21 +449,27 @@ public class Menu {
         if(turno==jugadores.size()){
             turno=0;
         }
-        System.out.println("Turno acabado. Ahora es el turno de "+jugadores.get(turno).getNombre()+".");
+
+        if(!partidaFinalizada)
+        {
+            System.out.println("Turno acabado. Agora é o turno de "+jugadores.get(turno).getNombre()+".");
+        }
     }
 
     private void bancarrota(Jugador endeudado, Jugador Recaudador){
     //Quitaránse todas as propidedades do xogar endeudado e daranse ao outro xogador/banca
         if(Recaudador == this.banca){
-            System.out.println("\nTodas las propiedades do jugador "+endeudado.getNombre()+" serán traspasadas a la Banca.\n");
+            System.out.println("\nTodas as propiedades do xogador "+endeudado.getNombre()+" serán traspasadas á Banca.\n");
         }else{
-            System.out.println("\nLas propiedades de "+endeudado.getNombre()+" serán revocadas a "+Recaudador.getNombre()+".\n");
+            System.out.println("\nAs propiedades de "+endeudado.getNombre()+" serán revocadas a "+Recaudador.getNombre()+".\n");
         }
-        if(endeudado.getPropiedades().size()>0){
-            for(Casilla aux: endeudado.getPropiedades()){
+        if(!endeudado.getPropiedades().isEmpty()){
+            for(Casilla aux: endeudado.getPropiedades()) {
                 aux.setDueño(Recaudador);
             }
-        }
+        }else{
+                System.out.println("\nO xogador endeudado non ten propiedades...");
+            }
 
     }
 
@@ -473,22 +486,26 @@ public class Menu {
             
             for(String comando : comandos) {
                 if(!comando.trim().isEmpty()) {
-                    System.out.println("Ejecutando: " + comando);
+                    System.out.println("Executando: " + comando);
                     analizarComando(comando);
                 }
             }
         } catch (java.io.FileNotFoundException e) {
-            System.out.println("No se encontró el archivo: " + nomeArquivo);
+            System.out.println("Non se atopou o arquivo: " + nomeArquivo);
         } catch (Exception e) {
-            System.out.println("Error al leer el archivo: " + e.getMessage());
+            System.out.println("Error ao ler o arquivo: " + e.getMessage());
         }
 
     }
     private boolean finalizarPartida(){
         Jugador ganhador = jugadores.getFirst();
-        System.out.println("\n\nO Gañador da partida foi "+ganhador.getNombre() + ", felicidades!\n");
+        System.out.println("\nO Gañador da partida foi "+ganhador.getNombre() + ", felicidades!\n");
         System.out.println("Rematou a partida con " + ganhador.getFortuna()+" $, e as súas propiedades son:\n ");
-        System.out.println(ganhador.getPropiedades());
+        System.out.println("{\n");
+        for(Casilla aux : ganhador.getPropiedades()){
+            System.out.println(aux.getNombre() + "\n");
+        }
+        System.out.println("}");
     return true;
     }
 }

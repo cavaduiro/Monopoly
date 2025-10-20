@@ -132,10 +132,10 @@ public class Casilla {
             if (this.tipo.equals("Impuesto")) {
                 if (actual.getFortuna() >= this.impuesto) {
                     actual.sumarFortuna(-this.impuesto);
-                    System.out.println("El jugador " + actual.getNombre() + " ha pagado " + this.impuesto + " a la banca por caer en la casilla " + this.nombre + ".\n");
+                    System.out.println("O xogador " + actual.getNombre() + " pagou " + this.impuesto + " á banca por caer na casilla " + this.nombre + ".\n");
                     banca.sumarFortuna(this.impuesto);
                 } else {
-                    System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el impuesto de la casilla " + this.nombre + ".\n");
+                    System.out.println("O xogador " + actual.getNombre() + " non ten cartos para pagar os impostos da casilla " + this.nombre + ".\n");
                     return false;
                 }
             } else if (this.tipo != null && this.tipo.equals("Especial")) {
@@ -144,11 +144,11 @@ public class Casilla {
                 } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
                     // Lógica de caja de comunidad ->seguintes entregas
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
-                    System.out.println("\nEl jugador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impuestos. \n");
+                    System.out.println("\nO xogador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impostos. \n");
                     actual.sumarFortuna(banca.getFortuna());
                     banca.setFortuna(0);
                 } else if (this.nombre != null && this.nombre.equals("IrCarcel")) {
-                    System.out.println("\nHas caído en IrCárcel, irás a la cárcel...\n");
+                    System.out.println("\nCaíches en IrCarcel, irás ao cárcere...\n");
                     actual.encarcelar(pos);
                     return true; //O xogador segue solvente aínda se na cárcel.
                 }
@@ -169,9 +169,9 @@ public class Casilla {
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoSolar);
                         }
-                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoSolar + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " pagou " + impuestoSolar + " ao xogador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer na casilla " + this.nombre + ".\n");
                     } else {
-                        System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el alquiler de la casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " non ten suficientes cartos para pagar o alquilar da casilla " + this.nombre + ".\n");
                         return false;
                     }
                 } else if(this.tipo != null && this.tipo.equals("Transporte")) {
@@ -189,9 +189,9 @@ public class Casilla {
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoTransporte);
                         }
-                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoTransporte + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " pagou " + impuestoTransporte + " ao xogador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer na casilla " + this.nombre + ".\n");
                     } else {
-                        System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el transporte de la casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " non tes suficientes cartos para pagar o transporte da casilla " + this.nombre + ".\n");
                         return false;
                     }
                 } else if (this.tipo != null && this.tipo.equals("Servicios")) {
@@ -213,9 +213,9 @@ public class Casilla {
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoServicios);
                         }
-                        System.out.println("El jugador " + actual.getNombre() + " ha pagado " + impuestoServicios + " al jugador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " pagou " + impuestoServicios + " ao xogador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer en la casilla " + this.nombre + ".\n");
                     } else {
-                        System.out.println("El jugador " + actual.getNombre() + " no tiene suficiente dinero para pagar el servicio de la casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " non ten suficientes cartos para pagar o servizo da casilla " + this.nombre + ".\n");
                         return false;
                     }
                 }

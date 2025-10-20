@@ -54,8 +54,8 @@ public class Avatar {
         int nuevaPosicion = posicionActual + valorTirada;
         if (nuevaPosicion > 40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
             nuevaPosicion = nuevaPosicion %40;
-            this.jugador.sumarFortuna(200000); //El jugador recibe 2000000 por pasar por la salida.
-            System.out.println("El jugador " + this.jugador.getNombre() + " ha pasado por la salida y ha recibido 2000000€.\n");
+            this.jugador.sumarFortuna(2000000); //El jugador recibe 2000000 por pasar por la salida.
+            System.out.println("O xogador " + this.jugador.getNombre() + " pasou pola saída e recibiu 2000000€.\n");
         }
         //Ahora buscamos la casilla correspondiente a la nueva posición y movemos el avatar allí.
         for (ArrayList<Casilla> lado : casillas) {
@@ -73,7 +73,7 @@ public class Avatar {
         if(casillaActual.getPosicion() > posicionActual && !jugador.getEnCarcel()){
             this.jugador.sumarFortuna(200000); //El jugador recibe 2000000 por pasar por la salida.
         }
-        System.out.println("El jugador " + this.jugador.getNombre() + " se ha movido de la casilla " + casillaActual.getNombre() + " a la casilla " + this.lugar.getNombre() + ".\n");
+        System.out.println("O xogador " + this.jugador.getNombre() + " moveuse da casilla " + casillaActual.getNombre() + " á casilla " + this.lugar.getNombre() + ".\n");
 
     }
 
@@ -81,25 +81,23 @@ public class Avatar {
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    private void generarId(ArrayList<Avatar> avCreados) {
-        {
+    private void generarId(ArrayList<Avatar> avCreados)
+    {
+        String[] Ids = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M", "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+        List<String> disp = new ArrayList<>(Arrays.asList(Ids));
 
-            String[] Ids = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M", "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-            List<String> disp = new ArrayList<>(Arrays.asList(Ids));
-
-            // Quitamos os creados xa
-            for (Avatar av : avCreados) {
-                disp.remove(av.id);
-            }
-
-            if (disp.isEmpty()) {
-                System.out.println("Non quedan IDs."); //Caso imposible
-            }
-
-
-            int randomIndex = (int) (Math.random() * disp.size());
-            this.id = disp.get(randomIndex);
+        // Quitamos os creados xa
+        for (Avatar av : avCreados) {
+            disp.remove(av.id);
         }
+
+        if (disp.isEmpty()) {
+            System.out.println("Non quedan IDs."); //Caso imposible
+        }
+
+
+        int randomIndex = (int) (Math.random() * disp.size());
+        this.id = disp.get(randomIndex);
     }
     private boolean esDupe(ArrayList<Avatar> avCreados){
         for(Avatar aux: avCreados){
