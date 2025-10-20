@@ -61,11 +61,9 @@ class Grupo {
     public boolean esDuenhoGrupo(Jugador jugador) {
         for (Casilla casilla : miembros) { //Por cada casilla del grupo
             if (casilla.getDuenho() != jugador) {
-                System.out.println("\nnonono\n");
                 return false;
             }
         }
-        System.out.println("\nsisisi\n");
         return true;
         
     }

@@ -259,7 +259,6 @@ public class Menu {
             forzar = true;
         }
         Jugador jugadorActual= jugadores.get(turno);
-        System.out.println(jugadorActual);
         if(tirado){
             System.out.println("Ya has tirado los dados en este turno.");
             return;
@@ -335,6 +334,10 @@ public class Menu {
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */
     private void comprar(String nombre) {
+        if(solvente = false){
+            System.out.println("\nO xogador non é solvente...");
+            return;
+        }
         Casilla casillaComprar = tablero.encontrar_casilla(nombre);
         if(casillaComprar == null){
             System.out.println("No existe ninguna casilla con el nombre."+ nombre);
@@ -449,9 +452,12 @@ public class Menu {
         }else{
             System.out.println("\nLas propiedades de "+endeudado.getNombre()+" serán revocadas a "+Recaudador.getNombre()+".\n");
         }
-        for(Casilla aux: endeudado.getPropiedades()){
-            aux.setDueño(Recaudador);
+        if(endeudado.getPropiedades().size()>0){
+            for(Casilla aux: endeudado.getPropiedades()){
+                aux.setDueño(Recaudador);
+            }
         }
+
     }
 
     private void leerArquivo(String nomeArquivo){

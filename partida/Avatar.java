@@ -1,6 +1,9 @@
 package partida;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import monopoly.*;
 
 
@@ -78,18 +81,24 @@ public class Avatar {
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    private void generarId(ArrayList<Avatar> avCreados)
-    {
-        int x = (int) (Math.random() * 26 + 65); //valor aleatorio ascii
-        this.id = Character.toString((char) x);
-        if (!avCreados.isEmpty())
+    private void generarId(ArrayList<Avatar> avCreados) {
         {
-            do
-            {
-                x = (int) (Math.random() * 26 + 65); //valor aleatorio ascii
-                this.id = Character.toString((char) x);
-            } while (esDupe(avCreados));
 
+            String[] Ids = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M", "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+            List<String> disp = new ArrayList<>(Arrays.asList(Ids));
+
+            // Quitamos os creados xa
+            for (Avatar av : avCreados) {
+                disp.remove(av.id);
+            }
+
+            if (disp.isEmpty()) {
+                System.out.println("Non quedan IDs."); //Caso imposible
+            }
+
+
+            int randomIndex = (int) (Math.random() * disp.size());
+            this.id = disp.get(randomIndex);
         }
     }
     private boolean esDupe(ArrayList<Avatar> avCreados){
