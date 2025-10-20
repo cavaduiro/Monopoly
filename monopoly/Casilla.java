@@ -174,11 +174,11 @@ public class Casilla {
                         System.out.println("O xogador " + actual.getNombre() + " non ten suficientes cartos para pagar o alquilar da casilla " + this.nombre + ".\n");
                         return false;
                     }
-                } else if(this.tipo != null && this.tipo.equals("Transporte")) {
+                } else if(this.tipo != null && this.tipo.equals("Transportes")) {
                     int numTransportes = 0;
                     Jugador propietario = this.duenho;
                     for (Casilla propiedad : propietario.getPropiedades()) {
-                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Transporte")) {
+                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Transportes")) {
                             numTransportes++;
                         }
                     }
