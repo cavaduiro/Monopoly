@@ -279,10 +279,10 @@ public class Casilla {
     }
     @Override
     public String toString() {
-        if(this.duenho == null){
-            return "\n{\n  Tipo=" + this.tipo + "\n  grupo=" + Valor.getNombreColor(this.grupo.getColorGrupo()) +"\n  valor=" + this.valor + "\n  propietario= Banca"  + "\n  alquiler="+ this.impuesto + "\n}";
+        if(this.grupo==null){
+            return "\n{\n  nombre: " + this.nombre + "\n  tipo: " + this.tipo + "\n  valor: " + this.valor + "\n  propietario: " + this.duenho.getNombre()  + "\n  alquiler: " + this.impuesto + "\n}";
         }
-        return "\n{\n  Tipo=" + this.tipo + "\n  grupo=" + Valor.getNombreColor(this.grupo.getColorGrupo()) +"\n  valor=" + this.valor + "\n  propietario=" + this.duenho.getNombre()  + "\n  alquiler="+ this.impuesto + "\n}";
+        return "\n{\n  nombre: " + this.nombre + "\n  tipo: " + this.tipo + "\n  grupo: " + Valor.getNombreColor(this.grupo.getColorGrupo()) +"\n  valor: " + this.valor + "\n  propietario: " + this.duenho.getNombre()  + "\n  alquiler: " + this.impuesto + "\n}";
     }
 }
    

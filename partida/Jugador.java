@@ -30,7 +30,7 @@ public class Jugador {
         {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
-            this.fortuna = 5;
+            this.fortuna = 15000000;
             this.propiedades = new ArrayList<Casilla>();
         }
     }

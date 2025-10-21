@@ -397,7 +397,7 @@ public class Menu {
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
         for (ArrayList<Casilla> lado : pos) {
             for (Casilla casilla : lado) {
-                if (casilla.getDuenho() == banca && ("Solar".equals(casilla.getTipo()) || "Transporte".equals(casilla.getTipo()) || "Servicio".equals(casilla.getTipo()))) {
+                if (casilla.getDuenho() == banca && ("Solar".equals(casilla.getTipo()) || "Transportes".equals(casilla.getTipo()) || "Servicios".equals(casilla.getTipo()))) {
                     System.out.println(casilla);
                 }
             }
@@ -432,10 +432,11 @@ public class Menu {
             }else{
                 solvente=true;
                 jugadorActual.sumarFortuna(-500000);
+                jugadorActual.setEnCarcel(false);
+                jugadorActual.setTiradasCarcel(0);
+                System.out.println("Saíches automaticamente do cárcere tras tres turnos.\nPagaches 500000€ como multa dude.");
             }
-            jugadorActual.setEnCarcel(false);
-            jugadorActual.setTiradasCarcel(0);
-            System.out.println("Saíches automaticamente do cárcere tras tres turnos.\nPagaches 500000€ como multa dude.");
+
         }
         if(!solvente){
             Jugador Recaudador = jugadorActual.getAvatar().getLugar().getDuenho();
