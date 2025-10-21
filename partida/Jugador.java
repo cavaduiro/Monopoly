@@ -1,7 +1,6 @@
 package partida;
 
 import java.util.ArrayList;
-
 import monopoly.*;
 
 
@@ -31,7 +30,7 @@ public class Jugador {
         {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
-            this.fortuna = 15000000;
+            this.fortuna = 5;
             this.propiedades = new ArrayList<Casilla>();
         }
     }
@@ -62,6 +61,11 @@ public class Jugador {
     public void setEnCarcel(boolean enCarcel) {
         this.enCarcel = enCarcel;
     }
+
+    public void setTiradasCarcel(int tiradasCarcel) {
+        this.tiradasCarcel = tiradasCarcel;
+    }
+
     public void setFortuna(int novaFortuna){this.fortuna = novaFortuna;}
     //Otros métodos:
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.

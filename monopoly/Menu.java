@@ -15,7 +15,7 @@ public class Menu {
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
-    private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
+    private boolean solvente=true; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
     private Jugador banca; //Jugador que representa a la banca.
     private boolean partidaIniciada=false; //Booleano para comprobar si la partida ha comenzado (mínimo 2 jugadores creados).
     private boolean partidaFinalizada = false;
@@ -97,7 +97,7 @@ public class Menu {
                     System.out.println("\nNúmero de argumentos erróneo.\n");
                     break;
                 }
-                if(cmdseparado[1].equalsIgnoreCase("cárcel")){
+                if(cmdseparado[1].equalsIgnoreCase("cárcel") || cmdseparado[1].equalsIgnoreCase("carcel")){
                     salirCarcelPagando();
                     break;
                 }
@@ -288,6 +288,9 @@ public class Menu {
                 return;
             }else{
                 jugadorActual.sumartiradascarcel();
+                System.out.println("\nSegues na cárcere. Levas "+jugadorActual.getTiradasCarcel()+" turnos.\n");
+                tirado =true;
+                return;
             }
         }
 
@@ -332,7 +335,7 @@ public class Menu {
         else{
             actual.sumarFortuna(-500000);
             actual.setEnCarcel(false);
-            System.out.println(actual.getNombre()+"pagaches a cuota (500000) e saíches do cárcere, podes tirar os dados.");
+            System.out.println(actual.getNombre()+" pagaches a cuota (500000) e saíches do cárcere, podes tirar os dados.");
             return;
         }
     }
@@ -422,12 +425,21 @@ public class Menu {
         }
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getEnCarcel() && jugadorActual.getTiradasCarcel()==3){
+            if(jugadorActual.getFortuna()<500000){
+                System.out.println("Non tes cartos para saír do cárcere (500000€) ...");
+                solvente=false;
+                //return; En futuras entregas onde podas recaudar cartos vendendo e hipotecando propiedades, non se pode facer return aquí, porque podes conseguir cartos e pagar a multa
+            }else{
+                solvente=true;
+                jugadorActual.sumarFortuna(-500000);
+            }
             jugadorActual.setEnCarcel(false);
-            System.out.println("Saíches automaticamente do cárcere tras tres turnos.");
+            jugadorActual.setTiradasCarcel(0);
+            System.out.println("Saíches automaticamente do cárcere tras tres turnos.\nPagaches 500000€ como multa dude.");
         }
         if(!solvente){
             Jugador Recaudador = jugadorActual.getAvatar().getLugar().getDuenho();
-            System.out.println("\nNon pagaches as deudas.");
+            System.out.println("\nNon pagaches as deudas."); //Débedas DÉBEDAS 
             bancarrota(jugadorActual, Recaudador);
             //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,0); <-non ten sentido facer aquí solvente, xa se fai cando tiras os dados.
             //^^, senón tiras os dados, non cambia o teu estado do xogo. Con saber en que casilla estás xa sabes a quen lle debes os cartos
