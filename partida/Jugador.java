@@ -15,6 +15,7 @@ public class Jugador {
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
     private int vueltas; //Cuenta las vueltas dadas al tablero.
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
+    private Estats estatisticas;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
