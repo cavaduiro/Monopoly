@@ -108,11 +108,11 @@ public class Menu {
                 acabarTurno();
                 break;
             case "comprar":
-                if(cmdseparado.length < 2){
+                comprar(cmdseparado[1]);
+                if(cmdseparado.length<2){
                     System.out.println("\nNúmero de argumentos erróneo.\n");
                     break;
                 }
-                comprar(cmdseparado[1]);
                 break;
             case "comandos":
                 if(cmdseparado.length < 2){
@@ -311,7 +311,7 @@ public class Menu {
         solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
 
         tirado=true;
-        if(valor1==valor2 && jugadorActual.getEnCarcel()==false){
+        if(valor1==valor2&&!jugadorActual.getEnCarcel()){
             System.out.println("Sacaches dobles");
             tirado=false;
             return;

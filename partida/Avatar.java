@@ -65,6 +65,7 @@ public class Avatar {
                 }
                 if (casilla.getPosicion() == nuevaPosicion) {
                     casilla.anhadirAvatar(this); //Añadimos el avatar a la casilla a la que se mueve.
+                    casilla.sumarFreq();
                     this.lugar = casilla; //Actualizamos el lugar en el que está el avatar.
                 }
             }
