@@ -6,6 +6,7 @@ import partida.*;
 
 public class Menu {
 
+
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida
     private ArrayList<Avatar> avatares; //Avatares en la partida.
@@ -440,7 +441,7 @@ public class Menu {
         }
         if(!solvente){
             Jugador Recaudador = jugadorActual.getAvatar().getLugar().getDuenho();
-            System.out.println("\nNon pagaches as deudas."); //Débedas DÉBEDAS 
+            System.out.println("\nNon pagaches as débedas.");
             bancarrota(jugadorActual, Recaudador);
             //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,0); <-non ten sentido facer aquí solvente, xa se fai cando tiras os dados.
             //^^, senón tiras os dados, non cambia o teu estado do xogo. Con saber en que casilla estás xa sabes a quen lle debes os cartos
