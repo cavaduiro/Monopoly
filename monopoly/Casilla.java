@@ -136,6 +136,7 @@ public class Casilla {
             if (this.tipo.equals("Impuesto")) {
                 if (actual.getFortuna() >= this.impuesto) {
                     actual.sumarFortuna(-this.impuesto);
+                    actual.getEstatisticas().acImpPagado(this.impuesto);
                     System.out.println("O xogador " + actual.getNombre() + " pagou " + this.impuesto + " á banca por caer na casilla " + this.nombre + ".\n");
                     banca.sumarFortuna(this.impuesto);
                 } else {
