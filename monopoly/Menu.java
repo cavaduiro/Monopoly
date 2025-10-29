@@ -1,7 +1,10 @@
 package monopoly;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
+
 import partida.*;
 
 public class Menu {
@@ -120,6 +123,21 @@ public class Menu {
                     break;
                 }
                 leerArquivo(cmdseparado[1]);
+                break;
+            case "estadisticas":
+                if(!partidaIniciada){
+                    System.out.println("\nA partida aínda non comezou, non hai estatísticas que mostrar.\n");
+                    break;
+                }
+                if (cmdseparado.length < 2){
+                    estadisticasPartida();
+                    break;
+                }else if(cmdseparado.length>3)
+                {
+                    System.out.println("\nNumero de comandos erróneo...");
+                    break;
+                }
+                estadisticasXogador(cmdseparado);
                 break;
             default:
                 System.out.println("\nComando introducido erróneo.\n");
@@ -335,6 +353,7 @@ public class Menu {
         }
         else{
             actual.sumarFortuna(-500000);
+            actual.getEstatisticas().acImpPagado(500000);
             actual.setEnCarcel(false);
             System.out.println(actual.getNombre()+" pagaches a cuota (500000) e saíches do cárcere, podes tirar os dados.");
             return;
@@ -521,5 +540,85 @@ public class Menu {
         }
         System.out.println("}");
     return true;
+    }
+    private void estadisticasPartida() {
+        boolean primeraComprada = false;
+        boolean grupoComprado = false;
+        int rentGrupoMax =-1*10^8;
+        int rentGrupoActual = 0;
+        Casilla casillaMax = this.tablero.getPosiciones().get(0).get(0); //Inicializamos casillaMax con la primera casilla del tablero tipo soloar
+        Casilla freqmax = this.tablero.getPosiciones().get(0).get(0);
+        for (ArrayList<Casilla> lado : this.tablero.getPosiciones()) {
+            for (Casilla casilla : lado) {
+                if ((casilla.getTipo().equalsIgnoreCase("Transportes") || casilla.getTipo().equalsIgnoreCase("Servicios") || casilla.getTipo().equalsIgnoreCase("Solar")) && casilla.getDuenho() != banca) {
+                    if ((casilla.getRentabilidad() > casillaMax.getRentabilidad() || casillaMax.getDuenho() == banca)) {
+                        casillaMax = casilla;
+                    }
+                }
+            }
+        }
+
+        Set<String> set = this.tablero.getGrupos().keySet();
+        Grupo grupomax = null;
+        for (String key : set) {
+            Grupo grupo=this.tablero.getGrupos().get(key);
+            grupoComprado = false;
+            for(Casilla aux: grupo.getMiembros()){
+                if(aux.getDuenho()!=banca){
+                    rentGrupoActual+=aux.getRentabilidad();
+                    grupoComprado = true;
+                }
+            }
+            if(rentGrupoActual>rentGrupoMax && grupoComprado){
+                rentGrupoMax=rentGrupoActual;
+                grupomax=grupo;
+            }
+
+        }
+        if (casillaMax.getDuenho() == banca) {
+            System.out.println("\n -*Ningunha propiedade foi comprada aínda.\n");
+            primeraComprada = false;
+        }else{
+            System.out.println(" -*Casilla máis rentable: "+casillaMax.getNombre()+".\n");
+            primeraComprada = true;
+        }
+        for (ArrayList<Casilla> lado : this.tablero.getPosiciones()) {
+            for (Casilla aux : lado) {
+                    if (aux.getCaidas() > freqmax.getCaidas()) {
+                        freqmax = aux;
+                }
+            }
+        }
+        if(primeraComprada){
+            System.out.println(" -*O grupo máis rentable é: "+grupomax.getColorGrupo());
+        }else{
+            System.out.println(" -*Ningún grupo foi comprado aínda.\n");
+        }
+        System.out.println(" -*Casilla máis frecuentada: "+freqmax.getNombre()+", cunha frecuencia de "+freqmax.getCaidas()+" caidas.\n");
+        Jugador voltasmax = jugadores.get(0);
+        Jugador fortunamax = jugadores.get(0);
+        for(Jugador aux: jugadores){
+            if(aux.getEstatisticas().getVoltasDadas()>voltasmax.getEstatisticas().getVoltasDadas()){
+                voltasmax = aux;
+            }
+            if(aux.getFortuna()>fortunamax.getFortuna()){
+                fortunamax = aux;
+            }
+        }
+        System.out.println(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
+        System.out.println(" -*Xogador en cabeza: "+fortunamax.getNombre()+", con unha fortuna de "+fortunamax.getFortuna()+" €.\n");
+
+
+    }
+
+    private void estadisticasXogador(String[] comandos){
+        for(Jugador aux: jugadores){
+            if(aux.getNombre().equalsIgnoreCase(comandos[1])){
+                System.out.println(aux.getEstatisticas());
+                return;
+            }
+        }
+        System.out.println("\nNon existe ningún xogador con ese nome.");
+        return;
     }
 }

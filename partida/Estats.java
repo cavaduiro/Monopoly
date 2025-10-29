@@ -1,5 +1,6 @@
 package partida;
 
+import monopoly.*;
 public class Estats {
 
     //Atributos
@@ -21,6 +22,12 @@ public class Estats {
 
     //Getters e Setters
 
+    public float getVoltasDadas() {
+        return voltasDadas;
+    }
+    public void setVoltasDadas(float voltasDadas) {
+        this.voltasDadas = voltasDadas;
+    }
 
     public float getDineroInvertido() {
         return dineroInvertido;
@@ -92,7 +99,7 @@ public class Estats {
 
     //Función que suma os cartos que ganhas ao pasar pola saida
     public void sumarsalidas() {
-        this.cobroSalidas += 2000000;
+        this.cobroSalidas += Valor.SUMA_VUELTA;
     }
 
     //Función que chama desde o inquilino cando se produce a transacción,

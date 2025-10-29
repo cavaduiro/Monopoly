@@ -59,27 +59,32 @@ public class Avatar {
             this.jugador.getEstatisticas().sumarsalidas();//El jugador recibe 2000000 por pasar por la salida.
             System.out.println("O xogador " + this.jugador.getNombre() + " pasou pola saída e recibiu 2000000€.\n");
         }
-        //Ahora buscamos la casilla correspondiente a la nueva posición y movemos el avatar allí.
-        for (ArrayList<Casilla> lado : casillas) {
-            for (Casilla casilla : lado) {
-                if (casilla.getPosicion() == posicionActual) {
-                    casilla.eliminarAvatar(this); //Eliminamos el avatar de la casilla en la que estaba.
-                }
-                if (casilla.getPosicion() == nuevaPosicion) {
-                    casilla.anhadirAvatar(this); //Añadimos el avatar a la casilla a la que se mueve.
-                    casilla.sumarFreq();
-                    this.lugar = casilla; //Actualizamos el lugar en el que está el avatar.
-                }
-            }
-        }
 
+
+        casillaActual.eliminarAvatar(this);
+        Casilla nueva = posIndex(nuevaPosicion, casillas);
+        nueva.sumarFreq();
+        nueva.anhadirAvatar(this); //Añadimos el avatar a la casilla a la que se mueve.
+        nueva.sumarFreq();
+        this.lugar = nueva; //Actualizamos el lugar en el que está el avatar.
         if(casillaActual.getPosicion() > posicionActual && !jugador.getEnCarcel()){
-            this.jugador.sumarFortuna(200000); //El jugador recibe 2000000 por pasar por la salida.
+            this.jugador.sumarFortuna(Valor.SUMA_VUELTA); //El jugador recibe 2000000 por pasar por la salida.
         }
         System.out.println("O xogador " + this.jugador.getNombre() + " moveuse da casilla " + casillaActual.getNombre() + " á casilla " + this.lugar.getNombre() + ".\n");
 
     }
 
+
+    //Devolve a casilla co índice de 0 a 40
+    public Casilla posIndex(int index,ArrayList<ArrayList<Casilla>> casillas){
+        if(index<11){
+            return casillas.get(0).get(index);
+        }else if(index<20){
+            return casillas.get(1).get(index-11);
+        }else if(index<31){
+            return casillas.get(2).get(index-20);
+        }else{return casillas.get(3).get(index-31);}
+    }
     /*Metodo que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.

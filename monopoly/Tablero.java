@@ -12,6 +12,7 @@ public class Tablero {
     private HashMap<String, Grupo> grupos; //Grupos del tablero, almacenados como un HashMap con clave String (será el color del grupo).
     private Jugador banca; //Un jugador que será la banca.
 
+
     //Constructor: únicamente le pasamos el jugador banca (que se creará desde el menú).
     public Tablero(Jugador banca) {
         this.banca = banca;
@@ -220,6 +221,7 @@ private void imprimirEspaciosCentrales(StringBuilder sb) {
     }
 }
 
+
 @Override
 public String toString() {
     ArrayList<Casilla> ladoEste = posiciones.get(1);
@@ -323,6 +325,9 @@ public String toString() {
     //Getters y setters:
     public ArrayList<ArrayList<Casilla>> getPosiciones() {
         return posiciones;
+    }
+    public HashMap<String, Grupo> getGrupos() {
+        return grupos;
     }
     public Jugador getBanca() {
         return banca;

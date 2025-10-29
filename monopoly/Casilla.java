@@ -16,6 +16,7 @@ public class Casilla {
     private float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
     private float hipoteca; //Valor otorgado por hipotecar una casilla
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
+    private float rentabilidad;
     private int caidas;
 
 
@@ -34,6 +35,7 @@ public class Casilla {
         this.impuesto = impuesto;
         this.hipoteca = hipoteca;
         this.avatares = new ArrayList<Avatar>();
+        this.rentabilidad=-impuesto;
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
@@ -82,7 +84,7 @@ public class Casilla {
         }
         return Valor.WHITE;
     }
-
+    public float getRentabilidad(){return this.rentabilidad;}
     public Jugador getDuenho(){return this.duenho;}
 
     public float getValor() {return this.valor;}
@@ -93,6 +95,8 @@ public class Casilla {
 
     public int getPosicion() {return this.posicion;}
 
+    public int getCaidas() {return this.caidas;}
+
     /****************************/
 
 
@@ -101,7 +105,7 @@ public class Casilla {
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
     }
-
+    public void setCaidas(int caidas) {this.caidas = caidas;}
     public void setDueño(Jugador duenho) {
         this.duenho = duenho;
     }
@@ -146,6 +150,9 @@ public class Casilla {
             } else if (this.tipo != null && this.tipo.equals("Especial")) {
                 if (this.nombre != null && this.nombre.equals("Suerte")) {
                     // Lógica de suerte-> seguintes entregas
+                    //loxicaSorte();
+
+
                 } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
                     // Lógica de caja de comunidad ->seguintes entregas
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
@@ -169,7 +176,9 @@ public class Casilla {
                     impuestoSolar *= 2;
                 }
                 if (this.tipo != null && (this.tipo.equals("Solar"))) {
-                    if (actual.getFortuna() >= impuestoSolar    ) {
+                    if (actual.getFortuna() >= impuestoSolar) {
+                        actual.getEstatisticas().transAlq();
+                        this.sumarRentabilidad(impuestoSolar);
                         actual.sumarFortuna(-impuestoSolar);
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoSolar);
@@ -190,6 +199,8 @@ public class Casilla {
                     System.out.println("\nO dono da casilla " + this.nombre + " ten " + numTransportes + " transportes, polo que o imposto multiplicarase por " + numTransportes + ".\n");
                     float impuestoTransporte = this.impuesto * numTransportes;
                     if (actual.getFortuna() >= impuestoTransporte) {
+                        actual.getEstatisticas().transAlq();
+                        this.sumarRentabilidad(impuestoTransporte);
                         actual.sumarFortuna(-impuestoTransporte);
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoTransporte);
@@ -214,6 +225,8 @@ public class Casilla {
                     System.out.println("\nO dono da casilla " + this.nombre + " ten " + numServicios + " servizos, polo que o imposto multiplicarase por " + multiplicador + ".\n");
                     float impuestoServicios = this.impuesto * tirada * multiplicador;
                     if (actual.getFortuna() >= impuestoServicios) {
+                        this.sumarRentabilidad(impuestoServicios);
+                        actual.getEstatisticas().transAlq();
                         actual.sumarFortuna(-impuestoServicios);
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoServicios);
@@ -229,8 +242,45 @@ public class Casilla {
         return true;
     }
 
+    /**
+     * Lóxica de sorte
+     */
+    private void loxicaSorte(Jugador banca){
+        switch(banca.getIndexsorte()){
+            case 0:
+                //Moverse a la casilla de salida
 
+                break;
+            case 1:
+                //Pagar 5000000
+                break;
+            case 2:
+                //Cobrar 3000000
+                break;
+            case 3:
+                //Pagar por cada propiedad que tengas 1000000
+                break;
+            case 4:
+                //Avanzar hasta la casilla de transporte más cercana
+                break;
+            case 5:
+                //Ir a la cárcel
+                break;
+            case 6:
+                break;
 
+            default:
+                break;
+
+        }
+    };
+
+    /**
+     * Lóxica comunidade
+     */
+    private void loxicaComunidade(){
+
+    }
 
 
 
@@ -272,6 +322,9 @@ public class Casilla {
         return info;
     }
 
+    private void sumarRentabilidad(float cantidad){
+        this.rentabilidad+=cantidad;
+    }
     /* Método para mostrar información de una casilla en venta.
      * Valor devuelto: texto con esa información.
      */

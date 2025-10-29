@@ -16,10 +16,14 @@ public class Jugador {
     private int vueltas; //Cuenta las vueltas dadas al tablero.
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
     private Estats estatisticas;
+    private int indexsorte;
+    private int indexcom;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
         this.fortuna = 0;
+        this.indexcom = 0;
+        this.indexsorte = 0;
     }
 
     /*Constructor principal. Requiere parámetros:
@@ -39,6 +43,9 @@ public class Jugador {
 
 
     //Getters:
+
+    public int getIndexcom() {return indexcom;}
+    public int getIndexsorte(){return indexsorte;}
 
     public int getTiradasCarcel() {
         return tiradasCarcel;
@@ -126,6 +133,12 @@ public class Jugador {
     }
     public void sumartiradascarcel(){
         this.tiradasCarcel++;
+    }
+    public void sumarSorte(){
+        this.indexsorte++;
+    }
+    public void sumarCom(){
+        this.indexcom++;
     }
 
     @Override

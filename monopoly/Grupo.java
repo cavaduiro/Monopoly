@@ -69,4 +69,8 @@ class Grupo {
         return true;
         
     }
+
+    public ArrayList<Casilla> getMiembros() {
+        return miembros;
+    }
 }
