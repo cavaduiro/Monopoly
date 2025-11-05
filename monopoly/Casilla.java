@@ -466,6 +466,7 @@ public class Casilla {
                 System.out.println("Non tes suficiente fortuna para construír un hotel nesta casilla, custa "+precioConstrucion+"€");
                 return;
             }
+            this.edificios.get("casa").setNumCasas(0);
             this.edificios.get(tipo).setTenEdificio(true);
         }
         if(tipo.equals("piscina")){

@@ -50,6 +50,10 @@ public class Edificios {
         }
     }
 
+    public void setNumCasas(int numCasas){
+        this.numCasas = numCasas;
+    }
+    
     public void setTenEdificio(boolean tenEdificio){
         this.tenEdificio = tenEdificio;
     }
