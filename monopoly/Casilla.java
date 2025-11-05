@@ -150,11 +150,11 @@ public class Casilla {
             } else if (this.tipo != null && this.tipo.equals("Especial")) {
                 if (this.nombre != null && this.nombre.equals("Suerte")) {
                     // Lógica de suerte-> seguintes entregas
-                    //loxicaSorte();
+                    loxicaSorte(banca,actual,pos);
 
 
                 } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
-                    // Lógica de caja de comunidad ->seguintes entregas
+                    loxicaComunidade(banca,actual,pos);
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
                     System.out.println("\nO xogador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impostos. \n");
                     actual.sumarFortuna(banca.getFortuna());
@@ -177,7 +177,7 @@ public class Casilla {
                 }
                 if (this.tipo != null && (this.tipo.equals("Solar"))) {
                     if (actual.getFortuna() >= impuestoSolar) {
-                        actual.getEstatisticas().transAlq();
+                        actual.getEstatisticas().transAlq(impuestoSolar);
                         this.sumarRentabilidad(impuestoSolar);
                         actual.sumarFortuna(-impuestoSolar);
                         if (this.duenho != null) {
@@ -198,8 +198,11 @@ public class Casilla {
                     }
                     System.out.println("\nO dono da casilla " + this.nombre + " ten " + numTransportes + " transportes, polo que o imposto multiplicarase por " + numTransportes + ".\n");
                     float impuestoTransporte = this.impuesto * numTransportes;
+                    if(tirada == 0){
+                        impuestoTransporte *= 2;
+                    }
                     if (actual.getFortuna() >= impuestoTransporte) {
-                        actual.getEstatisticas().transAlq();
+                        actual.getEstatisticas().transAlq(impuestoTransporte);
                         this.sumarRentabilidad(impuestoTransporte);
                         actual.sumarFortuna(-impuestoTransporte);
                         if (this.duenho != null) {
@@ -226,7 +229,7 @@ public class Casilla {
                     float impuestoServicios = this.impuesto * tirada * multiplicador;
                     if (actual.getFortuna() >= impuestoServicios) {
                         this.sumarRentabilidad(impuestoServicios);
-                        actual.getEstatisticas().transAlq();
+                        actual.getEstatisticas().transAlq(impuestoServicios);
                         actual.sumarFortuna(-impuestoServicios);
                         if (this.duenho != null) {
                             this.duenho.sumarFortuna(impuestoServicios);
@@ -245,41 +248,150 @@ public class Casilla {
     /**
      * Lóxica de sorte
      */
-    private void loxicaSorte(Jugador banca){
+    private void loxicaSorte(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+
         switch(banca.getIndexsorte()){
             case 0:
-                //Moverse a la casilla de salida
-
+                //Moverse a la casilla solar 19
+                System.out.println("Oh no excursión á solar 19\n");
+                Casilla casactual=actual.getAvatar().getLugar();
+                if(casactual.getPosicion()==36){
+                    actual.sumarFortuna(Valor.SUMA_VUELTA);
+                    actual.getEstatisticas().sumarsalidas();
+                    actual.getEstatisticas().sumarVoltas();
+                }
+                casactual.eliminarAvatar(actual.getAvatar());
+                Casilla dest = actual.getAvatar().posIndex(32,pos);
+                dest.anhadirAvatar(actual.getAvatar());
+                actual.getAvatar().setLugar(dest);
+                banca.sumarSorte();
                 break;
             case 1:
-                //Pagar 5000000
+                System.out.println("");
+                actual.getEstatisticas().sumarCarcel();
+                if(actual.getAvatar().getLugar().getPosicion()!=7){
+                    actual.getEstatisticas().sumarVoltas();
+                }
+                actual.encarcelar(pos);
+                banca.sumarSorte();
                 break;
             case 2:
-                //Cobrar 3000000
+                System.out.println("");
+                //Recibir 1.000.000
+                actual.sumarFortuna(1000000);
+                actual.getEstatisticas().sumarbote(1000000);
+                banca.sumarSorte();
                 break;
             case 3:
-                //Pagar por cada propiedad que tengas 1000000
+                System.out.println("");
+                //Paga a cada xogador 250.000
+                float bote = 250000;
+                for(ArrayList<Casilla> lado: pos){
+                    for(Casilla cas: lado){
+                        for(Avatar av: cas.getAvatares()){
+                                if(!av.getJugador().equals(actual)){
+                                    actual.getEstatisticas().acImpPagado(bote);
+                                    actual.sumarFortuna(-bote);
+                                    av.getJugador().sumarFortuna(bote);
+                                    av.getJugador().getEstatisticas().sumarbote(bote);
+                                }
+                            }
+                        }
+                    }
+
+                banca.sumarSorte();
                 break;
             case 4:
-                //Avanzar hasta la casilla de transporte más cercana
+                System.out.println("Oh no! Retrocedes tres casillas\n");
+                //Retroceder tres casillas
+                casactual=actual.getAvatar().getLugar();
+                casactual.eliminarAvatar(actual.getAvatar());
+                int posdest= casactual.getPosicion()-3;
+                dest = actual.getAvatar().posIndex(posdest,pos);
+                dest.anhadirAvatar(actual.getAvatar());
+                actual.getAvatar().setLugar(dest);
+                banca.sumarSorte();
+                evaluarCasilla(actual,banca,0,pos);
                 break;
             case 5:
-                //Ir a la cárcel
+                System.out.println("Múltanche por usar o teléfono mentres conduces, paga 150000 euros\n");
+                //Múltanche por usar o tlf mentres conduces, paga 150000
+                actual.sumarFortuna(-150000);
+                banca.sumarFortuna(150000);
+                actual.getEstatisticas().acImpPagado(150000);
+                banca.sumarSorte();
                 break;
             case 6:
+                System.out.println("Avanza cara a casilla máis cercana\n");
+                //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
+                boolean iterado= false;
+                for(int novacas : Valor.transportes){
+                    if(actual.getAvatar().getLugar().getPosicion()<novacas && !iterado){
+                        casactual=actual.getAvatar().getLugar();
+                        casactual.eliminarAvatar(actual.getAvatar());
+                        dest = actual.getAvatar().posIndex(novacas,pos);
+                        dest.anhadirAvatar(actual.getAvatar());
+                        actual.getAvatar().setLugar(dest);
+                        iterado = true;
+                    }
+                }
+                evaluarCasilla(actual,banca,0,pos);
                 break;
-
             default:
                 break;
-
         }
     };
-
     /**
      * Lóxica comunidade
      */
-    private void loxicaComunidade(){
-
+    private void loxicaComunidade(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+        switch(banca.getIndexsorte()){
+            case 0:
+                System.out.println("\nPaga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas\n");
+                actual.sumarFortuna(-500000);
+                break;
+            case 1:
+                System.out.println("\nVas á cárcel sin pasar por casilla de salida e sin cobrar\n");
+                actual.encarcelar(pos);
+                actual.getEstatisticas().sumarCarcel();
+                break;
+            case 2:
+                //Colócate en casilla de salida cobrando 200000
+                System.out.println("\nVas á casilla de saída, cobrando 2000000 euros.\n");
+                Casilla casactual=actual.getAvatar().getLugar();
+                casactual.eliminarAvatar(actual.getAvatar());
+                Casilla dest = actual.getAvatar().posIndex(0,pos);
+                dest.anhadirAvatar(actual.getAvatar());
+                actual.getEstatisticas().sumarVoltas();
+                actual.sumarFortuna(Valor.SUMA_VUELTA);
+                actual.getEstatisticas().sumarsalidas();
+                actual.getAvatar().setLugar(dest);
+                break;
+            case 3:
+                System.out.println("Devolución de Facenda, recibes 500000)\n");
+                actual.sumarFortuna(500000);
+                actual.getEstatisticas().sumarbote(500000);
+                break;
+            case 4:
+                System.out.println("Retrocede a Solar1\n");
+                casactual=actual.getAvatar().getLugar();
+                casactual.eliminarAvatar(actual.getAvatar());
+                dest= actual.getAvatar().posIndex(1,pos);
+                dest.anhadirAvatar(actual.getAvatar());
+                actual.getAvatar().setLugar(dest);
+                evaluarCasilla(actual,banca,0,pos);
+                break;
+            case 5:
+                System.out.println("Vas ó Solar20\n");
+                casactual=actual.getAvatar().getLugar();
+                casactual.eliminarAvatar(actual.getAvatar());
+                dest= actual.getAvatar().posIndex(34,pos);
+                dest.anhadirAvatar(actual.getAvatar());
+                actual.getAvatar().setLugar(dest);
+                break;
+            default:
+                break;
+        }
     }
 
 

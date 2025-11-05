@@ -5,6 +5,7 @@ import partida.Jugador;
 import java.util.ArrayList;
 
 public class Edificios {
-    private Jugador duenho;
+    private Casilla casilla;
+
 
 }

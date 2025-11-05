@@ -1,12 +1,16 @@
 package monopoly;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Valor {
     //Se incluyen una serie de constantes útiles para no repetir valores.
     public static final float FORTUNA_BANCA = 15000000; // Cantidad que tiene inicialmente la Banca
     public static final float FORTUNA_INICIAL = 15000000; // Cantidad que recibe cada jugador al comenzar la partida
     public static final float SUMA_VUELTA = 2000000; // Cantidad que recibe un jugador al pasar pos la Salida
-    
+    public static ArrayList<Integer> transportes = new ArrayList<>(Arrays.asList(5,15,25,35));
+
     //Colores del texto:
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
@@ -36,4 +40,5 @@ public class Valor {
         if (codigo.equals(RESET)) return "RESET";
         return "DESCONOCIDO";
     }
+
 }

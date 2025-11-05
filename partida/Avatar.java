@@ -40,8 +40,14 @@ public class Avatar {
     }
 
     public Casilla getLugar() {return lugar;}
-    //Setters:
 
+    public Jugador getJugador() {
+        return jugador;
+    }
+    //Setters:
+    public void setLugar(Casilla lugar) {
+        this.lugar = lugar;
+    }
     //A continuación, tenemos otros métodos útiles para el desarrollo del juego.
     /*Metodo que permite mover a un avatar a una casilla concreta. Parámetros:
      * - Un array con las casillas del tablero. Se trata de un arrayList de arrayList de casillas (uno por lado).
@@ -73,6 +79,7 @@ public class Avatar {
         System.out.println("O xogador " + this.jugador.getNombre() + " moveuse da casilla " + casillaActual.getNombre() + " á casilla " + this.lugar.getNombre() + ".\n");
 
     }
+
 
 
     //Devolve a casilla co índice de 0 a 40

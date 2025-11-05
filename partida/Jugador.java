@@ -136,6 +136,7 @@ public class Jugador {
     }
     public void sumarSorte(){
         this.indexsorte++;
+        this.indexsorte = this.indexsorte%7;
     }
     public void sumarCom(){
         this.indexcom++;

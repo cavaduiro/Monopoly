@@ -103,9 +103,8 @@ public class Estats {
     }
 
     //Función que chama desde o inquilino cando se produce a transacción,
-    public void transAlq() {
+    public void transAlq(float pago) {
         Jugador rentista = this.xogador.getAvatar().getLugar().getDuenho();
-        float pago = this.xogador.getAvatar().getLugar().getImpuesto();
         this.pagoAlquileres += pago;
         rentista.getEstatisticas().cobroAlquileres += pago;
 
@@ -113,6 +112,9 @@ public class Estats {
 
     public void sumarVoltas() {
         this.voltasDadas++;
+    }
+    public void sumarbote(float premio) {
+        this.premiosInversionesBote += premio;
     }
 
     @Override
