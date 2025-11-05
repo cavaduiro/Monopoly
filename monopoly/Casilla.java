@@ -504,6 +504,61 @@ public class Casilla {
         jugadorActual.sumarFortuna(-precioConstrucion);
     }
 
+
+    public void vender(String tipo, int numEdificios, Jugador jugadorActual){
+        int numCasas = this.edificios.get("casa").getNumCasas();
+        boolean hotelConstruido = this.edificios.get("hotel").getTenEdificio();
+        boolean piscinaConstruida = this.edificios.get("piscina").getTenEdificio();
+        boolean pistaConstruida = this.edificios.get("deporte").getTenEdificio();
+
+        if(tipo.equals("casa")){
+            if(numCasas<numEdificios){
+                System.out.println("Non tes tantas casas construídas nesta casilla, no solar "+this.getNombre()+" tes "+numCasas+" casas construídas");
+                return;
+            }else if(numEdificios>numCasas){
+                System.out.println("Non tes tantas casas construídas nesta casilla, no solar "+this.getNombre()+" tes "+numCasas+" casas construídas");
+                return;
+            }
+            this.edificios.get(tipo).setNumCasas(numCasas - numEdificios);
+        }
+        if(tipo.equals("hotel")){
+            if(!hotelConstruido){
+                System.out.println("Non tes un hotel construído nesta casilla");
+                return;
+            }
+            if(numEdificios>1){
+                System.out.println("Non poder haber "+numEdificios+" construidos, só un");
+                return;
+            }
+            this.edificios.get(tipo).setTenEdificio(false);
+            this.edificios.get("casa").setNumCasas(4);
+        }
+        if(tipo.equals("piscina")){
+            if(!piscinaConstruida){
+                System.out.println("Non tes unha piscina construída nesta casilla");
+                return;
+            }
+            if(numEdificios>1){
+                System.out.println("Non poder haber "+numEdificios+" construidos, só unha");
+                return;
+            }
+            this.edificios.get(tipo).setTenEdificio(false);
+        }
+        if(tipo.equals("deporte")){
+            if(!pistaConstruida){
+                System.out.println("Non tes unha instalación deportiva construída nesta casilla");
+                return;
+            }
+            if(numEdificios>1){
+                System.out.println("Non poder haber "+numEdificios+" construidos, só unha");
+                return;
+            }
+            this.edificios.get(tipo).setTenEdificio(false);
+        }
+        jugadorActual.sumarFortuna((this.edificios.get(tipo).getCusto())*numEdificios);
+        System.out.println("Vendeches "+numEdificios+" "+tipo+" na casilla "+this.getNombre()+" por "+(this.edificios.get(tipo).getCusto())*numEdificios+"€");
+    }
+
     /*Método para mostrar información sobre una casilla.
     * Devuelve una cadena con información específica de cada tipo de casilla.*/
     public String infoCasilla() {

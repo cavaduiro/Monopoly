@@ -150,6 +150,17 @@ public class Menu {
                 }
                 edificar(cmdseparado);
                 break;
+            case "vender":
+                if(!partidaIniciada){
+                    System.out.println("\nA partida aínda non comezou, non se poden vender edificios.\n");
+                    break;
+                }
+                if(cmdseparado.length<4){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
+                vender(cmdseparado);
+                break;
             default:
                 System.out.println("\nComando introducido erróneo.\n");
                 break;
@@ -427,6 +438,30 @@ public class Menu {
         casillaEdificar.edificar(partes[1], jugadorActual);
     }
 
+    private void vender(String[] partes){
+        Jugador jugadorActual= jugadores.get(turno);
+        if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
+            System.out.println("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
+            return;
+        }
+        Casilla casilla = tablero.encontrar_casilla(partes[2]);        
+        if(casilla==null){
+            System.out.println("Non existe ningunha casilla co nome."+ partes[2]);
+            return;
+        }
+        if(casilla.getDuenho() != jugadorActual){
+            System.out.println("A casilla "+casilla.getNombre()+"non é da túa propiedade.");
+            return;
+        }
+        if(!casilla.getGrupo().esDuenhoGrupo(jugadorActual)){
+            System.out.println("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
+            return;
+        }
+        //Como paso partes[3] a tipo int??
+    
+        casilla.vender(partes[1], Integer.parseInt(partes[3]), jugadorActual);
+    }
+    
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
         if(jugadores.size()==0){
