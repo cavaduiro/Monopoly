@@ -2,6 +2,8 @@ package monopoly;
 
 import partida.*;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 //Probando probando probando probandofijoiejfoewijwfoiwj
 public class Casilla {
@@ -18,6 +20,7 @@ public class Casilla {
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
     private float rentabilidad;
     private int caidas;
+    private Map<String, Edificios> edificios; //Edificios construidos en la casilla (si es solar).
 
 
     public Casilla() {
@@ -36,6 +39,13 @@ public class Casilla {
         this.hipoteca = hipoteca;
         this.avatares = new ArrayList<Avatar>();
         this.rentabilidad=-impuesto;
+        if(tipo.equals("Solar")){
+            this.edificios = new HashMap<String, Edificios>();
+            this.edificios.put("casa", new Edificios("casa", Valor.getCosteCompraEdificio(posicion, "casa"), Valor.getCosteAlquilerEdificio(posicion, "casa"), 0));
+            this.edificios.put("hotel", new Edificios("hotel", Valor.getCosteCompraEdificio(posicion, "hotel"), Valor.getCosteAlquilerEdificio(posicion, "hotel"), false));
+            this.edificios.put("piscina", new Edificios("piscina", Valor.getCosteCompraEdificio(posicion, "piscina"), Valor.getCosteAlquilerEdificio(posicion, "piscina"), false));
+            this.edificios.put("deporte", new Edificios("deporte", Valor.getCosteCompraEdificio(posicion, "deporte"), Valor.getCosteAlquilerEdificio(posicion, "deporte"), false));
+        }
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
@@ -96,6 +106,8 @@ public class Casilla {
     public int getPosicion() {return this.posicion;}
 
     public int getCaidas() {return this.caidas;}
+
+    public Map<String, Edificios> getEdificios() {return this.edificios;}
 
     /****************************/
 
@@ -418,6 +430,77 @@ public class Casilla {
     * Este método toma como argumento la cantidad a añadir del valor de la casilla.*/
     public void sumarValor(float suma) {
         this.setValor(this.valor + suma);
+    }
+
+    public void edificar(String tipo, Jugador jugadorActual){
+        int precioConstrucion = this.edificios.get(tipo).getCusto();
+        int numCasas = this.edificios.get("casa").getNumCasas();
+        boolean hotelConstruido = this.edificios.get("hotel").getTenEdificio();
+        boolean piscinaConstruida = this.edificios.get("piscina").getTenEdificio();
+        boolean pistaConstruida = this.edificios.get("deporte").getTenEdificio();
+        if(tipo.equals("casa")){
+            if(numCasas>=4){
+                System.out.println("Xa tes o número máximo de casa permitidas na casilla");
+                return;
+            }
+            if(jugadorActual.getFortuna()<precioConstrucion){
+                System.out.println("Non tes suficiente fortuna para construír unha casa nesta casilla, custa "+precioConstrucion+"€");
+                return;
+            }
+            if(hotelConstruido||piscinaConstruida||pistaConstruida){
+                System.out.println("Non podes construír máis casas nesta casilla, xa tes un hotel ou unha instalación deportiva ou piscina construída");
+                return;
+            }
+            this.edificios.get(tipo).anhadirCasa();
+        }
+        if(tipo.equals("hotel")){
+            if(numCasas!=4){
+                System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
+                return;
+            }
+            if(hotelConstruido){
+                System.out.println("Xa tes un hotel construido");
+                return;
+            }
+            if(jugadorActual.getFortuna()<precioConstrucion){
+                System.out.println("Non tes suficiente fortuna para construír un hotel nesta casilla, custa "+precioConstrucion+"€");
+                return;
+            }
+            this.edificios.get(tipo).setTenEdificio(true);
+        }
+        if(tipo.equals("piscina")){
+            if(piscinaConstruida){
+                System.out.println("Xa tes unha piscina construída");
+                return;
+            }
+            if(!hotelConstruido){
+                System.out.println("Necesitas ter un hotel nesta casilla para construír unha piscina");
+                return;
+            }
+            if(jugadorActual.getFortuna()<precioConstrucion){
+                System.out.println("Non tes suficiente fortuna para construír unha piscina nesta casilla, custa "+precioConstrucion+"€");
+                return;
+            }
+            this.edificios.get(tipo).setTenEdificio(true);
+        }
+        if(tipo.equals("deporte")){
+            if(pistaConstruida){
+                System.out.println("Xa tes unha instalación deportiva construída");
+                return;
+            }
+            if(!hotelConstruido || !piscinaConstruida){
+                System.out.println("Necesitas ter un hotel e unha piscina nesta casilla para construír unha instalación deportiva");
+                return;
+            }
+            if(jugadorActual.getFortuna()<precioConstrucion){
+                System.out.println("Non tes suficiente fortuna para construír unha instalación deportiva nesta casilla, custa "+precioConstrucion+"€");
+                return;
+            }
+            this.edificios.get(tipo).setTenEdificio(true);
+        }
+
+        System.out.println("Construiches un/a "+tipo+" na casilla "+this.getNombre()+" por "+precioConstrucion+"€");
+        jugadorActual.sumarFortuna(-precioConstrucion);
     }
 
     /*Método para mostrar información sobre una casilla.

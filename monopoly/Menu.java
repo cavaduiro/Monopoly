@@ -139,6 +139,17 @@ public class Menu {
                 }
                 estadisticasXogador(cmdseparado);
                 break;
+            case "edificar":
+                if(!partidaIniciada){
+                    System.out.println("\nA partida aínda non comezou, non se poden edificar edificios.\n");
+                    break;
+                }
+                if(cmdseparado.length<2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
+                edificar(cmdseparado);
+                break;
             default:
                 System.out.println("\nComando introducido erróneo.\n");
                 break;
@@ -392,6 +403,28 @@ public class Menu {
         }
         casillaComprar.comprarCasilla(jugadorActual, banca);
 
+    }
+
+    private void edificar(String[] partes){
+        Jugador jugadorActual= jugadores.get(turno);
+        if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
+            System.out.println("Tipo de edificio non válido. Podes construir casa, hotel, piscina ou deporte.");
+            return;
+        }
+
+        Casilla casillaEdificar = jugadorActual.getAvatar().getLugar();
+
+        if(casillaEdificar.getDuenho() != jugadorActual){
+            System.out.println("Non estás na túa propiedade.");
+            return;
+        }
+        
+        if(!casillaEdificar.getGrupo().esDuenhoGrupo(jugadorActual)){
+            System.out.println("Necesitas comprar todas as casillas do grupo para poder edificar nesta casilla");
+            return;
+        }
+
+        casillaEdificar.edificar(partes[1], jugadorActual);
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.

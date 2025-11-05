@@ -41,4 +41,153 @@ public class Valor {
         return "DESCONOCIDO";
     }
 
+        public static int getCosteCompraEdificio(int posicion, String tipoEdificio) {
+            //Os valores teñen estas coorelacións, miradeo no arquivo se qeurees 
+            int valor =0;
+            switch (posicion){
+                case 1: case 3: case 6: case 8: case 9:
+                    valor = 500000;
+                    break;
+                case 11: case 13: case 14: case 16: case 18: case 19:
+                    valor = 1000000;
+                    break;
+                case 21: case 23: case 24: case 26: case 27: case 29:
+                    valor = 1500000;
+                    break;
+                case 31: case 32: case 34: case 37: case 39:
+                    valor = 2000000;
+                    break;
+                default:
+                    return 0;
+            }
+            if(tipoEdificio.equals("hotel") || tipoEdificio.equals("casa")){
+                return(valor);
+            } else if(tipoEdificio.equals("piscina")){
+                return (valor/5);
+            } else if(tipoEdificio.equals("pista")){
+                return ((valor/5)*2);
+            }
+            return 0;
+        
+        }
+
+        public static int getCosteAlquilerEdificio(int posicion, String tipoEdificio) {
+            //Os valores teñen estas coorelacións, miradeo no arquivo se qeurees 
+            int valor =0;
+            switch (tipoEdificio){
+                case "casa":
+                    switch(posicion){
+                        case 1:
+                            valor = 400000;
+                            break;
+                        case 3:
+                            valor = 800000;
+                            break;
+                        case 6: case 8:
+                            valor = 1000000;
+                            break;
+                        case 9:
+                            valor = 1250000;
+                            break;
+                        case 11: case 13: 
+                            valor = 1500000;
+                            break;
+                        case 14:
+                            valor = 1750000;
+                            break;
+                        case 16: case 18: 
+                            valor = 1850000;
+                            break;
+                        case 19:
+                            valor = 2000000;
+                            break;
+                        case 21: case 23: 
+                            valor = 2200000;
+                            break;
+                        case 24:
+                            valor = 2325000;
+                            break;
+                        case 26: case 27: 
+                            valor = 2450000;
+                            break;
+                        case 29:
+                            valor = 2600000;
+                            break;
+                        case 31: case 32:
+                            valor = 2750000;
+                            break;
+                        case 34: 
+                            valor = 3000000;
+                            break;
+                        case 37: 
+                            valor = 3250000;
+                            break;  
+                        case 39:
+                            valor = 4250000;
+                            break;
+                    }
+                    return(valor);
+                case "hotel": case "piscina": case "pista": 
+                    switch(posicion){
+                        case 1:
+                            valor = 2500000;
+                            break;
+                        case 3:
+                            valor = 4500000;
+                            break;
+                        case 6: case 8:
+                            valor = 5500000;
+                            break;
+                        case 9:
+                            valor = 6000000;
+                            break;
+                        case 11: case 13: 
+                            valor = 7500000;
+                            break;
+                        case 14:
+                            valor = 9000000;
+                            break;
+                        case 16: case 18: 
+                            valor = 9500000;
+                            break;
+                        case 19:
+                            valor = 10000000;
+                            break;
+                        case 21: case 23: 
+                            valor = 10500000;
+                            break;
+                        case 24:
+                            valor = 11000000;
+                            break;
+                        case 26: case 27: 
+                            valor = 11500000;
+                            break;
+                        case 29:
+                            valor = 12000000;
+                            break;
+                        case 31: case 32:
+                            valor = 12750000;
+                            break;
+                        case 34: 
+                            valor = 14000000;
+                            break;
+                        case 37: 
+                            valor = 17000000;
+                            break;  
+                        case 39:
+                            valor = 20000000;
+                            break;
+                    }
+                    break;
+
+        
+            }
+            if(tipoEdificio.equals("hotel")){
+                return(valor);
+            } else if(tipoEdificio.equals("piscina") || tipoEdificio.equals("deporte")){
+                return (valor/5);
+            }
+            return 0;
+        }
+
 }

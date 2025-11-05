@@ -188,20 +188,42 @@ public class Tablero {
     return sb;
 }
 
+
+
+
+
+
 private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indice, int inicio, int fin) {
     String color = lado.get(indice).getColorCasilla();
-    String nombre = lado.get(indice).getNombre();
-    
-    // Primera línea: espacios en blanco
-    if (inicio == 0) {
-        sb.append(color).append("|").append(" ".repeat(10)).append(color).append("|");
-    } 
-    // Segunda línea: mostrar el NOMBRE COMPLETO centrado
-    else if (inicio == 10) {
-        String textoCentrado = centrarTexto(nombre, 10); // Usar el nombre completo
+    Casilla casilla = lado.get(indice);
+    String nombre = casilla.getNombre();
+
+    if (inicio == 0) { // primera línea: edificios / espacios
+        if ("Solar".equalsIgnoreCase(casilla.getTipo())) {
+            boolean haiHotel = casilla.getEdificios().get("hotel").getTenEdificio();
+            boolean haiPiscina = casilla.getEdificios().get("piscina").getTenEdificio();
+            boolean haiDeporte = casilla.getEdificios().get("deporte").getTenEdificio();
+            int numCasas = casilla.getEdificios().get("casa").getNumCasas();
+
+            int usados = (haiHotel ? 2 : 0) + (haiPiscina ? 2 : 0) + (haiDeporte ? 2 : 0) + (numCasas * 2);
+            int espaciosBlanco = Math.max(0, 10 - usados);
+
+            sb.append(color).append("|");
+            if (haiDeporte) sb.append("● ");
+            if (haiHotel) sb.append("▲ ");
+            if (haiPiscina) sb.append("◆ ");
+            for (int k = 0; k < numCasas; k++) sb.append("■ ");
+            sb.append(" ".repeat(espaciosBlanco)).append(color).append("|");
+        } else {
+            // casillas no-Solar: línea vacía centrada
+            sb.append(color).append("|").append(" ".repeat(10)).append(color).append("|");
+        }
+    } else if (inicio == 10) { // segunda línea: nombre centrado
+        String textoCentrado = centrarTexto(nombre, 10);
         sb.append(color).append("|").append(textoCentrado).append(color).append("|");
     }
 }
+
 private String centrarTexto(String texto, int ancho) {
     if (texto.length() >= ancho) {
         return texto.substring(0, ancho);
