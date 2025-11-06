@@ -41,10 +41,10 @@ public class Casilla {
         this.rentabilidad=-impuesto;
         if(tipo.equals("Solar")){
             this.edificios = new HashMap<String, Edificios>();
-            this.edificios.put("casa", new Edificios("casa", Valor.getCosteCompraEdificio(posicion, "casa"), Valor.getCosteAlquilerEdificio(posicion, "casa"), 0));
-            this.edificios.put("hotel", new Edificios("hotel", Valor.getCosteCompraEdificio(posicion, "hotel"), Valor.getCosteAlquilerEdificio(posicion, "hotel"), false));
-            this.edificios.put("piscina", new Edificios("piscina", Valor.getCosteCompraEdificio(posicion, "piscina"), Valor.getCosteAlquilerEdificio(posicion, "piscina"), false));
-            this.edificios.put("deporte", new Edificios("deporte", Valor.getCosteCompraEdificio(posicion, "deporte"), Valor.getCosteAlquilerEdificio(posicion, "deporte"), false));
+            this.edificios.put("casa", new Edificios("casa", Valor.getCosteCompraEdificio(posicion, "casa"), Valor.getCosteAlquilerEdificio(posicion, "casa"), 0, this));
+            this.edificios.put("hotel", new Edificios("hotel", Valor.getCosteCompraEdificio(posicion, "hotel"), Valor.getCosteAlquilerEdificio(posicion, "hotel"), false, this));
+            this.edificios.put("piscina", new Edificios("piscina", Valor.getCosteCompraEdificio(posicion, "piscina"), Valor.getCosteAlquilerEdificio(posicion, "piscina"), false, this));
+            this.edificios.put("deporte", new Edificios("deporte", Valor.getCosteCompraEdificio(posicion, "deporte"), Valor.getCosteAlquilerEdificio(posicion, "deporte"), false, this));
         }
     }
 
@@ -183,10 +183,31 @@ public class Casilla {
             } else {
                 // Si el dueño tiene todas las casillas del grupo, el impuesto es el doble
                 float impuestoSolar = this.impuesto;
-                if (this.grupo != null && this.grupo.esDuenhoGrupo(this.duenho)) {
+                int casas=this.edificios.get("casa").getNumCasas();
+                boolean hotel=this.edificios.get("hotel").getTenEdificio(), piscina=this.edificios.get("piscina").getTenEdificio(), deporte=this.edificios.get("deporte").getTenEdificio();
+                if (this.grupo != null && this.grupo.esDuenhoGrupo(this.duenho)&&casas==0&&!hotel&&!piscina&&!deporte) {
                     System.out.println("\nO dono da casilla " + this.nombre + " ten todas as casillas do grupo, polo que o imposto a pagar será o dobre.\n");
                     impuestoSolar *= 2;
+                }else{
+                    impuestoSolar=0; //Imposto base 0, imos sumar o das construccións SOLO
+                    if(casas>0){
+                        impuestoSolar=this.edificios.get("casa").getAlquiler()*casas;
+                        System.out.println("\nO dono da casilla "+this.nombre+" ten "+casas+" casas, con alquiler de "+this.edificios.get("casa").getAlquiler()+" cada unha.\n");
+                    }
+                    if (hotel) {
+                        impuestoSolar += this.edificios.get("hotel").getAlquiler();
+                        System.out.println("\nO dono da casilla "+this.nombre+" ten un hotel, con alquiler de "+this.edificios.get("hotel").getAlquiler()+".\n");
+                    }
+                    if (piscina) {
+                        impuestoSolar += this.edificios.get("piscina").getAlquiler();
+                        System.out.println("\nO dono da casilla "+this.nombre+" ten unha piscina, con alquiler de "+this.edificios.get("piscina").getAlquiler()+".\n");
+                    }
+                    if (deporte) {
+                        impuestoSolar += this.edificios.get("deporte").getAlquiler();
+                        System.out.println("\nO dono da casilla "+this.nombre+" ten unha pista, con alquiler de "+this.edificios.get("deporte").getAlquiler()+".\n");   
+                    }
                 }
+
                 if (this.tipo != null && (this.tipo.equals("Solar"))) {
                     if (actual.getFortuna() >= impuestoSolar) {
                         actual.getEstatisticas().transAlq(impuestoSolar);
@@ -453,6 +474,7 @@ public class Casilla {
             }
             this.edificios.get(tipo).anhadirCasa();
         }
+        //ESTO PÖDESE MODULARIZAR MOITO MOITO MOITO; DE MOMENTO DAME PEREZA
         if(tipo.equals("hotel")){
             if(numCasas!=4){
                 System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");

@@ -64,7 +64,7 @@ public class Valor {
                 return(valor);
             } else if(tipoEdificio.equals("piscina")){
                 return (valor/5);
-            } else if(tipoEdificio.equals("pista")){
+            } else if(tipoEdificio.equals("deporte")){
                 return ((valor/5)*2);
             }
             return 0;
@@ -127,7 +127,7 @@ public class Valor {
                             break;
                     }
                     return(valor);
-                case "hotel": case "piscina": case "pista": 
+                case "hotel": case "piscina": case "deporte": 
                     switch(posicion){
                         case 1:
                             valor = 2500000;

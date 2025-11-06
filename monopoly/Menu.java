@@ -176,6 +176,10 @@ public class Menu {
             listarJugadores();
         }else if(partes[1].equalsIgnoreCase("enventa")){
             listarVenta();
+        }else if(partes[1].equalsIgnoreCase("edificios") && partes.length==2){
+            listarEdificios();
+        }else if(partes[1].equalsIgnoreCase("edificios") && partes.length==3){
+            listarEdificiosGrupo(partes[2]);
         }else{
             System.out.println("\nComando introducido erróneo.\n");
         }
@@ -496,6 +500,91 @@ public class Menu {
     private void listarJugadores() {
         for(Jugador aux:jugadores){
             System.out.println(aux);
+        }
+    }
+
+    private void listarEdificios(){
+        ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
+        for (ArrayList<Casilla> lado : pos) {
+            for (Casilla casilla : lado) {
+                if(!casilla.getTipo().equals("Solar")){
+                    continue;
+                }else if(casilla.getDuenho()==banca){
+                    continue;
+                }
+                Edificios edificioCasa = casilla.getEdificios().get("casa");
+                if(edificioCasa.getNumCasas() > 0){
+                    System.out.println(edificioCasa);
+                }
+                Edificios edificioUnico;
+                for(String tipo : new String[]{"hotel", "piscina", "deporte"}){
+                    edificioUnico = casilla.getEdificios().get(tipo);
+                    if(edificioUnico.getTenEdificio()){
+                        System.out.println(edificioUnico);
+                    }
+                }
+            }
+        }
+    }
+
+    private void listarEdificiosGrupo(String colorGrupo){
+        boolean atopou=false;
+        ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
+        int casas=0;
+        boolean hotel=false, piscina=false, deporte=false;
+        for (ArrayList<Casilla> lado : pos) {
+            for (Casilla casilla : lado) {
+                if(!casilla.getTipo().equals("Solar")){
+                    continue;
+                }else if(casilla.getDuenho()==banca){
+                    continue;
+                }
+                if(Valor.getNombreColor(casilla.getGrupo().getColorGrupo()).equalsIgnoreCase(colorGrupo)){        
+                    Edificios edificioCasa = casilla.getEdificios().get("casa");
+                    if(edificioCasa.getNumCasas() > 0){
+                        casas=edificioCasa.getNumCasas();
+                        System.out.println(edificioCasa);
+                    }
+                    Edificios edificioUnico;
+                    for(String tipo : new String[]{"hotel", "piscina", "deporte"}){
+                        edificioUnico = casilla.getEdificios().get(tipo);
+                        if(edificioUnico.getTenEdificio()){
+                            if(tipo.equals("hotel")){
+                                hotel=true;
+                            }else if(tipo.equals("piscina")){
+                                piscina=true;
+                            }else if(tipo.equals("deporte")){
+                                deporte=true;
+                            }
+                            System.out.println(edificioUnico);
+                        }
+                    }
+                    atopou=true;
+                }
+            }
+        }
+        if(!atopou){
+            System.out.println("Non hai edificios construídos neste grupo de cor ou a cor non é válida.");
+            return;
+        }else{
+            if(deporte){
+                System.out.println("Xa non podes construír máis edificios neste grupo.");
+                return;
+            }
+            if(piscina){
+                System.out.println("Xa non podes construír máis casas, hoteis nin piscinas, pero aínda podes construír un deporte.");
+                return;
+            }
+            if(hotel){
+                System.out.println("Xa non podes construír máis casas nin hoteis, pero aínda podes construír unha piscina e un deporte.");
+                return;
+            }
+            if(casas == 4){
+                System.out.println("Xa non podes construír máis casas neste grupo, pero aínda podes construír un hotel, unha piscina e un deporte.");
+            }
+            if(casas < 4){
+                System.out.println("Aínda podes construír "+(4-casas)+" casas neste grupo, un hotel, unha piscina e un deporte.");
+            }
         }
     }
 
