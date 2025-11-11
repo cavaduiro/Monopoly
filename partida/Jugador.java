@@ -159,7 +159,25 @@ public class Jugador {
                 }
             }
         } else {
-            sb.append("None");
+            sb.append(" - ");
+        }
+        sb.append("\nHipotecas : ");
+        if(this.propiedades != null && !this.propiedades.isEmpty()){
+            for (Casilla p : propiedades) {
+                if (p.getHipotecada()) {
+                    sb.append(p.getNombre()).append(", ");
+                }
+            }
+        } else {
+            sb.append(" - ");
+        }
+        sb.append("\nEdificios: ");
+        if(this.propiedades != null && !this.propiedades.isEmpty()){
+            for (Casilla p : propiedades) {
+                sb.append(p.getEdificios().get("casas").getIdCasas());
+            }
+        } else {
+            sb.append(" - ");
         }
         sb.append("\n}");
         return sb.toString();
