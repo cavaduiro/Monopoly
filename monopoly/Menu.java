@@ -161,6 +161,20 @@ public class Menu {
                 }
                 vender(cmdseparado);
                 break;
+            case "hipotecar":
+                if (cmdseparado.length < 2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
+                hipotecar(cmdseparado);
+                break;
+            case "deshipotecar":
+                if (cmdseparado.length < 2){
+                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    break;
+                }
+                deshipotecar(cmdseparado);
+                break;
             default:
                 System.out.println("\nComando introducido erróneo.\n");
                 break;
@@ -433,6 +447,15 @@ public class Menu {
             System.out.println("Non estás na túa propiedade.");
             return;
         }
+
+        ArrayList<Casilla> casillasGrupo = casillaEdificar.getGrupo().getMiembros();
+
+        for(Casilla aux: casillasGrupo){
+            if(aux.getHipotecada()){
+                System.out.println("Non podes edificar neste grupo porque algunha casilla do grupo está hipotecada.");
+                return;
+            }
+        }
         
         if(!casillaEdificar.getGrupo().esDuenhoGrupo(jugadorActual)){
             System.out.println("Necesitas comprar todas as casillas do grupo para poder edificar nesta casilla");
@@ -588,6 +611,61 @@ public class Menu {
         }
     }
 
+
+    //Hai que ter todos os edificios dun grupo para poder hipotecar unha propiedade????
+    private void hipotecar(String[] partes){
+        Jugador jugadorActual= jugadores.get(turno);
+        Casilla casillaHipotecar = tablero.encontrar_casilla(partes[1]);    
+        if(casillaHipotecar==null){
+            System.out.println("Non existe ningunha casilla co nome."+ partes[1]);
+            return;
+        }
+        if(casillaHipotecar.getDuenho() != jugadorActual){
+            System.out.println("A casilla "+casillaHipotecar.getNombre()+"non é da túa propiedade, non a podes hipotecar.");
+            return;
+        }
+        if(!casillaHipotecar.getTipo().equals("Solar")){
+            System.out.println("Solo se poden hipotecar solares.");
+            return;
+        }
+        if(casillaHipotecar.getHipotecada()){
+            System.out.println("A casilla "+casillaHipotecar.getNombre()+" xa está hipotecada.");
+            return;
+        }
+        if(casillaHipotecar.getTipo().equals("Solar")){
+            if(casillaHipotecar.getEdificios().get("casa").getNumCasas()>0){
+                System.out.println("Esta propiedade ten "+casillaHipotecar.getEdificios().get("casa").getNumCasas()+" casas construídas, debes vender as casas antes de hipotecar.");
+                return;
+            }
+            if(casillaHipotecar.getEdificios().get("hotel").getTenEdificio()||casillaHipotecar.getEdificios().get("piscina").getTenEdificio()||casillaHipotecar.getEdificios().get("deporte").getTenEdificio()){
+                System.out.println("Esta propiedade ten un algún edificio construído, debes vendelo antes de hipotecar.");
+                return;
+            }
+        casillaHipotecar.hipotecarCasilla();
+    }
+}
+    //Hipotecar e deshipotecar poderíase xuntar nunha función soa...
+    private void deshipotecar(String[] partes){
+        Jugador jugadorActual= jugadores.get(turno);
+        Casilla casillaDeshipotecar = tablero.encontrar_casilla(partes[1]);    
+        if(casillaDeshipotecar==null){
+            System.out.println("Non existe ningunha casilla co nome."+ partes[1]);
+            return;
+        }
+        if(!casillaDeshipotecar.getTipo().equals("Solar")){
+            System.out.println("Solo se poden deshipotecar solares.");
+            return;
+        }
+        if(casillaDeshipotecar.getDuenho() != jugadorActual){
+            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+"non é da túa propiedade, non a podes deshipotecar.");
+            return;
+        }
+        if(casillaDeshipotecar.getHipotecada()==false){
+            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+" non está hipotecada.");
+            return;
+        }
+        casillaDeshipotecar.deshipotecarCasilla();
+    }
     // Metodo que realiza las acciones asociadas al comando 'listar avatares'.
     private void listarAvatares() {
 

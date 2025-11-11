@@ -20,6 +20,7 @@ public class Casilla {
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
     private float rentabilidad;
     private int caidas;
+    boolean hipotecada=false;
     private Map<String, Edificios> edificios; //Edificios construidos en la casilla (si es solar).
 
 
@@ -39,6 +40,7 @@ public class Casilla {
         this.hipoteca = hipoteca;
         this.avatares = new ArrayList<Avatar>();
         this.rentabilidad=-impuesto;
+        this.hipotecada=false;
         if(tipo.equals("Solar")){
             this.edificios = new HashMap<String, Edificios>();
             this.edificios.put("casa", new Edificios("casa", Valor.getCosteCompraEdificio(posicion, "casa"), Valor.getCosteAlquilerEdificio(posicion, "casa"), 0, this));
@@ -107,6 +109,8 @@ public class Casilla {
 
     public int getCaidas() {return this.caidas;}
 
+    public boolean getHipotecada() {return this.hipotecada;}
+
     public Map<String, Edificios> getEdificios() {return this.edificios;}
 
     /****************************/
@@ -123,6 +127,10 @@ public class Casilla {
     }
     public void setValor(float valor) {
         this.valor = valor;
+    }
+
+    public void setHipotecada(boolean hipotecada) {
+        this.hipotecada = hipotecada;
     }
     /****************************/
 
@@ -178,8 +186,8 @@ public class Casilla {
                 }
             }
         } else {
-            if (this.duenho == actual) {
-                //non fai nada, o xogador é dono da casilla xa lol
+            if ((this.duenho == actual)||hipotecada) {
+                //non fai nada, o xogador é dono da casilla xa lol OU ESTÁ HIPOTECADA :3
             } else {
                 // Si el dueño tiene todas las casillas del grupo, el impuesto es el doble
                 float impuestoSolar = this.impuesto;
@@ -443,6 +451,22 @@ public class Casilla {
        else {
            System.out.println("\nA casilla xa ten dono.\n");
        }
+    }
+
+    public void hipotecarCasilla() {
+        this.hipotecada = true;
+        this.duenho.sumarFortuna(this.hipoteca);
+        System.out.println("\nA casilla " + this.nombre + " foi hipotecada por " + this.hipoteca + " euros.\n Ata que a deshipoteques, non poderás cobrar aluguer por esta casilla nin construir no grupo "+Valor.getNombreColor(this.grupo.getColorGrupo())+".\n");
+    }
+
+    public void deshipotecarCasilla() {
+        if(this.duenho.getFortuna() < this.hipoteca) {
+            System.out.println("\nNon tes suficiente fortuna para deshipotecar esta casilla. Tes "+this.duenho.getFortuna()+" euros, pero necesitas "+this.hipoteca+" euros.\n");
+            return;
+        }
+        this.hipotecada = false;
+        this.duenho.sumarFortuna(-this.hipoteca);
+        System.out.println("\nA casilla " + this.nombre + " foi deshipotecada por " + this.hipoteca + " euros.\n Xa podes cobrar aluguer por esta casilla e construir no grupo "+Valor.getNombreColor(this.grupo.getColorGrupo())+".\n");
     }
 
     /*Método para añadir valor a una casilla. Utilidad:

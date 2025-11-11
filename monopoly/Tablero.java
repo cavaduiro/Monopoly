@@ -199,7 +199,7 @@ private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indi
     String nombre = casilla.getNombre();
 
     if (inicio == 0) { // primera línea: edificios / espacios
-        if ("Solar".equalsIgnoreCase(casilla.getTipo())) {
+        if ("Solar".equalsIgnoreCase(casilla.getTipo())&& !casilla.getHipotecada()) {
             boolean haiHotel = casilla.getEdificios().get("hotel").getTenEdificio();
             boolean haiPiscina = casilla.getEdificios().get("piscina").getTenEdificio();
             boolean haiDeporte = casilla.getEdificios().get("deporte").getTenEdificio();
@@ -214,10 +214,13 @@ private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indi
             if (haiPiscina) sb.append("◆ ");
             for (int k = 0; k < numCasas; k++) sb.append("■ ");
             sb.append(" ".repeat(espaciosBlanco)).append(color).append("|");
-        } else {
-            // casillas no-Solar: línea vacía centrada
+        } else if ("Solar".equalsIgnoreCase(casilla.getTipo()) && casilla.getHipotecada()) {
+            sb.append(color).append("|").append("-".repeat(10)).append("|");
+        } else{
             sb.append(color).append("|").append(" ".repeat(10)).append(color).append("|");
         }
+        
+
     } else if (inicio == 10) { // segunda línea: nombre centrado
         String textoCentrado = centrarTexto(nombre, 10);
         sb.append(color).append("|").append(textoCentrado).append(color).append("|");
@@ -236,13 +239,48 @@ private String centrarTexto(String texto, int ancho) {
     return " ".repeat(espaciosIzquierda) + texto + " ".repeat(espaciosDerecha);
 }
 
-private void imprimirEspaciosCentrales(StringBuilder sb) {
-    int anchoCentral = 11 * 10 - 2;
+private void imprimirEspaciosCentrales(StringBuilder sb, int fila) {
+    //Quero imprimir aquí un Ascii con un dibujo
+    //Entonces, primeiro: cantos espacios hai que imprimri par asaber o ancho central máximo=
+    //resposta: 11 casillas * 10 caracteres por casilla - 2 (os dous bordes das casillas)= 108
+    //Vaise chamando fila a fila, entonces podemos facer un ascii que según o valor que se lle dea vai imprimido unha liña, como un array ,sbes?
+
+    String[] ascii = new String[50];
+int espaciosBlanco = 108;
+int espaciosAntes = 25;
+int espaciosDespois= espaciosBlanco - espaciosAntes - 62; //64 é o ancho do debuxo
+ascii[0] = " ".repeat(espaciosBlanco);
+ascii[1] = " ".repeat(espaciosBlanco);
+ascii[2] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀" + " ".repeat(espaciosDespois);
+ascii[3] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⡟⠛⠛⠛⠻⢶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-18)+"_______________"+" ".repeat(3);
+ascii[4] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⠃⠀⠀⠀⢠⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"|   𝐋𝐞𝐲𝐞𝐧𝐝𝐚    |"+" ".repeat(3);
+ascii[5] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⢀⣤⠶⡶⢶⡶⣒⣲⠆⢰⣿⣿⣏⣀⣀⡀⢠⣿⣿⣿⣿⣿⡿⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ■ Casas      |"+" ".repeat(3);
+ascii[6] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⢴⣄⠹⣦⠙⣯⠀⣠⣿⣿⠟⠛⠻⠿⢛⣿⣿⣿⣿⣿⡟⣰⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ▲ Hotel      |"+" ".repeat(3);
+ascii[7] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⣸⠏⠀⢸⡏⢛⡿⠿⣿⣾⣿⣿⣯⣤⣤⣤⣤⣼⣿⣿⣿⣿⣿⣧⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ◆ Piscina    |"+" ".repeat(3);
+ascii[8] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⢀⣰⣦⡿⠀⠀⠋⢀⣠⡴⢞⡿⢻⠆⠀⠀⠩⠿⠻⣯⠉⠙⠛⢻⣿⣭⡛⢷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ● P.Deporte  |"+" ".repeat(3);
+ascii[9] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⣼⣿⣟⠙⠷⠦⣯⡉⠀⠀⣾⠙⠗⢀⠀⠀⠀⣶⠀⠘⠀⠀⠀⠻⡿⣚⣿⠀⢹⡇⠀⠀⠀⠀⠀⣠⡴⠞⢿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ "+ " ".repeat(espaciosDespois-19)+"| - Hipotecada |"+" ".repeat(3);
+ascii[10] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⣿⣿⣿⣿⣶⣶⣾⡅⠀⢰⡏⠀⣰⣏⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠟⠋⢻⡶⠟⣀⣠⡤⠴⣷⣞⣭⣤⣤⣤⣿⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀"+ " ".repeat(espaciosDespois-19)+"|______________|"+" ".repeat(3);
+ascii[11] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠐⣿⢹⣿⣿⣿⣿⣿⡇⣶⠾⠷⠟⠉⠉⠉⠙⢷⣄⠀⠀⣠⠀⠀⢀⣀⣤⣾⠷⠛⠉⠀⣾⠟⣽⣿⣤⣄⡀⠀⠈⢹⣇⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀ "+ " ".repeat(espaciosDespois);
+ascii[12] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⣿⡘⣿⣿⣿⣿⣿⣿⣾⢷⣤⣀⣤⣾⣤⣀⡀⣙⣻⣿⠏⠀⢀⣼⣿⠟⢁⠀⠀⠀⠀⠀⢸⡏⣿⣿⣦⣉⣳⣤⣾⣯⡻⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀ "+ " ".repeat(espaciosDespois);
+ascii[13] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠘⣷⡻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣍⠀⠀⠉⠙⠋⠉⠀⠀⣠⡿⣿⣻⣶⣿⣷⡄⠀⠀⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣟⣷⡀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀ "+ " ".repeat(espaciosDespois);
+ascii[14] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠘⢷⣝⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣶⣶⣾⣁⣼⠏⢸⡯⢿⣿⣿⣌⡃⠀⠀⠀⠀⣀⢰⡌⣿⣿⣿⣿⣿⣿⣿⣿⣸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀  "+ " ".repeat(espaciosDespois);
+ascii[15] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠙⠷⣮⣟⡻⠿⣿⣿⣿⣿⣷⡿⣿⡛⢿⣬⣽⠃⠀⣾⡿⣦⣼⣿⣿⡇⢠⣄⣀⣰⣯⣼⣥⠿⢿⡍⢻⣿⣿⣿⣿⢻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀  "+ " ".repeat(espaciosDespois);
+ascii[16] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠓⡒⠒⣲⣿⣿⣿⣷⡀⠈⢱⠦⠀⠸⣷⡙⠙⠿⠟⠁⢈⡿⣭⣭⣉⠀⠀⠀⠀⢻⡄⢿⣿⣿⢟⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀  "+ " ".repeat(espaciosDespois);
+ascii[17] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠶⠾⠛⠛⠛⠉⠙⠛⠛⠛⠷⠶⣤⣘⢣⣄⣹⣷⣄⡲⠤⡗⣛⣁⣾⣣⡿⠀⠀⠀⠀⢸⡇⢻⣿⣿⠟⠁⣠⣶⣶⣄⡀⠀⠀⠀⠀ ⠀⠀"+ " ".repeat(espaciosDespois);
+ascii[18] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠋⠉⠛⠿⡿⢷⣶⣾⡿⠿⣋⣴⠃⠀⠀⣠⣾⣿⣿⣿⣥⠶⠛⠿⣿⣿⠿⠋⣀⡀⠀⠀⠀  "+ " ".repeat(espaciosDespois);
+ascii[19] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⣠⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⠀⠉⠛⠿⠭⠤⢒⡤⠾⠿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⢰⣿⣛⡶⣤⣀⠀⠀"+ " ".repeat(espaciosDespois);
+ascii[20] = "⠀".repeat(espaciosAntes) + "⣞⢿⣶⣤⣤⣐⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠸⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣾⣝⢧⡀"+ " ".repeat(espaciosDespois);
+ascii[21] = "⠀".repeat(espaciosAntes) + "⠈⠻⣟⢿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⡶⠳⠤⠞⠳⣤⣀⠀⠀⠀⠀⠘⢷⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠟⠉⠉⠙⠛⠿⡿⠇"+ " ".repeat(espaciosDespois);
+ascii[22] = "⠀".repeat(espaciosAntes) + "⠀⠀⠈⠛⠾⢿⣿⠀⠀⠀⠀⠀⠀⢀⣠⡾⠟⠁⠀⠀⠀⠀⠀⠈⠙⠻⠶⠶⣦⠤⠄⠙⠻⣶⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⠾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀  "+ " ".repeat(espaciosDespois);
+ascii[23] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣶⡴⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠿⠿⣷⣶⣶⣶⣶⣶⣶⠶⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  "+ " ".repeat(espaciosDespois);
+ascii[24] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois);
+ascii[25] = " ".repeat(espaciosBlanco);
+    sb.append(Valor.WHITE).append(ascii[fila]);
+    /*int anchoCentral = 11 * 10 - 2;
     for (int j = 0; j < anchoCentral; j++) {
         sb.append(" ");
-    }
+    }*/
 }
-
 
 @Override
 public String toString() {
@@ -276,21 +314,22 @@ public String toString() {
         imprimirAvatares(sb, ladoNorte.get(i).getColorCasilla(), ladoNorte, i);
     }
     sb.append("\n");
-
+    int imprimirAscii=0;
     // Lados Oeste y Este
     for (int fila = 0; fila < ladoOeste.size(); fila++) {
         int indiceEste = ladoEste.size() - 1 - fila;
-        
         // Línea 1: espacios en blanco este
         imprimirLineaCasilla(ladoEste, sb, indiceEste, 0, 10);
-        imprimirEspaciosCentrales(sb);
+        imprimirEspaciosCentrales(sb, imprimirAscii);
+        imprimirAscii++;
         // Línea 1: espacios en blanco oeste
         imprimirLineaCasilla(ladoOeste, sb, fila, 0, 10);
         sb.append("\n");
 
         // Línea 2: nombres centrados este
         imprimirLineaCasilla(ladoEste, sb, indiceEste, 10, 20);
-        imprimirEspaciosCentrales(sb);
+        imprimirEspaciosCentrales(sb, imprimirAscii);
+        imprimirAscii++;
         // Línea 2: nombres centrados oeste
         imprimirLineaCasilla(ladoOeste, sb, fila, 10, 20);
         sb.append("\n");
@@ -304,7 +343,8 @@ public String toString() {
                 if(j != 1) sb.append(" ");
             }
         } else {
-            imprimirEspaciosCentrales(sb);
+            imprimirEspaciosCentrales(sb, imprimirAscii);
+            imprimirAscii++;
         }
 
         // Línea 3: avatares oeste
