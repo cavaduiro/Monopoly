@@ -21,6 +21,7 @@ public class Menu {
     private Jugador banca; //Jugador que representa a la banca.
     private boolean partidaIniciada=false; //Booleano para comprobar si la partida ha comenzado (mínimo 2 jugadores creados).
     private boolean partidaFinalizada = false;
+    private boolean comandos = false;
 
     public Menu(){
         Scanner scanner = new Scanner(System.in);
@@ -77,6 +78,8 @@ public class Menu {
                 xogadorTurno();
                 break;
             case "ver":
+            if(comandos)
+                System.out.println(tablero);
                 break;
             case "listar":
                 listar(cmdseparado);
@@ -160,12 +163,17 @@ public class Menu {
                 }
                 if(cmdseparado.length<4){
                     Valor.error("Número de argumentos erróneo.");
-                    System.out.println("Uso: vender <propiedad> <cantidad> <precio>");
+                    System.out.println("Uso: vender <tipo> <solar> <cantidade>");
                     break;
                 }
+                
                 vender(cmdseparado);
                 break;
             case "hipotecar":
+                if (!partidaIniciada){
+                    Valor.error("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                    break;
+                }
                 if (cmdseparado.length < 2){
                     Valor.error("Número de argumentos erróneo.");
                     System.out.println("Uso: hipotecar <propiedad>");
@@ -174,6 +182,10 @@ public class Menu {
                 hipotecar(cmdseparado);
                 break;
             case "deshipotecar":
+                if (!partidaIniciada){
+                        Valor.error("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                        break;
+                    }
                 if (cmdseparado.length < 2){
                     Valor.error("Número de argumentos erróneo.");
                     System.out.println("Uso: deshipotecar <propiedad>");
@@ -495,6 +507,12 @@ public class Menu {
 
     private void vender(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
+
+        if(Integer.parseInt(partes[3]) <=0){
+            Valor.error("A cantidade ten que ser maior que 0.");
+            return;
+        }
+
         if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
             System.out.println("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
             return;
@@ -555,6 +573,7 @@ public class Menu {
     }
 
     private void listarEdificios(){
+        boolean atopou=false;
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
         for (ArrayList<Casilla> lado : pos) {
             for (Casilla casilla : lado) {
@@ -565,16 +584,21 @@ public class Menu {
                 }
                 Edificios edificioCasa = casilla.getEdificios().get("casa");
                 if(edificioCasa.getNumCasas() > 0){
+                    atopou=true;
                     System.out.println(edificioCasa);
                 }
                 Edificios edificioUnico;
                 for(String tipo : new String[]{"hotel", "piscina", "deporte"}){
                     edificioUnico = casilla.getEdificios().get(tipo);
                     if(edificioUnico.getTenEdificio()){
+                        atopou=true;
                         System.out.println(edificioUnico);
                     }
                 }
             }
+        }
+        if(!atopou){
+            System.out.println("\nNon hai edificios construídos no tablero.\n");
         }
     }
 
@@ -640,7 +664,7 @@ public class Menu {
     }
 
 
-    //Hai que ter todos os edificios dun grupo para poder hipotecar unha propiedade????
+    //Hai que ter todos os edificios dun grupo para poder hipotecar unha propiedade???? no
     private void hipotecar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaHipotecar = tablero.encontrar_casilla(partes[1]);    
@@ -769,6 +793,7 @@ public class Menu {
     }
 
     private void leerArquivo(String nomeArquivo){
+        this.comandos = true;
         try {
             java.io.File archivo = new java.io.File(nomeArquivo);
             Scanner lector = new Scanner(archivo);
@@ -790,10 +815,10 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Error ao ler o arquivo: " + e.getMessage());
         }
-
+        this.comandos = false;
     }
     private boolean finalizarPartida(){
-        Jugador ganhador = jugadores.getFirst();
+        Jugador ganhador = jugadores.get(0);
         System.out.println("\nO Gañador da partida foi "+ganhador.getNombre() + ", felicidades!\n");
         System.out.println("Rematou a partida con " + ganhador.getFortuna()+" $, e as súas propiedades son:\n ");
         System.out.println("{\n");

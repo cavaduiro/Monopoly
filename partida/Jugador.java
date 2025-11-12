@@ -9,7 +9,7 @@ public class Jugador {
     //Atributos:
     private String nombre; //Nombre del jugador
     private Avatar avatar; //Avatar que tiene en la partida.
-    private long fortuna; //Dinero que posee.
+    private float fortuna; //Dinero que posee.
     private float gastos; //Gastos realizados a lo largo del juego.
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
@@ -35,7 +35,7 @@ public class Jugador {
         {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
-            this.fortuna = 15000000;
+            this.fortuna = (float)Valor.FORTUNA_INICIAL;   
             this.propiedades = new ArrayList<Casilla>();
             this.estatisticas = new Estats(this);
         }

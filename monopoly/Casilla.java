@@ -30,6 +30,7 @@ public class Casilla {
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
     * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.
      */
+    @SuppressWarnings("Convert2Diamond")
     public Casilla(String nombre, String tipo, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {
         this.nombre = nombre;
         this.tipo = tipo;
@@ -169,11 +170,8 @@ public class Casilla {
                 }
             } else if (this.tipo != null && this.tipo.equals("Especial")) {
                 if (this.nombre != null && this.nombre.equals("Suerte")) {
-                    // Lógica de suerte-> seguintes entregas
                     loxicaSorte(banca,actual,pos);
-
-
-                } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
+                } else if (this.nombre != null && this.nombre.equals("Caja")) {
                     loxicaComunidade(banca,actual,pos);
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
                     System.out.println("\nO xogador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impostos. \n");
@@ -187,7 +185,10 @@ public class Casilla {
             }
         } else {
             if ((this.duenho == actual)||hipotecada) {
-                //non fai nada, o xogador é dono da casilla xa lol OU ESTÁ HIPOTECADA :3
+                if(hipotecada){
+                    System.out.println("\nA casilla "+this.nombre+" está hipotecada, polo que non se paga aluguer.\n");
+                }
+                
             } else {
                 // Si el dueño tiene todas las casillas del grupo, el impuesto es el doble
                 float impuestoSolar = this.impuesto;
@@ -217,6 +218,7 @@ public class Casilla {
                 }
 
                 if (this.tipo != null && (this.tipo.equals("Solar"))) {
+                    impuestoSolar = this.impuesto;
                     if (actual.getFortuna() >= impuestoSolar) {
                         actual.getEstatisticas().transAlq(impuestoSolar);
                         this.sumarRentabilidad(impuestoSolar);
@@ -500,12 +502,12 @@ public class Casilla {
         }
         //ESTO PÖDESE MODULARIZAR MOITO MOITO MOITO; DE MOMENTO DAME PEREZA
         if(tipo.equals("hotel")){
-            if(numCasas!=4){
-                System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
-                return;
-            }
             if(hotelConstruido){
                 System.out.println("Xa tes un hotel construido");
+                return;
+            }
+            if(numCasas!=4){
+                System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
                 return;
             }
             if(jugadorActual.getFortuna()<precioConstrucion){
@@ -577,7 +579,6 @@ public class Casilla {
                 return;
             }
             this.edificios.get(tipo).setTenEdificio(false);
-            this.edificios.get("casa").setNumCasas(4);
         }
         if(tipo.equals("piscina")){
             if(!piscinaConstruida){
