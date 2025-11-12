@@ -634,10 +634,54 @@ public class Casilla {
     }
     @Override
     public String toString() {
-        if(this.grupo==null){
-            return "\n{\n  nombre: " + this.nombre + "\n  tipo: " + this.tipo + "\n  valor: " + this.valor + "\n  propietario: " + this.duenho.getNombre()  + "\n  alquiler: " + this.impuesto + "\n}";
+        StringBuilder sb = new StringBuilder();
+        if(this.tipo.equals("Solar")){
+            sb.append("{\n\tnombre: ").append(this.nombre).append("\n");
+            sb.append(" \ttgrupo: ").append(Valor.getNombreColor(this.grupo.getColorGrupo())).append("\n");
+            sb.append(" \ttipo: ").append(this.tipo).append("\n");
+            sb.append(" \tpropietario: ").append(this.duenho.getNombre()).append("\n");
+            sb.append(" \tvalor: ").append(this.valor).append("\n");
+            sb.append(" \talquiler: ").append(this.impuesto).append("\n");
+            sb.append(" \tvalor casa: ").append(this.edificios.get("casa").getCusto()).append("\n");
+            sb.append(" \tvalor hotel: ").append(this.edificios.get("hotel").getCusto()).append("\n");
+            sb.append(" \tvalor piscina: ").append(this.edificios.get("piscina").getCusto()).append("\n");
+            sb.append(" \tvalor deporte: ").append(this.edificios.get("deporte").getCusto()).append("\n");
+            sb.append(" \talquiler casa: ").append(this.edificios.get("casa").getAlquiler()).append("\n");
+            sb.append(" \talquiler hotel: ").append(this.edificios.get("hotel").getAlquiler()).append("\n");
+            sb.append(" \talquiler piscina: ").append(this.edificios.get("piscina").getAlquiler()).append("\n");
+            sb.append(" \talquiler deporte: ").append(this.edificios.get("deporte").getAlquiler()).append("\n}");
         }
-        return "\n{\n  nombre: " + this.nombre + "\n  tipo: " + this.tipo + "\n  grupo: " + Valor.getNombreColor(this.grupo.getColorGrupo()) +"\n  valor: " + this.valor + "\n  propietario: " + this.duenho.getNombre()  + "\n  alquiler: " + this.impuesto + "\n}";
+        else if(this.tipo.equals("Transportes") || this.tipo.equals("Servicios")){
+            sb.append("{\tnombre: ").append(this.nombre).append("\n");
+            sb.append(" \ttipo: ").append(this.tipo).append("\n");
+            sb.append(" \tpropietario: ").append(this.duenho.getNombre()).append("\n");
+            sb.append(" \tvalor: ").append(this.valor).append("\n");
+            sb.append(" \talquiler: ").append(this.impuesto).append("\n}");
+        }
+        else if(this.tipo.equals("Impuesto")){
+            sb.append("{\n\ttipo: ").append(this.tipo).append("\n");
+            sb.append(" \timpuesto: ").append(this.impuesto).append("\n}");
+        }
+        else if(this.nombre.equalsIgnoreCase("Parking")){
+            sb.append("{\tbote: TENO A BANCA E EEEEE");
+            sb.append(" \tXogadores na casilla: [");
+            for(Avatar avatarEnCasilla: this.avatares){
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+            }
+            sb.append("]\n}");
+        }
+        else if(this.nombre.equalsIgnoreCase("Cárcel")){
+            sb.append("{\tCusto salir: 5000000\n");
+            sb.append(" \tXogadores na casilla: [");
+            for(Avatar avatarEnCasilla: this.avatares){
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+            }
+            sb.append("]\n}");
+        }else{
+            sb.append("{\tnombre: ").append(this.nombre).append("\n");
+            sb.append(" \ttipo: ").append(this.tipo).append("\n}");
+        }
+        return sb.toString();
     }
 }
    
