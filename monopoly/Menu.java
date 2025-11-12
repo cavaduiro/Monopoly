@@ -8,8 +8,6 @@ import java.util.Set;
 import partida.*;
 
 public class Menu {
-
-
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida
     private ArrayList<Avatar> avatares; //Avatares en la partida.
@@ -25,7 +23,6 @@ public class Menu {
     private boolean partidaFinalizada = false;
 
     public Menu(){
-
         Scanner scanner = new Scanner(System.in);
         String comando;
         this.banca = new Jugador();
@@ -36,8 +33,13 @@ public class Menu {
         this.dado2 = new Dado();
         while(!partidaFinalizada){
             System.out.println(tablero);
-            System.out.println("\n$: ");
+            if(partidaIniciada){ //Mostramos o nome do xogador que ten o turno
+                System.out.print("\nTurno de "+"\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
+            }else{ //Se a partida non comezou, mostramos o prompt xenérico
+                System.out.print("\n\033[1m$:\033[0m");
+            }
             comando = scanner.nextLine();
+            System.out.print("\n");
             analizarComando(comando);
 
         }
@@ -50,26 +52,24 @@ public class Menu {
         return tablero;
     }
 
-    // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
     }
     
-    /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
-    * Parámetro: cadena de caracteres (el comando).
+    /*
+     * Método que analiza el comando introducido por el usuario y llama a los métodos correspondientes.
+     * Parámetro: cadena de caracteres con el comando introducido.
     */
     private void analizarComando(String comando) {
-        String[] cmdseparado = comando.split(" "); //separa el comando por espacios y lo mete en array
+        String[] cmdseparado = comando.split(" "); //Separamos el comando por espacios para analizarlo mejor, .split(" ") separa en cada espacio
         switch (cmdseparado[0]){
             case "crear":
-                if(cmdseparado.length<2){ //En todos estos comandos tes que comprobar que hay suficientes argumentos, senón intentas acceder a posicións de memoria erróneas
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                if(cmdseparado.length!=4){
+                    Valor.error("Comando introducido erróneo");
+                    System.out.println("Uso: crear jugador nombre tipoAvatar\n");
                     break;
                 }
-                if(cmdseparado[1].equalsIgnoreCase("jugador")){
-                    crearxogador(cmdseparado);
-                }else{
-                    System.out.println("\nComando introducido erróneo.\n");
-                }break;
+                crearxogador(cmdseparado);
+                break;
             case "describir":
                 describir(cmdseparado);
                 break;
@@ -86,19 +86,18 @@ public class Menu {
                 break;
             case "lanzar":
                 if(cmdseparado.length<2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: lanzar dados  -  lanzar dados dado1+dado2\n");
                     break;
                 }
                 if(cmdseparado[1].equalsIgnoreCase("dados")){
                     lanzarDados(cmdseparado);
-
-                }else{
-                    System.out.println("\nComando introducido erróneo.\n");
                 }
                 break;
             case "salir":
                 if(cmdseparado.length<2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: salir carcel");
                     break;
                 }
                 if(cmdseparado[1].equalsIgnoreCase("cárcel") || cmdseparado[1].equalsIgnoreCase("carcel")){
@@ -113,20 +112,22 @@ public class Menu {
             case "comprar":
                 comprar(cmdseparado[1]);
                 if(cmdseparado.length<2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: comprar <propiedad>");
                     break;
                 }
                 break;
             case "comandos":
                 if(cmdseparado.length < 2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: comandos <archivo>");
                     break;
                 }
                 leerArquivo(cmdseparado[1]);
                 break;
             case "estadisticas":
                 if(!partidaIniciada){
-                    System.out.println("\nA partida aínda non comezou, non hai estatísticas que mostrar.\n");
+                    Valor.error("A partida aínda non comezou, non hai estatísticas que mostrar.");
                     break;
                 }
                 if (cmdseparado.length < 2){
@@ -134,57 +135,73 @@ public class Menu {
                     break;
                 }else if(cmdseparado.length>3)
                 {
-                    System.out.println("\nNumero de comandos erróneo...");
+                    Valor.error("Numero de comandos erróneo");
+                    System.out.println("Uso: estadisticas <opcional: jugador>");
                     break;
                 }
                 estadisticasXogador(cmdseparado);
                 break;
             case "edificar":
                 if(!partidaIniciada){
-                    System.out.println("\nA partida aínda non comezou, non se poden edificar edificios.\n");
+                    Valor.error("A partida aínda non comezou, non se poden edificar edificios.");
                     break;
                 }
                 if(cmdseparado.length<2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: edificar <propiedad>");
                     break;
                 }
                 edificar(cmdseparado);
                 break;
             case "vender":
                 if(!partidaIniciada){
-                    System.out.println("\nA partida aínda non comezou, non se poden vender edificios.\n");
+                    Valor.error("A partida aínda non comezou, non se poden vender edificios.");
                     break;
                 }
                 if(cmdseparado.length<4){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: vender <propiedad> <cantidad> <precio>");
                     break;
                 }
                 vender(cmdseparado);
                 break;
             case "hipotecar":
                 if (cmdseparado.length < 2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: hipotecar <propiedad>");
                     break;
                 }
                 hipotecar(cmdseparado);
                 break;
             case "deshipotecar":
                 if (cmdseparado.length < 2){
-                    System.out.println("\nNúmero de argumentos erróneo.\n");
+                    Valor.error("Número de argumentos erróneo.");
+                    System.out.println("Uso: deshipotecar <propiedad>");
                     break;
                 }
                 deshipotecar(cmdseparado);
                 break;
+            case "axuda":
+                Valor.error("Número de argumentos erróneo.");
+                System.out.println("Uso: axuda");
+                mostrarAxuda();
+                break;
             default:
-                System.out.println("\nComando introducido erróneo.\n");
+                Valor.error("\nComando introducido erróneo.\n");
+
                 break;
 
         }
     }
 
+    /*
+     *Método que realiza as accións asociadas ao comando 'listar'.
+     * Parámetro: array de cadenas de caracteres con las partes del comando. 
+    */
     private void listar(String[] partes){
         if(partes.length<2){
-            System.out.println("\nNon inseriu o número de comandos suficientes...\n");
+            Valor.error("Non inseriu o número de comandos suficientes");
+            System.out.println("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
         }
         if(partes[1].equalsIgnoreCase("jugadores")){
             listarJugadores();
@@ -195,14 +212,18 @@ public class Menu {
         }else if(partes[1].equalsIgnoreCase("edificios") && partes.length==3){
             listarEdificiosGrupo(partes[2]);
         }else{
-            System.out.println("\nComando introducido erróneo.\n");
+            Valor.error("Comando introducido erróneo.");
         }
     }
 
+    /*
+     *Método que realiza as accións asociadas ao comando 'describir'.
+     * Parámetro: array de cadenas de caracteres con las partes del comando. 
+    */
     private void describir(String[] partes){
         if(partes.length < 2 || partes.length > 3){
-            System.out.println("\nNúmero de parámetros incorrecto.\n");
-            System.out.println("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla\n");
+            Valor.error("Número de parámetros incorrecto");
+            System.out.println("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
             return;
         }
         if(partes[1].equalsIgnoreCase("jugador")){
@@ -212,55 +233,55 @@ public class Menu {
         }
     }
 
+    /*
+     *Método que crea un xogador coa información dada no comando.
+     * Parámetro: nome do xogador a crear. 
+    */
     private void crearxogador(String[] partes) {
         if(partidaIniciada){
-            System.out.println("A partida xa comezou. Non se poden engadir máis xogadores.\n");
+            Valor.error("A partida xa comezou. Non se poden engadir máis xogadores.");
             return;
         }
         if(partes.length !=4){
-            System.out.println("\nNúmero de parámetros incorrecto.\n");
-            System.out.println("Uso: crear jugador nombre tipo_avatar\n");
+            Valor.error("Número de parámetros incorrecto.");
+            System.out.println("Uso: crear jugador nome tipoAvatar");
             return;
         }
         if(jugadores.size()==4){
-            System.out.println("Número máximo de jugadores alcanzado.");
+            Valor.error("Número máximo de xogadores alcanzado (4).");
             return;
         }
         if(!partes[3].equalsIgnoreCase("coche")&&!partes[3].equalsIgnoreCase("sombrero")&&!partes[3].equalsIgnoreCase("esfinge")&&!partes[3].equalsIgnoreCase("pelota"))    {
-            System.out.println("Tipo de avatar non válido.");
+            Valor.error("Tipo de avatar non válido. Os tipos dispoñibles son: coche, sombrero, esfinge e pelota.");
                 return;
         }
-
-        else{
-            for(Jugador aux:jugadores){
-
-                if(aux.getNombre().equals(partes[2])){
-                    System.out.println("Xa existe un xogador con ese nome.");
-                    return;
-                }
-                else if(aux.getAvatar().getTipo().equalsIgnoreCase(partes[3])){
-                    System.out.println("Xa existe un xogador con ese avatar.");
-                    return;
-                }
+        for(Jugador aux:jugadores){
+            if(aux.getNombre().equals(partes[2])){
+                Valor.error("Xa existe un xogador co nome "+partes[2]+".");
+                return;
             }
-            Casilla auxsal = tablero.encontrar_casilla("Salida");
-            Jugador nuevo= new Jugador(partes[2],partes[3],auxsal,avatares);
-
-            jugadores.add(nuevo);
-            auxsal.anhadirAvatar(nuevo.getAvatar());
+            else if(aux.getAvatar().getTipo().equalsIgnoreCase(partes[3])){
+                Valor.error("Xa existe un xogador co avatar "+partes[3]+".");
+                return;
+            }
         }
+        Casilla auxsal = tablero.encontrar_casilla("Salida"); //Colocamos o xogador creado na casilla de saída
+        Jugador nuevo= new Jugador(partes[2],partes[3],auxsal,avatares);
 
+        jugadores.add(nuevo);
+        auxsal.anhadirAvatar(nuevo.getAvatar());
     }
-    /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
-    * Parámetro: comando introducido
-     */
-    private void descJugador(String[] partes) {
 
-        if(jugadores.size()==0){
-            System.out.println("\nNon hai xogadores aínda.\n");
+    /*
+     *Describe un xogador dado polo nome.
+     * Parámetro: nome do xogador a describir. 
+    */
+    private void descJugador(String[] partes) {
+        if(jugadores.isEmpty()){
+            Valor.error("Non hai xogadores aínda.");
             return;
         }
-        System.out.println("Nome do xogador a describir: "+partes[2] );
+        //System.out.println("Nome do xogador a describir: "+partes[2] );
         boolean encontrado = false;
         for(Jugador aux:jugadores){
             if(aux.getNombre().equals(partes[2])){
@@ -270,13 +291,11 @@ public class Menu {
             }
         }
         if(!encontrado){
-            System.out.println("\nNon existe un xogador con ese nome " + partes[2] + "\n");
+            Valor.error("Non existe un xogador co nome" + partes[2]);
         }
     }
-
-    /*Metodo que realiza las acciones asociadas al comando 'describir avatar'.
-    * Parámetro: id del avatar a describir.
-    */
+    
+    /*
     private void descAvatar(String ID) {
 
         for(Avatar aux:avatares){
@@ -285,36 +304,41 @@ public class Menu {
             }
         }
     }
+    */
 
-    /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
-    * Parámetros: nombre de la casilla a describir.
+    /*
+     *Describe unha casilla dado polo nome.
+     * Parámetro: nome da casilla a describir.
     */
     private void descCasilla(String[] nombre) {
         Casilla aux =tablero.encontrar_casilla(nombre[1]);
-        
         if(aux != null){
             System.out.println(aux);
         }else{
-            System.out.println("\nNon existe casilla con ese nome.\n");
+            Valor.error("Non existe ningunha casilla chamada " + nombre[1]);
         }
-         
     }
-    //Metodo que indica o xogador que ten o turno actual
 
+    /*
+     *Mostra a información do xogador que ten o turno.
+     * Parámetro: -
+    */
     private void xogadorTurno(){
         Jugador jugadorActual = jugadores.get(turno);
-        System.out.println("\n{\nNome: "+ jugadorActual.getNombre()+"\nAvatar: "+jugadorActual.getAvatar().getId()+"\n}\n");
+        System.out.println(jugadorActual);
     }
 
-
-    //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
+    /*
+     *Lánzanse os dados e móvese o avatar do xogador que ten o turno.
+     * Parámetro: os números dos dados (opcional).
+    */ 
     private void lanzarDados(String[] partes) {
         if(partidaIniciada==false && jugadores.size()>=2){
             partidaIniciada=true;
-            System.out.println("A partida comezou\n");
+            System.out.println("\033[1m\nA partida comezou\033[0m\n");
         }
         else if(partidaIniciada==false && jugadores.size()<2){
-            System.out.println("A partida aínda non comezou, necesítanse dous xogadores.");
+            Valor.error("A partida aínda non comezou, necesítanse dous xogadores.");
             return;
         }
 
@@ -323,11 +347,12 @@ public class Menu {
             forzar = true;
         }
         Jugador jugadorActual= jugadores.get(turno);
-        System.out.println(jugadorActual);
+        //System.out.println(jugadorActual);
         if(tirado){
-            System.out.println("Xa tirou os dados este turno.");
+            Valor.error("Xa tirou os dados este turno.");
             return;
         }
+
         int valor1;
         int valor2;
         if (forzar) {
@@ -338,33 +363,31 @@ public class Menu {
             valor1 = dado1.hacerTirada();
             valor2 = dado2.hacerTirada();
         }
-        if(jugadorActual.getEnCarcel()){
-            if (valor1==valor2){ //Para salir da cárcel por turnos, espérase a que acabe o turno
+        if(jugadorActual.getEnCarcel()){ //Se o xogador está na cárcere
+            if (valor1==valor2){ //Se saca dobles, sae da cárcere
                 jugadorActual.setEnCarcel(false);
                 lanzamientos=0;
                 tirado=false;
-                System.out.println("\nSacaches un "+valor1+" e un "+valor2+". Saíches do cárcere.");
+                System.out.println("\nSacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m. Saíches do cárcere.\n");
                 return;
             }else{
                 jugadorActual.sumartiradascarcel();
-                System.out.println("\nSegues na cárcere. Levas "+jugadorActual.getTiradasCarcel()+" turnos.\n");
+                System.out.println("\nSegues na cárcere. Levas "+"\033[1m"+jugadorActual.getTiradasCarcel()+" turnos.\033[0m\n");
                 tirado =true;
                 return;
             }
         }
 
         if(lanzamientos==2 && valor1==valor2){
-            System.out.println("Sacaches tres dobles seguidos, vas ao cárcere.\n");
+            System.out.println("\nSacaches tres dobles seguidos, \033[1mvas ao cárcere.\033[0m\n");
             jugadorActual.encarcelar(tablero.getPosiciones());
             lanzamientos=0;
             tirado=true;
             return;
         }
         lanzamientos++;
-        System.out.println("Sacaches un "+valor1+" e un "+valor2+".\n");
+        System.out.println("Sacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m.\n");
         jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
-
-
 
         solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
 
@@ -374,60 +397,65 @@ public class Menu {
             tirado=false;
             return;
         }
-
-
     }
-    void salirCarcelPagando(){
+
+    /*
+     *Sale da cárcere pagando a fianza.
+     * Parámetro: - 
+    */
+    private void salirCarcelPagando(){
         Jugador actual=jugadores.get(turno);
         if(!actual.getEnCarcel()){
-            System.out.println("O xogador non está no cárcere");
+            Valor.error("Non estás no cárcere");
             return;
         }
-        if(actual.getFortuna()<500000){
-            System.out.println("O xogador non ten cartos para saír do cárcere...");
+        if(actual.getFortuna()<500000000){
+            Valor.error("Non tes cartos de abondo para saír do cárcere." + "\033[1m Precisas 500000€, e tes "+String.format("%.0f", actual.getFortuna())+"€\033[0m");
             return;
         }
         if(tirado){
-            System.out.println("Xa tiraches os dados");
+            Valor.error("Xa tiraches os dados");
             return;
         }
         else{
             actual.sumarFortuna(-500000);
             actual.getEstatisticas().acImpPagado(500000);
             actual.setEnCarcel(false);
-            System.out.println(actual.getNombre()+" pagaches a cuota (500000) e saíches do cárcere, podes tirar os dados.");
+            System.out.println(actual.getNombre()+" pagaches a cuota de 500000€ e saíches do cárcere, podes tirar os dados.");
             return;
         }
     }
-    /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
-    * Parámetro: cadena de caracteres con el nombre de la casilla.
-     */
+
+    /*
+     *Compras a propiedade na que está o avatar do xogador que ten o turno.
+     * Parámetro: nome da casilal a comprar. 
+    */
     private void comprar(String nombre) {
         if(!solvente){
-            System.out.println("\nO xogador actual non é solvente, non pode facer compras...");
+            Valor.error("O xogador actual non é solvente, non pode facer compras ata pagar as súas débedas.");
             return;
         }
         Casilla casillaComprar = tablero.encontrar_casilla(nombre);
         if(casillaComprar == null){
-            System.out.println("Non existe ningunha casilla co nome."+ nombre);
+            Valor.error("Non existe ningunha casilla co nome "+ nombre);
             return;
         }
         if(!"Solar".equals(casillaComprar.getTipo()) && !"Transportes".equals(casillaComprar.getTipo()) && casillaComprar.getTipo()!="Servicios"){
-            System.out.println("Esa casilla non é mercable.\n So podes comprar casillas de tipo Solar, Transporte o Servicio.");
+            Valor.error("Esa casilla non é mercable, so podes comprar casillas de tipo Solar, Transporte o Servicio.");
             return;
         }
         if(casillaComprar.getDuenho() != banca){
-            System.out.println("Esa casilla xa ten dono, é de "+casillaComprar.getDuenho().getNombre()+".");
+            Valor.error("Esa casilla xa ten dono, é de "+casillaComprar.getDuenho().getNombre()+".");
             return;
         }
         
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getAvatar().getLugar() != casillaComprar){
-            System.out.println("Non estás nesa casilla que queres comprar.");
+            Valor.error("Non estás nesa casilla que queres comprar.");
             return;
         }
         if(jugadorActual.getFortuna() < casillaComprar.getValor()){
-            System.out.println("Non tes suficiente fortuna para comprar a casilla.\nA casilla costa "+casillaComprar.getValor()+" e ti tes aforrado"+jugadorActual.getFortuna()+".");
+            Valor.error("Non tes suficiente fortuna para comprar a casilla, a casilla costa "+casillaComprar.getValor()+" e ti tes aforrado "+jugadorActual.getFortuna()+"€");
             return;
         }
         casillaComprar.comprarCasilla(jugadorActual, banca);
@@ -437,7 +465,7 @@ public class Menu {
     private void edificar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
         if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
-            System.out.println("Tipo de edificio non válido. Podes construir casa, hotel, piscina ou deporte.");
+            Valor.error("Tipo de edificio non válido. Podes construir casa, hotel, piscina ou deporte.");
             return;
         }
 
@@ -491,7 +519,7 @@ public class Menu {
     
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
-        if(jugadores.size()==0){
+        if(jugadores.isEmpty()){
             System.out.println("Non hai xogadores creados todavía.");
             return;
         }
@@ -644,7 +672,6 @@ public class Menu {
         casillaHipotecar.hipotecarCasilla();
     }
 }
-    //Hipotecar e deshipotecar poderíase xuntar nunha función soa...
     private void deshipotecar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaDeshipotecar = tablero.encontrar_casilla(partes[1]);    
@@ -856,4 +883,30 @@ public class Menu {
         System.out.println("\nNon existe ningún xogador con ese nome.");
         return;
     }
+
+    private void mostrarAxuda(){
+        System.out.println(
+
+                "\033[1m Lista de comandos dispoñibles: \033[0m\n" +
+                "   -crear jugador <nombre> <tipo_avatar>\n" +
+                "   -salir carcel\n" +
+                "   -acabar turno\n" +
+                "   -lanzar dados <dado1>+<dado2>\n" +
+                "   -comprar <nombre_casilla>\n" +
+                "   -edificar <tipo_edificio>\n" +
+                "   -vender <tipo_edificio> <nombre_casilla> <num_edificios>\n" +
+                "   -hipotecar <nombre_casilla>\n" +
+                "   -deshipotecar <nombre_casilla>\n" +
+                "   -listar jugadores\n" +
+                "   -listar enventa\n" +
+                "   -listar edificios <color_grupo>\n" +
+                "   -describir jugador <nombre_jugador>\n" +
+                "   -describir <nombre_casilla>\n" +
+                "   -estadisticas [<nombre_jugador>]\n" +
+                "   -comandos <nombre_archivo>\n"
+        );
+
+
+    }
+
 }

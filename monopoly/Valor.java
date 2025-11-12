@@ -190,4 +190,7 @@ public class Valor {
             return 0;
         }
 
+        public static void error(String mensaje) {
+            System.out.println(RED + "\033[1mError: \033[0m" + mensaje + RESET);
+        }
 }

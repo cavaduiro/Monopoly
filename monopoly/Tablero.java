@@ -236,6 +236,11 @@ private String centrarTexto(String texto, int ancho) {
 }
 
 private void imprimirEspaciosCentrales(StringBuilder sb, int fila) {
+    //Quero imprimir aquí un Ascii con un dibujo
+    //Entonces, primeiro: cantos espacios hai que imprimri par asaber o ancho central máximo=
+    //resposta: 11 casillas * 10 caracteres por casilla - 2 (os dous bordes das casillas)= 108
+    //Vaise chamando fila a fila, entonces podemos facer un ascii que según o valor que se lle dea vai imprimido unha liña, como un array ,sbes?
+
     String[] ascii = new String[50];
     int espaciosBlanco = 108;
     int espaciosAntes = 25;
@@ -244,7 +249,7 @@ private void imprimirEspaciosCentrales(StringBuilder sb, int fila) {
     ascii[1] = " ".repeat(espaciosBlanco);
     ascii[2] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀" + " ".repeat(espaciosDespois);
     ascii[3] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⡟⠛⠛⠛⠻⢶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-18)+"______________"+" ".repeat(4);
-    ascii[4] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⠃⠀⠀⠀⢠⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"|____𝐋𝐞𝐲𝐞𝐧𝐝𝐚___|"+" ".repeat(3);
+    ascii[4] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⠃⠀⠀⠀⢠⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"|___𝐋𝐞𝐲𝐞𝐧𝐝𝐚____|"+" ".repeat(3);
     ascii[5] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⢀⣤⠶⡶⢶⡶⣒⣲⠆⢰⣿⣿⣏⣀⣀⡀⢠⣿⣿⣿⣿⣿⡿⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ■ Casas      |"+" ".repeat(3);
     ascii[6] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⢴⣄⠹⣦⠙⣯⠀⣠⣿⣿⠟⠛⠻⠿⢛⣿⣿⣿⣿⣿⡟⣰⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ▲ Hotel      |"+" ".repeat(3);
     ascii[7] = "⠀".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⣸⠏⠀⢸⡏⢛⡿⠿⣿⣾⣿⣿⣯⣤⣤⣤⣤⣼⣿⣿⣿⣿⣿⣧⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ◆ Piscina    |"+" ".repeat(3);
@@ -383,4 +388,5 @@ public String toString() {
     public Jugador getBanca() {
         return banca;
     }
+
 }

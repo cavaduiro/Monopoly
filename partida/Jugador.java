@@ -9,7 +9,7 @@ public class Jugador {
     //Atributos:
     private String nombre; //Nombre del jugador
     private Avatar avatar; //Avatar que tiene en la partida.
-    private float fortuna; //Dinero que posee.
+    private long fortuna; //Dinero que posee.
     private float gastos; //Gastos realizados a lo largo del juego.
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
@@ -62,9 +62,12 @@ public class Jugador {
     public boolean getEnCarcel() {
         return enCarcel;
     }
-    public float getFortuna() {
-        return fortuna;
+   
+    //como fago que fortuan devolva varios decimais para que non faga cousas como 1.3E7, se non que devolva o número complet?
+    public float getFortuna(){
+        return this.fortuna;
     }
+
 
     public ArrayList<Casilla> getPropiedades() {return propiedades;}
 
@@ -161,20 +164,33 @@ public class Jugador {
         } else {
             sb.append(" - ");
         }
-        sb.append("\nHipotecas : ");
-        if(this.propiedades != null && !this.propiedades.isEmpty()){
-            for (Casilla p : propiedades) {
-                if (p.getHipotecada()) {
-                    sb.append(p.getNombre()).append(", ");
+        sb.append("\nHipotecas: ");
+         if (this.propiedades != null && !this.propiedades.isEmpty()) {
+            for(Casilla propiedadesHipoteca: this.propiedades){
+                if(propiedadesHipoteca.getHipotecada()){
+                    sb.append(propiedadesHipoteca.getNombre()).append(", ");
                 }
             }
         } else {
             sb.append(" - ");
         }
         sb.append("\nEdificios: ");
-        if(this.propiedades != null && !this.propiedades.isEmpty()){
-            for (Casilla p : propiedades) {
-                sb.append(p.getEdificios().get("casas").getIdCasas());
+        if (this.propiedades != null && !this.propiedades.isEmpty()) {
+            for(Casilla propiedadesEdificio: this.propiedades){
+                if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
+                    for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){
+                        sb.append(casaId).append(", ");
+                    }
+                }
+                if(propiedadesEdificio.getEdificios().get("hotel").getTenEdificio()){
+                    sb.append(propiedadesEdificio.getEdificios().get("hotel").getId()).append(", ");
+                }
+                if(propiedadesEdificio.getEdificios().get("piscina").getTenEdificio()){
+                    sb.append(propiedadesEdificio.getEdificios().get("piscina").getId()).append(", ");
+                }
+                if(propiedadesEdificio.getEdificios().get("deporte").getTenEdificio()){
+                    sb.append(propiedadesEdificio.getEdificios().get("deporte").getId()).append(", ");
+                }
             }
         } else {
             sb.append(" - ");
