@@ -79,7 +79,7 @@ public class Menu {
                 break;
             case "ver":
             if(comandos)
-                System.out.println(tablero);
+                {System.out.println(tablero);}
                 break;
             case "listar":
                 listar(cmdseparado);
@@ -113,12 +113,12 @@ public class Menu {
                 acabarTurno();
                 break;
             case "comprar":
-                comprar(cmdseparado[1]);
                 if(cmdseparado.length<2){
                     Valor.error("Número de argumentos erróneo.");
                     System.out.println("Uso: comprar <propiedad>");
                     break;
                 }
+                comprar(cmdseparado[1]);
                 break;
             case "comandos":
                 if(cmdseparado.length < 2){

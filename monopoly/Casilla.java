@@ -448,6 +448,7 @@ public class Casilla {
            solicitante.anhadirPropiedad(this);
            this.duenho = solicitante;
            solicitante.sumarFortuna(-this.valor);
+           solicitante.getEstatisticas().pagoinversion(this.valor);
               System.out.println("\nO xogador " + solicitante.getNombre() + " comprou a casilla " + this.nombre + " por " + this.valor + " euros.\n");
        }
        else {

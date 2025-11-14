@@ -107,7 +107,9 @@ public class Estats {
         Jugador rentista = this.xogador.getAvatar().getLugar().getDuenho();
         this.pagoAlquileres += pago;
         rentista.getEstatisticas().cobroAlquileres += pago;
-
+    }
+    public void pagoinversion(float pago){
+        this.dineroInvertido += pago;
     }
 
     public void sumarVoltas() {
