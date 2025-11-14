@@ -115,6 +115,7 @@ public class Estats {
     public void sumarVoltas() {
         this.voltasDadas++;
     }
+
     public void sumarbote(float premio) {
         this.premiosInversionesBote += premio;
     }
@@ -122,7 +123,7 @@ public class Estats {
     @Override
     public String toString() {
         return "Estatísticas do xogador " + this.xogador.getNombre() + ":\n" +
-                "Dinero invertido en propiedades: " + dineroInvertido + "€\n" +
+                "Dinero invertido en propiedades: " + dineroInvertido + "€\n" + //v
                 "Dinero pagado en taxas e impostos: " + pagoTasasImp + "€\n" +
                 "Dinero pagado en alugueres: " + pagoAlquileres + "€\n" +
                 "Dinero cobrado en alugueres: " + cobroAlquileres + "€\n" +

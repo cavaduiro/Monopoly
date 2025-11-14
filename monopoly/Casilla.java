@@ -310,7 +310,7 @@ public class Casilla {
                 banca.sumarSorte();
                 break;
             case 1:
-                System.out.println("");
+                System.out.println("\nVai o cárcere, sen pasar pola casilla de saída.\n");
                 actual.getEstatisticas().sumarCarcel();
                 if(actual.getAvatar().getLugar().getPosicion()!=7){
                     actual.getEstatisticas().sumarVoltas();
@@ -319,14 +319,14 @@ public class Casilla {
                 banca.sumarSorte();
                 break;
             case 2:
-                System.out.println("");
+                System.out.println("\nRecibes 1.000.000! Lucky you...\n");
                 //Recibir 1.000.000
                 actual.sumarFortuna(1000000);
                 actual.getEstatisticas().sumarbote(1000000);
                 banca.sumarSorte();
                 break;
             case 3:
-                System.out.println("");
+                System.out.println("\nPaga a cada xogador 250.000€\n");
                 //Paga a cada xogador 250.000
                 float bote = 250000;
                 for(ArrayList<Casilla> lado: pos){
@@ -551,6 +551,7 @@ public class Casilla {
 
         System.out.println("Construiches un/a "+tipo+" na casilla "+this.getNombre()+" por "+precioConstrucion+"€");
         jugadorActual.sumarFortuna(-precioConstrucion);
+        jugadorActual.getEstatisticas().pagoinversion(precioConstrucion);
     }
 
 

@@ -1,7 +1,9 @@
 Errores:
     *Estadísticas:
-        -Cando inicias a partida, se caes en calquera delas e lle das ás estatísticas da partida, a frecuencia duplícase
-        -Deberiá haber unha forme de que se non se deron voltas, que poña que non se deu ningunha
-        -Empates co tema dos cartos
 
+        -Empates co tema dos cartos
+        -cando usas estadisticas, hay liñas que cambian de cor??
         bro basicamente como non puxen nos sitios nos que se actualizan as stats que se actualicen non se actualizan sorpresa fagoo eu
+        (creo que xa o fixen ^^^)
+
+        deberiase facer unha lista cos xogadores en cabeza por se hai empate??

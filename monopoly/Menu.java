@@ -831,8 +831,8 @@ public class Menu {
     private void estadisticasPartida() {
         boolean primeraComprada = false;
         boolean grupoComprado = false;
-        int rentGrupoMax =-1*10^8;
-        int rentGrupoActual = 0;
+        float rentGrupoMax =-1*10^8;
+        float rentGrupoActual = 0;
         Casilla casillaMax = this.tablero.getPosiciones().get(0).get(0); //Inicializamos casillaMax con la primera casilla del tablero tipo soloar
         Casilla freqmax = this.tablero.getPosiciones().get(0).get(0);
         for (ArrayList<Casilla> lado : this.tablero.getPosiciones()) {
@@ -892,7 +892,12 @@ public class Menu {
                 fortunamax = aux;
             }
         }
-        System.out.println(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
+        if(voltasmax.getEstatisticas().getVoltasDadas()!=0){
+            System.out.println(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
+        }else{
+            System.out.println(" -*Ningún xogador ten voltas todavía.\n");
+        }
+
         System.out.println(" -*Xogador en cabeza: "+fortunamax.getNombre()+", con unha fortuna de "+fortunamax.getFortuna()+" €.\n");
 
 
