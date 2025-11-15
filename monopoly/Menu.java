@@ -882,9 +882,38 @@ public class Menu {
             System.out.println(" -*Ningún grupo foi comprado aínda.\n");
         }
         System.out.println(" -*Casilla máis frecuentada: "+freqmax.getNombre()+", cunha frecuencia de "+freqmax.getCaidas()+" caidas.\n");
-        Jugador voltasmax = jugadores.get(0);
-        Jugador fortunamax = jugadores.get(0);
+        //Jugador voltasmax = jugadores.get(0);
+        ArrayList<Jugador> topvoltas = new ArrayList<>(); //vou probar cunha lista para os empates
+        ArrayList<Jugador> topfortunas = new ArrayList<>();
+        topfortunas.add(jugadores.get(0));
+        topvoltas.add(jugadores.get(0));
+        //Jugador fortunamax = jugadores.get(0);
         for(Jugador aux: jugadores){
+            float voltasaux = aux.getEstatisticas().getVoltasDadas();
+            float cartosaux = aux.getFortuna();
+            if(voltasaux>topvoltas.get(0).getEstatisticas().getVoltasDadas()){
+                //facemos unha lista co top de players con máis voltas
+                for(int i = 0; i<topvoltas.toArray().length; i++){
+                    topvoltas.remove(i);
+                }
+                topvoltas.add(aux);
+            }else if(voltasaux == topvoltas.get(0).getEstatisticas().getVoltasDadas() &&!topvoltas.contains(aux)){
+                topvoltas.add(aux);
+            }
+                //repetimos o proceso pero cos carots
+            if(cartosaux>topfortunas.get(0).getFortuna()){
+                //facemos unha lista co top de players con máis voltas
+                for(int i = 0; i<topfortunas.toArray().length; i++){
+                    topfortunas.remove(i);
+                }
+                topfortunas.add(aux);
+            }else if(cartosaux == topfortunas.get(0).getFortuna() && !topfortunas.contains(aux)){
+                topfortunas.add(aux);
+            }
+
+        }
+        /*Déixoo comentado por se a solución anterior era mellor
+        *  for(Jugador aux: jugadores){
             if(aux.getEstatisticas().getVoltasDadas()>voltasmax.getEstatisticas().getVoltasDadas()){
                 voltasmax = aux;
             }
@@ -900,7 +929,27 @@ public class Menu {
 
         System.out.println(" -*Xogador en cabeza: "+fortunamax.getNombre()+", con unha fortuna de "+fortunamax.getFortuna()+" €.\n");
 
-
+        *
+        *
+        * */
+        if(topvoltas.get(0).getEstatisticas().getVoltasDadas() == 0){
+            System.out.println(" -*Ningún xogador ten voltas todavía.\n");
+        }else if(topvoltas.size()==1){
+            System.out.println(" -*Xogador con máis voltas ("+ topvoltas.get(0).getEstatisticas().getVoltasDadas()+"): "+topvoltas.get(0).getNombre()+".\n");
+        }else{
+            System.out.println(" -*Xogadores con máis voltas ("+ topvoltas.get(0).getEstatisticas().getVoltasDadas()+"): \n");
+            for(Jugador aux: topvoltas){
+                System.out.println("\t- "+ aux.getNombre()+"\n");
+            }
+        }
+        if(topfortunas.size()==1){
+            System.out.println(" -*Xogador con máis fortuna("+topfortunas.get(0).getFortuna()+"): "+topfortunas.get(0).getNombre()+".\n");
+        }else {
+            System.out.println(" -*Xogadores con máis fortun("+topfortunas.get(0).getFortuna()+"):c\n");
+            for (Jugador aux : topfortunas) {
+                System.out.println("\t- " + aux.getNombre() + "\n");
+            }
+        }
     }
 
     private void estadisticasXogador(String[] comandos){
