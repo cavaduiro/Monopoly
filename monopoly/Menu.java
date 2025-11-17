@@ -673,10 +673,10 @@ public class Menu {
             return;
         }
         if(casillaHipotecar.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casillaHipotecar.getNombre()+"non é da túa propiedade, non a podes hipotecar.");
+            System.out.println("A casilla "+casillaHipotecar.getNombre()+" non é da túa propiedade, non a podes hipotecar.");
             return;
         }
-        if(!casillaHipotecar.getTipo().equals("Solar")){
+        if(casillaHipotecar.getTipo().equals("Solar")){
             System.out.println("Solo se poden hipotecar solares.");
             return;
         }
@@ -693,8 +693,9 @@ public class Menu {
                 System.out.println("Esta propiedade ten un algún edificio construído, debes vendelo antes de hipotecar.");
                 return;
             }
-        casillaHipotecar.hipotecarCasilla();
+
     }
+        casillaHipotecar.hipotecarCasilla();
 }
     private void deshipotecar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
@@ -703,12 +704,12 @@ public class Menu {
             System.out.println("Non existe ningunha casilla co nome."+ partes[1]);
             return;
         }
-        if(!casillaDeshipotecar.getTipo().equals("Solar")){
+        if(casillaDeshipotecar.getTipo().equals("Solar")){
             System.out.println("Solo se poden deshipotecar solares.");
             return;
         }
         if(casillaDeshipotecar.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+"non é da túa propiedade, non a podes deshipotecar.");
+            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
             return;
         }
         if(casillaDeshipotecar.getHipotecada()==false){

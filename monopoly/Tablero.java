@@ -38,7 +38,7 @@ public class Tablero {
         Casilla caja1 = new Casilla("Caja", "Especial", 2, this.banca);
         Casilla solar2 = new Casilla("Solar2", "Solar", 3, 600000, this.banca, 40000, 300000);
         Casilla impuesto1 = new Casilla("Imp1", "Impuesto", 4, this.banca, 2000000.f);
-        Casilla trans1 = new Casilla("Trans1", "Transportes", 5, 500000, this.banca, 250000, 0);
+        Casilla trans1 = new Casilla("Trans1", "Transportes", 5, 500000, this.banca, 250000, 250000/2);
         Casilla solar3 = new Casilla("Solar3", "Solar", 6, 1000000, this.banca, 60000, 500000);
         Casilla suerte1 = new Casilla ("Suerte", "Especial", 7, this.banca);
         Casilla solar4 = new Casilla ("Solar4", "Solar", 8, 1000000, this.banca, 60000, 500000);
@@ -71,10 +71,10 @@ public class Tablero {
     private void insertarLadoOeste() {
         Casilla solar6 = new Casilla("Solar6", "Solar", 11, 1400000, this.banca, 100000, 700000);
         //NON SEI CANTO COSTA A CASILLA DE SERVICIOS, O VALOR É ARBITRARIO
-        Casilla serv1 = new Casilla("Serv1", "Servicios", 12, 1500000, this.banca, 50000, 0);
+        Casilla serv1 = new Casilla("Serv1", "Servicios", 12, 1500000, this.banca, 50000, 50000/2);
         Casilla solar7 = new Casilla("Solar7", "Solar", 13, 1400000, this.banca, 100000, 700000);
         Casilla solar8 = new Casilla("Solar8", "Solar", 14, 1600000, this.banca, 120000, 800000);
-        Casilla trans2 = new Casilla("Trans2", "Transportes", 15, 500000, this.banca, 250000, 0);
+        Casilla trans2 = new Casilla("Trans2", "Transportes", 15, 500000, this.banca, 250000, 250000/2);
         Casilla solar9 = new Casilla("Solar9", "Solar", 16, 1800000, this.banca, 140000, 900000);
         Casilla caja2 = new Casilla("Caja", "Especial", 17, this.banca);
         Casilla solar10 = new Casilla("Solar10", "Solar", 18, 1800000, this.banca, 140000, 900000);
@@ -107,10 +107,10 @@ public class Tablero {
         Casilla suerte2 = new Casilla("Suerte", "Especial", 22, this.banca);
         Casilla solar13 = new Casilla("Solar13", "Solar", 23, 2200000, this.banca, 180000, 1100000);
         Casilla solar14 = new Casilla("Solar14", "Solar", 24, 2400000, this.banca, 200000, 120000);
-        Casilla trans3 = new Casilla("Trans3", "Transportes", 25, 500000, this.banca, 250000, 0);
+        Casilla trans3 = new Casilla("Trans3", "Transportes", 25, 500000, this.banca, 250000, 250000);
         Casilla solar15 = new Casilla("Solar15", "Solar", 26, 2600000, this.banca, 220000, 1300000);
         Casilla solar16 = new Casilla("Solar16", "Solar", 27, 2600000, this.banca, 220000, 1300000);  
-        Casilla serv2 = new Casilla("Serv2", "Servicios", 28, 1500000, this.banca, 50000, 0);
+        Casilla serv2 = new Casilla("Serv2", "Servicios", 28, 1500000, this.banca, 50000, 50000);
         Casilla solar17 = new Casilla("Solar17", "Solar", 29, 2800000, this.banca, 240000, 1400000);
         Casilla irCarcel = new Casilla("IrCarcel", "Especial", 30, this.banca);
 
@@ -142,7 +142,7 @@ public class Tablero {
         Casilla solar19 = new Casilla("Solar19", "Solar", 32, 3000000, this.banca, 260000, 1500000);
         Casilla caja3 = new Casilla("Caja", "Especial", 33, this.banca);
         Casilla solar20 = new Casilla("Solar20", "Solar", 34, 3200000, this.banca, 280000, 160000);
-        Casilla trans4 = new Casilla("Trans4", "Transportes", 35, 500000, this.banca, 250000, 0);
+        Casilla trans4 = new Casilla("Trans4", "Transportes", 35, 500000, this.banca, 250000, 250000);
         Casilla suerte3 = new Casilla("Suerte", "Especial", 36, this.banca);
         Casilla solar21 = new Casilla("Solar21", "Solar", 37, 3500000, this.banca, 350000, 1750000);
         Casilla impuesto2 = new Casilla("Imp2", "Impuesto", 38, this.banca, 2000000);

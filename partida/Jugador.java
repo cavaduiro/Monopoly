@@ -177,20 +177,23 @@ public class Jugador {
         sb.append("\nEdificios: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
             for(Casilla propiedadesEdificio: this.propiedades){
-                if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
-                    for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){
-                        sb.append(casaId).append(", ");
+                if(propiedadesEdificio.getEdificios()!= null){
+                    if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
+                        for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){
+                            sb.append(casaId).append(", ");
+                        }
+                    }
+                    if(propiedadesEdificio.getEdificios().get("hotel").getTenEdificio()){
+                        sb.append(propiedadesEdificio.getEdificios().get("hotel").getId()).append(", ");
+                    }
+                    if(propiedadesEdificio.getEdificios().get("piscina").getTenEdificio()){
+                        sb.append(propiedadesEdificio.getEdificios().get("piscina").getId()).append(", ");
+                    }
+                    if(propiedadesEdificio.getEdificios().get("deporte").getTenEdificio()){
+                        sb.append(propiedadesEdificio.getEdificios().get("deporte").getId()).append(", ");
                     }
                 }
-                if(propiedadesEdificio.getEdificios().get("hotel").getTenEdificio()){
-                    sb.append(propiedadesEdificio.getEdificios().get("hotel").getId()).append(", ");
-                }
-                if(propiedadesEdificio.getEdificios().get("piscina").getTenEdificio()){
-                    sb.append(propiedadesEdificio.getEdificios().get("piscina").getId()).append(", ");
-                }
-                if(propiedadesEdificio.getEdificios().get("deporte").getTenEdificio()){
-                    sb.append(propiedadesEdificio.getEdificios().get("deporte").getId()).append(", ");
-                }
+
             }
         } else {
             sb.append(" - ");
