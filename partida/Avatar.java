@@ -85,9 +85,9 @@ public class Avatar {
     public Casilla posIndex(int index,ArrayList<ArrayList<Casilla>> casillas){
         if(index<11){
             return casillas.get(0).get(index);
-        }else if(index<20){
+        }else if(index<19){
             return casillas.get(1).get(index-11);
-        }else if(index<31){
+        }else if(index<30){
             return casillas.get(2).get(index-20);
         }else{return casillas.get(3).get(index-31);}
     }
