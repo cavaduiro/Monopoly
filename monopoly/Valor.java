@@ -3,7 +3,7 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+//Hola
 public class Valor {
     //Se incluyen una serie de constantes útiles para no repetir valores.
     public static final float FORTUNA_BANCA = 15000000; // Cantidad que tiene inicialmente la Banca

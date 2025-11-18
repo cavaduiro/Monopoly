@@ -30,6 +30,7 @@ public class Casilla {
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
     * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.
      */
+    @SuppressWarnings("Convert2Diamond")
     public Casilla(String nombre, String tipo, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {
         this.nombre = nombre;
         this.tipo = tipo;
@@ -169,11 +170,8 @@ public class Casilla {
                 }
             } else if (this.tipo != null && this.tipo.equals("Especial")) {
                 if (this.nombre != null && this.nombre.equals("Suerte")) {
-                    // Lógica de suerte-> seguintes entregas
                     loxicaSorte(banca,actual,pos);
-
-
-                } else if (this.nombre != null && this.nombre.equals("Caja de Comunidad")) {
+                } else if (this.nombre != null && this.nombre.equals("Caja")) {
                     loxicaComunidade(banca,actual,pos);
                 } else if (this.nombre != null && this.nombre.equals("Parking")) {
                     System.out.println("\nO xogador "+actual.getNombre()+" recibirá "+banca.getFortuna()+" en impostos. \n");
@@ -187,7 +185,10 @@ public class Casilla {
             }
         } else {
             if ((this.duenho == actual)||hipotecada) {
-                //non fai nada, o xogador é dono da casilla xa lol OU ESTÁ HIPOTECADA :3
+                if(hipotecada){
+                    System.out.println("\nA casilla "+this.nombre+" está hipotecada, polo que non se paga aluguer.\n");
+                }
+                
             } else {
                 // Si el dueño tiene todas las casillas del grupo, el impuesto es el doble
                 float impuestoSolar = this.impuesto;
@@ -217,6 +218,7 @@ public class Casilla {
                 }
 
                 if (this.tipo != null && (this.tipo.equals("Solar"))) {
+                    impuestoSolar = this.impuesto;
                     if (actual.getFortuna() >= impuestoSolar) {
                         actual.getEstatisticas().transAlq(impuestoSolar);
                         this.sumarRentabilidad(impuestoSolar);
@@ -226,14 +228,14 @@ public class Casilla {
                         }
                         System.out.println("O xogador " + actual.getNombre() + " pagou " + impuestoSolar + " ao xogador " + (this.duenho != null ? this.duenho.getNombre() : "Desconocido") + " por caer na casilla " + this.nombre + ".\n");
                     } else {
-                        System.out.println("O xogador " + actual.getNombre() + " non ten suficientes cartos para pagar o alquilar da casilla " + this.nombre + ".\n");
+                        System.out.println("O xogador " + actual.getNombre() + " non ten suficientes cartos para pagar o aluguer da casilla " + this.nombre + ".\n");
                         return false;
                     }
                 } else if(this.tipo != null && this.tipo.equals("Transportes")) {
                     int numTransportes = 0;
                     Jugador propietario = this.duenho;
                     for (Casilla propiedad : propietario.getPropiedades()) {
-                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Transportes")) {
+                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Transportes") && !propiedad.hipotecada) {
                             numTransportes++;
                         }
                     }
@@ -258,7 +260,7 @@ public class Casilla {
                     Jugador propietario = this.duenho;
                     int numServicios = 0;
                     for (Casilla propiedad : propietario.getPropiedades()) {
-                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Servicios")) {
+                        if (propiedad.getTipo() != null && propiedad.getTipo().equals("Servicios") && !propiedad.hipotecada) {
                             numServicios++;
                         }
                     }
@@ -308,7 +310,7 @@ public class Casilla {
                 banca.sumarSorte();
                 break;
             case 1:
-                System.out.println("");
+                System.out.println("\nVai o cárcere, sen pasar pola casilla de saída.\n");
                 actual.getEstatisticas().sumarCarcel();
                 if(actual.getAvatar().getLugar().getPosicion()!=7){
                     actual.getEstatisticas().sumarVoltas();
@@ -317,14 +319,14 @@ public class Casilla {
                 banca.sumarSorte();
                 break;
             case 2:
-                System.out.println("");
+                System.out.println("\nRecibes 1.000.000! Lucky you...\n");
                 //Recibir 1.000.000
                 actual.sumarFortuna(1000000);
                 actual.getEstatisticas().sumarbote(1000000);
                 banca.sumarSorte();
                 break;
             case 3:
-                System.out.println("");
+                System.out.println("\nPaga a cada xogador 250.000€\n");
                 //Paga a cada xogador 250.000
                 float bote = 250000;
                 for(ArrayList<Casilla> lado: pos){
@@ -446,6 +448,7 @@ public class Casilla {
            solicitante.anhadirPropiedad(this);
            this.duenho = solicitante;
            solicitante.sumarFortuna(-this.valor);
+           solicitante.getEstatisticas().pagoinversion(this.valor);
               System.out.println("\nO xogador " + solicitante.getNombre() + " comprou a casilla " + this.nombre + " por " + this.valor + " euros.\n");
        }
        else {
@@ -456,7 +459,11 @@ public class Casilla {
     public void hipotecarCasilla() {
         this.hipotecada = true;
         this.duenho.sumarFortuna(this.hipoteca);
-        System.out.println("\nA casilla " + this.nombre + " foi hipotecada por " + this.hipoteca + " euros.\n Ata que a deshipoteques, non poderás cobrar aluguer por esta casilla nin construir no grupo "+Valor.getNombreColor(this.grupo.getColorGrupo())+".\n");
+        System.out.println("\nA casilla " + this.nombre + " foi hipotecada por " + this.hipoteca + " euros.\n Ata que a deshipoteques, non poderás cobrar aluguer por esta casilla.\n");
+        if(this.grupo!=null){
+            System.out.println("Ademais, tampouco poderás construir no grupo "+Valor.getNombreColor(this.grupo.getColorGrupo())+".\n");
+        }
+
     }
 
     public void deshipotecarCasilla() {
@@ -466,7 +473,10 @@ public class Casilla {
         }
         this.hipotecada = false;
         this.duenho.sumarFortuna(-this.hipoteca);
-        System.out.println("\nA casilla " + this.nombre + " foi deshipotecada por " + this.hipoteca + " euros.\n Xa podes cobrar aluguer por esta casilla e construir no grupo "+Valor.getNombreColor(this.grupo.getColorGrupo())+".\n");
+        System.out.println("\nA casilla " + this.nombre + " foi deshipotecada por " + this.hipoteca + " euros.\n Xa podes cobrar aluguer por esta casilla.\n");
+        if(this.grupo != null){
+            System.out.println("Ademais, xa podes construir no grupo "+Valor.getNombreColor(this.grupo.getColorGrupo())+".\n");
+        }
     }
 
     /*Método para añadir valor a una casilla. Utilidad:
@@ -500,12 +510,12 @@ public class Casilla {
         }
         //ESTO PÖDESE MODULARIZAR MOITO MOITO MOITO; DE MOMENTO DAME PEREZA
         if(tipo.equals("hotel")){
-            if(numCasas!=4){
-                System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
-                return;
-            }
             if(hotelConstruido){
                 System.out.println("Xa tes un hotel construido");
+                return;
+            }
+            if(numCasas!=4){
+                System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
                 return;
             }
             if(jugadorActual.getFortuna()<precioConstrucion){
@@ -548,6 +558,7 @@ public class Casilla {
 
         System.out.println("Construiches un/a "+tipo+" na casilla "+this.getNombre()+" por "+precioConstrucion+"€");
         jugadorActual.sumarFortuna(-precioConstrucion);
+        jugadorActual.getEstatisticas().pagoinversion(precioConstrucion);
     }
 
 
@@ -577,7 +588,6 @@ public class Casilla {
                 return;
             }
             this.edificios.get(tipo).setTenEdificio(false);
-            this.edificios.get("casa").setNumCasas(4);
         }
         if(tipo.equals("piscina")){
             if(!piscinaConstruida){

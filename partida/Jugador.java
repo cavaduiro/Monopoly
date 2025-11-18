@@ -9,7 +9,7 @@ public class Jugador {
     //Atributos:
     private String nombre; //Nombre del jugador
     private Avatar avatar; //Avatar que tiene en la partida.
-    private long fortuna; //Dinero que posee.
+    private float fortuna; //Dinero que posee.
     private float gastos; //Gastos realizados a lo largo del juego.
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
@@ -35,7 +35,7 @@ public class Jugador {
         {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
-            this.fortuna = 15000000;
+            this.fortuna = (float)Valor.FORTUNA_INICIAL;   
             this.propiedades = new ArrayList<Casilla>();
             this.estatisticas = new Estats(this);
         }
@@ -177,20 +177,23 @@ public class Jugador {
         sb.append("\nEdificios: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
             for(Casilla propiedadesEdificio: this.propiedades){
-                if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
-                    for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){
-                        sb.append(casaId).append(", ");
+                if(propiedadesEdificio.getEdificios()!= null){
+                    if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
+                        for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){
+                            sb.append(casaId).append(", ");
+                        }
+                    }
+                    if(propiedadesEdificio.getEdificios().get("hotel").getTenEdificio()){
+                        sb.append(propiedadesEdificio.getEdificios().get("hotel").getId()).append(", ");
+                    }
+                    if(propiedadesEdificio.getEdificios().get("piscina").getTenEdificio()){
+                        sb.append(propiedadesEdificio.getEdificios().get("piscina").getId()).append(", ");
+                    }
+                    if(propiedadesEdificio.getEdificios().get("deporte").getTenEdificio()){
+                        sb.append(propiedadesEdificio.getEdificios().get("deporte").getId()).append(", ");
                     }
                 }
-                if(propiedadesEdificio.getEdificios().get("hotel").getTenEdificio()){
-                    sb.append(propiedadesEdificio.getEdificios().get("hotel").getId()).append(", ");
-                }
-                if(propiedadesEdificio.getEdificios().get("piscina").getTenEdificio()){
-                    sb.append(propiedadesEdificio.getEdificios().get("piscina").getId()).append(", ");
-                }
-                if(propiedadesEdificio.getEdificios().get("deporte").getTenEdificio()){
-                    sb.append(propiedadesEdificio.getEdificios().get("deporte").getId()).append(", ");
-                }
+
             }
         } else {
             sb.append(" - ");

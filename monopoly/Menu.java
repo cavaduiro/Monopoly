@@ -21,6 +21,7 @@ public class Menu {
     private Jugador banca; //Jugador que representa a la banca.
     private boolean partidaIniciada=false; //Booleano para comprobar si la partida ha comenzado (mínimo 2 jugadores creados).
     private boolean partidaFinalizada = false;
+    private boolean comandos = false;
 
     public Menu(){
         Scanner scanner = new Scanner(System.in);
@@ -77,6 +78,8 @@ public class Menu {
                 xogadorTurno();
                 break;
             case "ver":
+            if(comandos)
+                {System.out.println(tablero);}
                 break;
             case "listar":
                 listar(cmdseparado);
@@ -110,12 +113,12 @@ public class Menu {
                 acabarTurno();
                 break;
             case "comprar":
-                comprar(cmdseparado[1]);
                 if(cmdseparado.length<2){
                     Valor.error("Número de argumentos erróneo.");
                     System.out.println("Uso: comprar <propiedad>");
                     break;
                 }
+                comprar(cmdseparado[1]);
                 break;
             case "comandos":
                 if(cmdseparado.length < 2){
@@ -160,12 +163,17 @@ public class Menu {
                 }
                 if(cmdseparado.length<4){
                     Valor.error("Número de argumentos erróneo.");
-                    System.out.println("Uso: vender <propiedad> <cantidad> <precio>");
+                    System.out.println("Uso: vender <tipo> <solar> <cantidade>");
                     break;
                 }
+                
                 vender(cmdseparado);
                 break;
             case "hipotecar":
+                if (!partidaIniciada){
+                    Valor.error("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                    break;
+                }
                 if (cmdseparado.length < 2){
                     Valor.error("Número de argumentos erróneo.");
                     System.out.println("Uso: hipotecar <propiedad>");
@@ -174,6 +182,10 @@ public class Menu {
                 hipotecar(cmdseparado);
                 break;
             case "deshipotecar":
+                if (!partidaIniciada){
+                        Valor.error("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                        break;
+                    }
                 if (cmdseparado.length < 2){
                     Valor.error("Número de argumentos erróneo.");
                     System.out.println("Uso: deshipotecar <propiedad>");
@@ -495,6 +507,12 @@ public class Menu {
 
     private void vender(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
+
+        if(Integer.parseInt(partes[3]) <=0){
+            Valor.error("A cantidade ten que ser maior que 0.");
+            return;
+        }
+
         if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
             System.out.println("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
             return;
@@ -555,6 +573,7 @@ public class Menu {
     }
 
     private void listarEdificios(){
+        boolean atopou=false;
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
         for (ArrayList<Casilla> lado : pos) {
             for (Casilla casilla : lado) {
@@ -565,16 +584,21 @@ public class Menu {
                 }
                 Edificios edificioCasa = casilla.getEdificios().get("casa");
                 if(edificioCasa.getNumCasas() > 0){
+                    atopou=true;
                     System.out.println(edificioCasa);
                 }
                 Edificios edificioUnico;
                 for(String tipo : new String[]{"hotel", "piscina", "deporte"}){
                     edificioUnico = casilla.getEdificios().get(tipo);
                     if(edificioUnico.getTenEdificio()){
+                        atopou=true;
                         System.out.println(edificioUnico);
                     }
                 }
             }
+        }
+        if(!atopou){
+            System.out.println("\nNon hai edificios construídos no tablero.\n");
         }
     }
 
@@ -640,7 +664,7 @@ public class Menu {
     }
 
 
-    //Hai que ter todos os edificios dun grupo para poder hipotecar unha propiedade????
+    //Hai que ter todos os edificios dun grupo para poder hipotecar unha propiedade???? no
     private void hipotecar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaHipotecar = tablero.encontrar_casilla(partes[1]);    
@@ -649,10 +673,10 @@ public class Menu {
             return;
         }
         if(casillaHipotecar.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casillaHipotecar.getNombre()+"non é da túa propiedade, non a podes hipotecar.");
+            System.out.println("A casilla "+casillaHipotecar.getNombre()+" non é da túa propiedade, non a podes hipotecar.");
             return;
         }
-        if(!casillaHipotecar.getTipo().equals("Solar")){
+        if(casillaHipotecar.getTipo().equals("Solar")){
             System.out.println("Solo se poden hipotecar solares.");
             return;
         }
@@ -669,8 +693,9 @@ public class Menu {
                 System.out.println("Esta propiedade ten un algún edificio construído, debes vendelo antes de hipotecar.");
                 return;
             }
-        casillaHipotecar.hipotecarCasilla();
+
     }
+        casillaHipotecar.hipotecarCasilla();
 }
     private void deshipotecar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
@@ -679,12 +704,12 @@ public class Menu {
             System.out.println("Non existe ningunha casilla co nome."+ partes[1]);
             return;
         }
-        if(!casillaDeshipotecar.getTipo().equals("Solar")){
+        if(casillaDeshipotecar.getTipo().equals("Solar")){
             System.out.println("Solo se poden deshipotecar solares.");
             return;
         }
         if(casillaDeshipotecar.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+"non é da túa propiedade, non a podes deshipotecar.");
+            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
             return;
         }
         if(casillaDeshipotecar.getHipotecada()==false){
@@ -769,6 +794,7 @@ public class Menu {
     }
 
     private void leerArquivo(String nomeArquivo){
+        this.comandos = true;
         try {
             java.io.File archivo = new java.io.File(nomeArquivo);
             Scanner lector = new Scanner(archivo);
@@ -790,10 +816,10 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Error ao ler o arquivo: " + e.getMessage());
         }
-
+        this.comandos = false;
     }
     private boolean finalizarPartida(){
-        Jugador ganhador = jugadores.getFirst();
+        Jugador ganhador = jugadores.get(0);
         System.out.println("\nO Gañador da partida foi "+ganhador.getNombre() + ", felicidades!\n");
         System.out.println("Rematou a partida con " + ganhador.getFortuna()+" $, e as súas propiedades son:\n ");
         System.out.println("{\n");
@@ -806,8 +832,8 @@ public class Menu {
     private void estadisticasPartida() {
         boolean primeraComprada = false;
         boolean grupoComprado = false;
-        int rentGrupoMax =-1*10^8;
-        int rentGrupoActual = 0;
+        float rentGrupoMax =-1*10^8;
+        float rentGrupoActual = 0;
         Casilla casillaMax = this.tablero.getPosiciones().get(0).get(0); //Inicializamos casillaMax con la primera casilla del tablero tipo soloar
         Casilla freqmax = this.tablero.getPosiciones().get(0).get(0);
         for (ArrayList<Casilla> lado : this.tablero.getPosiciones()) {
@@ -857,9 +883,38 @@ public class Menu {
             System.out.println(" -*Ningún grupo foi comprado aínda.\n");
         }
         System.out.println(" -*Casilla máis frecuentada: "+freqmax.getNombre()+", cunha frecuencia de "+freqmax.getCaidas()+" caidas.\n");
-        Jugador voltasmax = jugadores.get(0);
-        Jugador fortunamax = jugadores.get(0);
+        //Jugador voltasmax = jugadores.get(0);
+        ArrayList<Jugador> topvoltas = new ArrayList<>(); //vou probar cunha lista para os empates
+        ArrayList<Jugador> topfortunas = new ArrayList<>();
+        topfortunas.add(jugadores.get(0));
+        topvoltas.add(jugadores.get(0));
+        //Jugador fortunamax = jugadores.get(0);
         for(Jugador aux: jugadores){
+            float voltasaux = aux.getEstatisticas().getVoltasDadas();
+            float cartosaux = aux.getFortuna();
+            if(voltasaux>topvoltas.get(0).getEstatisticas().getVoltasDadas()){
+                //facemos unha lista co top de players con máis voltas
+                for(int i = 0; i<topvoltas.toArray().length; i++){
+                    topvoltas.remove(i);
+                }
+                topvoltas.add(aux);
+            }else if(voltasaux == topvoltas.get(0).getEstatisticas().getVoltasDadas() &&!topvoltas.contains(aux)){
+                topvoltas.add(aux);
+            }
+                //repetimos o proceso pero cos carots
+            if(cartosaux>topfortunas.get(0).getFortuna()){
+                //facemos unha lista co top de players con máis voltas
+                for(int i = 0; i<topfortunas.toArray().length; i++){
+                    topfortunas.remove(i);
+                }
+                topfortunas.add(aux);
+            }else if(cartosaux == topfortunas.get(0).getFortuna() && !topfortunas.contains(aux)){
+                topfortunas.add(aux);
+            }
+
+        }
+        /*Déixoo comentado por se a solución anterior era mellor
+        *  for(Jugador aux: jugadores){
             if(aux.getEstatisticas().getVoltasDadas()>voltasmax.getEstatisticas().getVoltasDadas()){
                 voltasmax = aux;
             }
@@ -867,10 +922,35 @@ public class Menu {
                 fortunamax = aux;
             }
         }
-        System.out.println(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
+        if(voltasmax.getEstatisticas().getVoltasDadas()!=0){
+            System.out.println(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
+        }else{
+            System.out.println(" -*Ningún xogador ten voltas todavía.\n");
+        }
+
         System.out.println(" -*Xogador en cabeza: "+fortunamax.getNombre()+", con unha fortuna de "+fortunamax.getFortuna()+" €.\n");
 
-
+        *
+        *
+        * */
+        if(topvoltas.get(0).getEstatisticas().getVoltasDadas() == 0){
+            System.out.println(" -*Ningún xogador ten voltas todavía.\n");
+        }else if(topvoltas.size()==1){
+            System.out.println(" -*Xogador con máis voltas ("+ topvoltas.get(0).getEstatisticas().getVoltasDadas()+"): "+topvoltas.get(0).getNombre()+".\n");
+        }else{
+            System.out.println(" -*Xogadores con máis voltas ("+ topvoltas.get(0).getEstatisticas().getVoltasDadas()+"): \n");
+            for(Jugador aux: topvoltas){
+                System.out.println("\t- "+ aux.getNombre()+"\n");
+            }
+        }
+        if(topfortunas.size()==1){
+            System.out.println(" -*Xogador con máis fortuna("+topfortunas.get(0).getFortuna()+"): "+topfortunas.get(0).getNombre()+".\n");
+        }else {
+            System.out.println(" -*Xogadores con máis fortun("+topfortunas.get(0).getFortuna()+"):c\n");
+            for (Jugador aux : topfortunas) {
+                System.out.println("\t- " + aux.getNombre() + "\n");
+            }
+        }
     }
 
     private void estadisticasXogador(String[] comandos){
