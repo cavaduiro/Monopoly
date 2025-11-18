@@ -514,6 +514,14 @@ public class Casilla {
                 System.out.println("Xa tes un hotel construido");
                 return;
             }
+            if(piscinaConstruida){
+                System.out.println("Non podes construír un hotel nesta casilla, xa tes unha piscina construída");
+                return;
+            }
+            if(pistaConstruida){
+                System.out.println("Non podes construír un hotel nesta casilla, xa tes unha instalación deportiva construída");
+                return;
+            }
             if(numCasas!=4){
                 System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
                 return;
@@ -528,6 +536,10 @@ public class Casilla {
         if(tipo.equals("piscina")){
             if(piscinaConstruida){
                 System.out.println("Xa tes unha piscina construída");
+                return;
+            }
+            if(pistaConstruida){
+                System.out.println("Non podes construír unha piscina nesta casilla, xa tes unha instalación deportiva construída");
                 return;
             }
             if(!hotelConstruido){
