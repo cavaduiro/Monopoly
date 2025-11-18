@@ -484,7 +484,7 @@ public class Menu {
         Casilla casillaEdificar = jugadorActual.getAvatar().getLugar();
 
         if(casillaEdificar.getDuenho() != jugadorActual){
-            System.out.println("Non estás na túa propiedade.");
+            Valor.error("Non estás na túa propiedade.");
             return;
         }
 
@@ -492,13 +492,13 @@ public class Menu {
 
         for(Casilla aux: casillasGrupo){
             if(aux.getHipotecada()){
-                System.out.println("Non podes edificar neste grupo porque algunha casilla do grupo está hipotecada.");
+                Valor.error("Non podes edificar neste grupo porque algunha casilla do grupo está hipotecada.");
                 return;
             }
         }
         
         if(!casillaEdificar.getGrupo().esDuenhoGrupo(jugadorActual)){
-            System.out.println("Necesitas comprar todas as casillas do grupo para poder edificar nesta casilla");
+            Valor.error("Necesitas comprar todas as casillas do grupo para poder edificar nesta casilla");
             return;
         }
 
@@ -514,20 +514,20 @@ public class Menu {
         }
 
         if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
-            System.out.println("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
+            Valor.error("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
             return;
         }
         Casilla casilla = tablero.encontrar_casilla(partes[2]);        
         if(casilla==null){
-            System.out.println("Non existe ningunha casilla co nome."+ partes[2]);
+            Valor.error("Non existe ningunha casilla co nome."+ partes[2]);
             return;
         }
         if(casilla.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casilla.getNombre()+"non é da túa propiedade.");
+            Valor.error("A casilla "+casilla.getNombre()+"non é da túa propiedade.");
             return;
         }
         if(!casilla.getGrupo().esDuenhoGrupo(jugadorActual)){
-            System.out.println("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
+            Valor.error("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
             return;
         }
         //Como paso partes[3] a tipo int??
@@ -538,12 +538,12 @@ public class Menu {
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
         if(jugadores.isEmpty()){
-            System.out.println("Non hai xogadores creados todavía.");
+            Valor.error("Non hai xogadores creados todavía.");
             return;
         }
         Jugador jugadorActual= jugadores.get(turno);
         if(!jugadorActual.getEnCarcel()){
-            System.out.println("Non estás no cárcere.");
+            Valor.error("Non estás no cárcere.");
             return;
         }
         else{
@@ -598,7 +598,7 @@ public class Menu {
             }
         }
         if(!atopou){
-            System.out.println("\nNon hai edificios construídos no tablero.\n");
+            Valor.error("\nNon hai edificios construídos no tablero.\n");
         }
     }
 
@@ -669,24 +669,24 @@ public class Menu {
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaHipotecar = tablero.encontrar_casilla(partes[1]);    
         if(casillaHipotecar==null){
-            System.out.println("Non existe ningunha casilla co nome."+ partes[1]);
+            Valor.error("Non existe ningunha casilla co nome."+ partes[1]);
             return;
         }
         if(casillaHipotecar.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casillaHipotecar.getNombre()+" non é da túa propiedade, non a podes hipotecar.");
+            Valor.error("A casilla "+casillaHipotecar.getNombre()+" non é da túa propiedade, non a podes hipotecar.");
             return;
         }
         if(casillaHipotecar.getHipotecada()){
-            System.out.println("A casilla "+casillaHipotecar.getNombre()+" xa está hipotecada.");
+            Valor.error("A casilla "+casillaHipotecar.getNombre()+" xa está hipotecada.");
             return;
         }
         if(casillaHipotecar.getTipo().equals("Solar")){
             if(casillaHipotecar.getEdificios().get("casa").getNumCasas()>0){
-                System.out.println("Esta propiedade ten "+casillaHipotecar.getEdificios().get("casa").getNumCasas()+" casas construídas, debes vender as casas antes de hipotecar.");
+                Valor.error("Esta propiedade ten "+casillaHipotecar.getEdificios().get("casa").getNumCasas()+" casas construídas, debes vender as casas antes de hipotecar.");
                 return;
             }
             if(casillaHipotecar.getEdificios().get("hotel").getTenEdificio()||casillaHipotecar.getEdificios().get("piscina").getTenEdificio()||casillaHipotecar.getEdificios().get("deporte").getTenEdificio()){
-                System.out.println("Esta propiedade ten un algún edificio construído, debes vendelo antes de hipotecar.");
+                Valor.error("Esta propiedade ten un algún edificio construído, debes vendelo antes de hipotecar.");
                 return;
             }
 
@@ -697,19 +697,19 @@ public class Menu {
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaDeshipotecar = tablero.encontrar_casilla(partes[1]);    
         if(casillaDeshipotecar==null){
-            System.out.println("Non existe ningunha casilla co nome."+ partes[1]);
+            Valor.error("Non existe ningunha casilla co nome."+ partes[1]);
             return;
         }
         if(casillaDeshipotecar.getTipo().equals("Solar")){
-            System.out.println("Solo se poden deshipotecar solares.");
+            Valor.error("Solo se poden deshipotecar solares.");
             return;
         }
         if(casillaDeshipotecar.getDuenho() != jugadorActual){
-            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
+            Valor.error("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
             return;
         }
         if(casillaDeshipotecar.getHipotecada()==false){
-            System.out.println("A casilla "+casillaDeshipotecar.getNombre()+" non está hipotecada.");
+            Valor.error("A casilla "+casillaDeshipotecar.getNombre()+" non está hipotecada.");
             return;
         }
         casillaDeshipotecar.deshipotecarCasilla();
@@ -729,7 +729,7 @@ public class Menu {
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getEnCarcel() && jugadorActual.getTiradasCarcel()==3){
             if(jugadorActual.getFortuna()<500000){
-                System.out.println("Non tes cartos para saír do cárcere (500000€) ...");
+                Valor.error("Non tes cartos para saír do cárcere (500000€) ...");
                 solvente=false;
                 //return; En futuras entregas onde podas recaudar cartos vendendo e hipotecando propiedades, non se pode facer return aquí, porque podes conseguir cartos e pagar a multa
             }else{
@@ -957,7 +957,7 @@ public class Menu {
                 return;
             }
         }
-        System.out.println("\nNon existe ningún xogador con ese nome.");
+        Valor.error("\nNon existe ningún xogador con ese nome.");
         return;
     }
 
