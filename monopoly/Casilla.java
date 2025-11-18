@@ -139,7 +139,7 @@ public class Casilla {
     public void anhadirAvatar(Avatar av) {
         this.avatares.add(av);
     }
-
+    //push de proba
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
         this.avatares.remove(av);
