@@ -238,7 +238,7 @@ public class Menu {
             System.out.println("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
             return;
         }
-        if(partes[1].equalsIgnoreCase("jugador")){
+        if(partes[1].equalsIgnoreCase("jugador")&& partes.length==3){
             descJugador(partes);
         }else{
             descCasilla(partes);
@@ -810,6 +810,7 @@ public class Menu {
         } catch (java.io.FileNotFoundException e) {
             System.out.println("Non se atopou o arquivo: " + nomeArquivo);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error ao ler o arquivo: " + e.getMessage());
         }
         this.comandos = false;

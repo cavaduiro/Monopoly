@@ -3,7 +3,6 @@ package partida;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import monopoly.*;
 
 
@@ -83,14 +82,18 @@ public class Avatar {
 
     //Devolve a casilla co índice de 0 a 40
     public Casilla posIndex(int index,ArrayList<ArrayList<Casilla>> casillas){
+        index= index%40;
         if(index<11){
             return casillas.get(0).get(index);
-        }else if(index<19){
+        }else if(index<20){
             return casillas.get(1).get(index-11);
-        }else if(index<30){
+        }else if(index<31){
             return casillas.get(2).get(index-20);
-        }else{return casillas.get(3).get(index-31);}
+        }else{
+            return casillas.get(3).get(index-31);
+        }
     }
+    
     /*Metodo que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.

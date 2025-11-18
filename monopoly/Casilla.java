@@ -308,6 +308,7 @@ public class Casilla {
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
                 banca.sumarSorte();
+                dest.evaluarCasilla(actual,banca,0,pos);
                 break;
             case 1:
                 System.out.println("\nVai o cárcere, sen pasar pola casilla de saída.\n");
@@ -354,7 +355,7 @@ public class Casilla {
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
                 banca.sumarSorte();
-                evaluarCasilla(actual,banca,0,pos);
+                dest.evaluarCasilla(actual,banca,0,pos);
                 break;
             case 5:
                 System.out.println("Múltanche por usar o teléfono mentres conduces, paga 150000 euros\n");
@@ -365,21 +366,22 @@ public class Casilla {
                 banca.sumarSorte();
                 break;
             case 6:
-                System.out.println("Avanza cara a casilla máis cercana\n");
+                System.out.println("Avanza cara a casilla máis cercana (de transporte)\n");
                 //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
                 boolean iterado= false;
+                Casilla destino = actual.getAvatar().getLugar();
                 for(int novacas : Valor.transportes){
                     if(actual.getAvatar().getLugar().getPosicion()<novacas && !iterado){
                         casactual=actual.getAvatar().getLugar();
                         casactual.eliminarAvatar(actual.getAvatar());
-                        dest = actual.getAvatar().posIndex(novacas,pos);
-                        dest.anhadirAvatar(actual.getAvatar());
-                        actual.getAvatar().setLugar(dest);
+                        destino = actual.getAvatar().posIndex(novacas,pos);  
+                        destino.anhadirAvatar(actual.getAvatar());
+                        actual.getAvatar().setLugar(destino);
                         iterado = true;
+                        destino.evaluarCasilla(actual,banca,0,pos);
+                        return;
                     }
                 }
-                evaluarCasilla(actual,banca,0,pos);
-                break;
             default:
                 break;
         }
@@ -422,7 +424,7 @@ public class Casilla {
                 dest= actual.getAvatar().posIndex(1,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
-                evaluarCasilla(actual,banca,0,pos);
+                dest.evaluarCasilla(actual,banca,0,pos);
                 break;
             case 5:
                 System.out.println("Vas ó Solar20\n");
@@ -431,6 +433,7 @@ public class Casilla {
                 dest= actual.getAvatar().posIndex(34,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
+                dest.evaluarCasilla(actual, banca, caidas, pos);
                 break;
             default:
                 break;
@@ -514,14 +517,6 @@ public class Casilla {
                 System.out.println("Xa tes un hotel construido");
                 return;
             }
-            if(piscinaConstruida){
-                System.out.println("Non podes construír un hotel nesta casilla, xa tes unha piscina construída");
-                return;
-            }
-            if(pistaConstruida){
-                System.out.println("Non podes construír un hotel nesta casilla, xa tes unha instalación deportiva construída");
-                return;
-            }
             if(numCasas!=4){
                 System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
                 return;
@@ -570,6 +565,7 @@ public class Casilla {
 
         System.out.println("Construiches un/a "+tipo+" na casilla "+this.getNombre()+" por "+precioConstrucion+"€");
         jugadorActual.sumarFortuna(-precioConstrucion);
+        this.rentabilidad-=precioConstrucion;
         jugadorActual.getEstatisticas().pagoinversion(precioConstrucion);
     }
 
@@ -595,6 +591,14 @@ public class Casilla {
                 System.out.println("Non tes un hotel construído nesta casilla");
                 return;
             }
+            if(pistaConstruida){
+                System.out.println("Non podes vender o hotel se tes unha instalación deportiva construída");
+                return;
+            }
+            if(piscinaConstruida){
+                System.out.println("Non podes vender o hotel se tes unha piscina construída");
+                return;
+            }
             if(numEdificios>1){
                 System.out.println("Non poder haber "+numEdificios+" construidos, só un");
                 return;
@@ -604,6 +608,10 @@ public class Casilla {
         if(tipo.equals("piscina")){
             if(!piscinaConstruida){
                 System.out.println("Non tes unha piscina construída nesta casilla");
+                return;
+            }
+            if(pistaConstruida){
+                System.out.println("Non podes vender a piscina se tes unha instalación deportiva construída");
                 return;
             }
             if(numEdificios>1){

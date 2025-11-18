@@ -10,10 +10,8 @@ public class Jugador {
     private String nombre; //Nombre del jugador
     private Avatar avatar; //Avatar que tiene en la partida.
     private float fortuna; //Dinero que posee.
-    private float gastos; //Gastos realizados a lo largo del juego.
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
-    private int vueltas; //Cuenta las vueltas dadas al tablero.
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
     private Estats estatisticas;
     private int indexsorte;
@@ -113,11 +111,6 @@ public class Jugador {
         this.fortuna += valor;
     }
 
-    //Metodo para sumar gastos a un jugador.
-    //Parámetro: valor a añadir a los gastos del jugador (será el precio de un solar, impuestos pagados...).
-    public void sumarGastos(float valor) {
-        this.gastos += valor;
-    }
 
     /*Metodo para establecer al jugador en la cárcel.
     * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
