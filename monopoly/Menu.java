@@ -488,6 +488,11 @@ public class Menu {
             return;
         }
 
+        if(!casillaEdificar.getTipo().equals("Solar")){
+            Valor.error("Só podes edificar en solares.");
+            return;
+        }
+
         ArrayList<Casilla> casillasGrupo = casillaEdificar.getGrupo().getMiembros();
 
         for(Casilla aux: casillasGrupo){
@@ -518,8 +523,13 @@ public class Menu {
             return;
         }
         Casilla casilla = tablero.encontrar_casilla(partes[2]);        
+        
         if(casilla==null){
             Valor.error("Non existe ningunha casilla co nome."+ partes[2]);
+            return;
+        }
+        if(!casilla.getTipo().equals("Solar")){
+            Valor.error("Só podes vender edificios en solares.");
             return;
         }
         if(casilla.getDuenho() != jugadorActual){
@@ -700,10 +710,7 @@ public class Menu {
             Valor.error("Non existe ningunha casilla co nome."+ partes[1]);
             return;
         }
-        if(casillaDeshipotecar.getTipo().equals("Solar")){
-            Valor.error("Solo se poden deshipotecar solares.");
-            return;
-        }
+
         if(casillaDeshipotecar.getDuenho() != jugadorActual){
             Valor.error("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
             return;
