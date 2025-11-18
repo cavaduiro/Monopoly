@@ -676,10 +676,6 @@ public class Menu {
             System.out.println("A casilla "+casillaHipotecar.getNombre()+" non é da túa propiedade, non a podes hipotecar.");
             return;
         }
-        if(casillaHipotecar.getTipo().equals("Solar")){
-            System.out.println("Solo se poden hipotecar solares.");
-            return;
-        }
         if(casillaHipotecar.getHipotecada()){
             System.out.println("A casilla "+casillaHipotecar.getNombre()+" xa está hipotecada.");
             return;
@@ -832,8 +828,8 @@ public class Menu {
     private void estadisticasPartida() {
         boolean primeraComprada = false;
         boolean grupoComprado = false;
-        float rentGrupoMax =-1*10^8;
-        float rentGrupoActual = 0;
+        double rentGrupoMax =-1*Math.pow(10,8);
+        double rentGrupoActual = 0;
         Casilla casillaMax = this.tablero.getPosiciones().get(0).get(0); //Inicializamos casillaMax con la primera casilla del tablero tipo soloar
         Casilla freqmax = this.tablero.getPosiciones().get(0).get(0);
         for (ArrayList<Casilla> lado : this.tablero.getPosiciones()) {
@@ -877,7 +873,7 @@ public class Menu {
                 }
             }
         }
-        if(primeraComprada){
+        if(grupoComprado){
             System.out.println(" -*O grupo máis rentable é: "+grupomax.getColorGrupo());
         }else{
             System.out.println(" -*Ningún grupo foi comprado aínda.\n");
@@ -891,7 +887,7 @@ public class Menu {
         //Jugador fortunamax = jugadores.get(0);
         for(Jugador aux: jugadores){
             float voltasaux = aux.getEstatisticas().getVoltasDadas();
-            float cartosaux = aux.getFortuna();
+            float cartosaux = aux.getFortuna()+aux.getEstatisticas().getDineroInvertido();
             if(voltasaux>topvoltas.get(0).getEstatisticas().getVoltasDadas()){
                 //facemos unha lista co top de players con máis voltas
                 for(int i = 0; i<topvoltas.toArray().length; i++){
@@ -901,14 +897,14 @@ public class Menu {
             }else if(voltasaux == topvoltas.get(0).getEstatisticas().getVoltasDadas() &&!topvoltas.contains(aux)){
                 topvoltas.add(aux);
             }
-                //repetimos o proceso pero cos carots
-            if(cartosaux>topfortunas.get(0).getFortuna()){
+                //repetimos o proceso pero cos cartos
+            if(cartosaux>topfortunas.get(0).getFortuna()+topfortunas.get(0).getEstatisticas().getDineroInvertido()){
                 //facemos unha lista co top de players con máis voltas
                 for(int i = 0; i<topfortunas.toArray().length; i++){
                     topfortunas.remove(i);
                 }
                 topfortunas.add(aux);
-            }else if(cartosaux == topfortunas.get(0).getFortuna() && !topfortunas.contains(aux)){
+            }else if(cartosaux == (topfortunas.get(0).getFortuna()+topfortunas.get(0).getEstatisticas().getDineroInvertido()) && !topfortunas.contains(aux)){
                 topfortunas.add(aux);
             }
 
@@ -944,9 +940,9 @@ public class Menu {
             }
         }
         if(topfortunas.size()==1){
-            System.out.println(" -*Xogador con máis fortuna("+topfortunas.get(0).getFortuna()+"): "+topfortunas.get(0).getNombre()+".\n");
+            System.out.println(" -*Xogador con máis fortuna("+(topfortunas.get(0).getFortuna()+topfortunas.get(0).getEstatisticas().getDineroInvertido())+"): "+topfortunas.get(0).getNombre()+".\n");
         }else {
-            System.out.println(" -*Xogadores con máis fortun("+topfortunas.get(0).getFortuna()+"):c\n");
+            System.out.println(" -*Xogadores con máis fortuna("+(topfortunas.get(0).getFortuna()+topfortunas.get(0).getEstatisticas().getDineroInvertido())+"):\n");
             for (Jugador aux : topfortunas) {
                 System.out.println("\t- " + aux.getNombre() + "\n");
             }
