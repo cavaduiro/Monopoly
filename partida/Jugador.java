@@ -136,6 +136,7 @@ public class Jugador {
     }
     public void sumarCom(){
         this.indexcom++;
+        this.indexcom = this.indexcom%6;
     }
 
     @Override

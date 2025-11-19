@@ -312,7 +312,7 @@ public class Casilla {
                 break;
             case 1:
                 System.out.println("\nVai o cárcere, sen pasar pola casilla de saída.\n");
-                actual.getEstatisticas().sumarCarcel();
+                //actual.getEstatisticas().sumarCarcel();
                 if(actual.getAvatar().getLugar().getPosicion()!=7){
                     actual.getEstatisticas().sumarVoltas();
                 }
@@ -370,6 +370,7 @@ public class Casilla {
                 //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
                 boolean iterado= false;
                 Casilla destino = actual.getAvatar().getLugar();
+                banca.sumarSorte();
                 for(int novacas : Valor.transportes){
                     if(actual.getAvatar().getLugar().getPosicion()<novacas && !iterado){
                         casactual=actual.getAvatar().getLugar();
@@ -382,6 +383,7 @@ public class Casilla {
                         return;
                     }
                 }
+
             default:
                 break;
         }
@@ -390,17 +392,21 @@ public class Casilla {
      * Lóxica comunidade
      */
     private void loxicaComunidade(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
-        switch(banca.getIndexsorte()){
+
+        switch(banca.getIndexcom()){
             case 0:
+                banca.sumarCom();
                 System.out.println("\nPaga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas\n");
                 actual.sumarFortuna(-500000);
                 break;
             case 1:
+                banca.sumarCom();
                 System.out.println("\nVas á cárcel sin pasar por casilla de salida e sin cobrar\n");
                 actual.encarcelar(pos);
-                actual.getEstatisticas().sumarCarcel();
+                //actual.getEstatisticas().sumarCarcel();
                 break;
             case 2:
+                banca.sumarCom();
                 //Colócate en casilla de salida cobrando 200000
                 System.out.println("\nVas á casilla de saída, cobrando 2000000 euros.\n");
                 Casilla casactual=actual.getAvatar().getLugar();
@@ -413,11 +419,13 @@ public class Casilla {
                 actual.getAvatar().setLugar(dest);
                 break;
             case 3:
+                banca.sumarCom();
                 System.out.println("Devolución de Facenda, recibes 500000)\n");
                 actual.sumarFortuna(500000);
                 actual.getEstatisticas().sumarbote(500000);
                 break;
             case 4:
+                banca.sumarCom();
                 System.out.println("Retrocede a Solar1\n");
                 casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
@@ -427,6 +435,7 @@ public class Casilla {
                 dest.evaluarCasilla(actual,banca,0,pos);
                 break;
             case 5:
+                banca.sumarCom();
                 System.out.println("Vas ó Solar20\n");
                 casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());

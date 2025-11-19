@@ -421,7 +421,7 @@ public class Menu {
             Valor.error("Non estás no cárcere");
             return;
         }
-        if(actual.getFortuna()<500000000){
+        if(actual.getFortuna()<500000){
             Valor.error("Non tes cartos de abondo para saír do cárcere." + "\033[1m Precisas 500000€, e tes "+String.format("%.0f", actual.getFortuna())+"€\033[0m");
             return;
         }
@@ -852,9 +852,10 @@ public class Menu {
 
         Set<String> set = this.tablero.getGrupos().keySet();
         Grupo grupomax = null;
+        grupoComprado = false;
         for (String key : set) {
             Grupo grupo=this.tablero.getGrupos().get(key);
-            grupoComprado = false;
+
             for(Casilla aux: grupo.getMiembros()){
                 if(aux.getDuenho()!=banca){
                     rentGrupoActual+=aux.getRentabilidad();
