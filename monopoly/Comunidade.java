@@ -17,7 +17,7 @@ public class Comunidade extends Carta {
     @Override
     public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
 
-        switch(banca.getIndexcom()){
+        switch(this.index){
             case 0:
                 this.sumar();
                 System.out.println("\nPaga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas\n");
@@ -66,7 +66,7 @@ public class Comunidade extends Carta {
                 dest= actual.getAvatar().posIndex(34,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
-                dest.evaluarCasilla(actual, banca, caidas, pos);
+                dest.evaluarCasilla(actual, banca, 0, pos);
                 break;
         }
     }

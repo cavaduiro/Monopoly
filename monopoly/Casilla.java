@@ -1,5 +1,6 @@
 package monopoly;
 
+import java.io.Console;
 import partida.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,7 +23,6 @@ public class Casilla {
     private int caidas;
     boolean hipotecada=false;
     private Map<String, Edificios> edificios; //Edificios construidos en la casilla (si es solar).
-
 
     public Casilla() {
     }//Parámetros vacíos
@@ -396,19 +396,19 @@ public class Casilla {
         switch(banca.getIndexcom()){
             case 0:
                 banca.sumarCom();
-                System.out.println("\nPaga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas\n");
+                Juego.consol.imprimir("Paga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas");
                 actual.sumarFortuna(-500000);
                 break;
             case 1:
                 banca.sumarCom();
-                System.out.println("\nVas á cárcel sin pasar por casilla de salida e sin cobrar\n");
+                Juego.consol.imprimir("Vas á cárcel sin pasar por casilla de salida e sin cobrar");
                 actual.encarcelar(pos);
                 //actual.getEstatisticas().sumarCarcel();
                 break;
             case 2:
                 banca.sumarCom();
                 //Colócate en casilla de salida cobrando 200000
-                System.out.println("\nVas á casilla de saída, cobrando 2000000 euros.\n");
+                Juego.consol.imprimir("Vas á casilla de saída, cobrando 2000000 euros.");
                 Casilla casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
                 Casilla dest = actual.getAvatar().posIndex(0,pos);
@@ -442,7 +442,7 @@ public class Casilla {
                 dest= actual.getAvatar().posIndex(34,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
-                dest.evaluarCasilla(actual, banca, caidas, pos);
+                dest.evaluarCasilla(actual, banca, 0, pos);
                 break;
             default:
                 break;

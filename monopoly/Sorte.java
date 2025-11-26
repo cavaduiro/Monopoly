@@ -16,7 +16,7 @@ public class Sorte extends Carta {
     @Override
     public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
 
-        switch(banca.getIndexsorte()){
+        switch(this.index){
             case 0:
                 //Moverse a la casilla solar 19
                 System.out.println("Oh no excursión á solar 19\n");
