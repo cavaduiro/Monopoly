@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "MonopolyETSE",
+            "request": "launch",
+            "mainClass": "monopoly.MonopolyETSE",
+            "projectName": "Monopoly_a81202d6"
+        },
+        {
             "type": "jdk",
             "request": "launch",
             "name": "Launch Java App"
