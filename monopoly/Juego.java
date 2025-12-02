@@ -63,13 +63,16 @@ public class Juego {
         switch (cmdseparado[0]){
             case "crear":
                 if(cmdseparado.length!=4){
-                    Valor.error("Comando introducido erróneo");
-                    System.out.println("Uso: crear jugador nombre tipoAvatar\n");
+                    System.out.println("Uso: crear jugador <nombreJugador> <tipoAvatar>");
                     break;
                 }
                 crearxogador(cmdseparado);
                 break;
             case "describir":
+                if(cmdseparado.length!=2){
+                 System.out.println("Uso: describir jugador <nombreJugador>  -  describir <nombreCasilla>");
+                 break;
+                }
                 describir(cmdseparado);
                 break;
             case "jugador":

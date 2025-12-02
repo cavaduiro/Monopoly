@@ -3,11 +3,11 @@ package monopoly;
 import java.util.Scanner;
 
 public class Consola {
+    private static final Scanner scanner = new Scanner(System.in);
     public void imprimir(String mensaje){
         System.out.println(mensaje);
     }
     public String leer(String desc){
-        Scanner scanner = new Scanner(System.in);
         String comando;
         System.out.println(desc);
         comando = scanner.nextLine();

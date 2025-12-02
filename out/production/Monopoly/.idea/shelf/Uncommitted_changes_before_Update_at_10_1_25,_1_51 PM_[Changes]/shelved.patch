@@ -1,0 +1,32 @@
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+--- /dev/null	(date 1759319487451)
++++ b/.gitignore	(date 1759319487451)
+@@ -0,0 +1,1 @@
++.idea
+\ No newline at end of file
+Index: partida/Dado.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package partida;\r\n\r\n\r\npublic class Dado {\r\n    //El dado solo tiene un atributo en nuestro caso: su valor.\r\n    private int valor;\r\n\r\n    //Metodo para simular lanzamiento de un dado: devolverá un valor aleatorio entre 1 y 6. wpoefijwopiefjpowiejf\r\n    public int hacerTirada() {\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/partida/Dado.java b/partida/Dado.java
+--- a/partida/Dado.java	(revision 7a1ab7c8abed0ee4fe476526d19fbe98b5baa2ff)
++++ b/partida/Dado.java	(date 1759318080496)
+@@ -7,6 +7,9 @@
+ 
+     //Metodo para simular lanzamiento de un dado: devolverá un valor aleatorio entre 1 y 6. wpoefijwopiefjpowiejf
+     public int hacerTirada() {
++        valor = (int) (Math.random() * 6) + 1;
++        valor += (int) (Math.random() * 6) + 1; //Tirada de dos dados
++        return valor;
+     }
+ 
+ }

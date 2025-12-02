@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fdae3759-4ed5-4765-8bef-ab791caf0662" name="Changes" comment="para vender o hotel non podes ter piscina e para vender piscina non podes ter pista">
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exception/ExepcionSintaxis.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/monopoly/Consola.java" beforeDir="false" afterPath="$PROJECT_DIR$/monopoly/Consola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monopoly/Juego.java" beforeDir="false" afterPath="$PROJECT_DIR$/monopoly/Juego.java" afterDir="false" />
+    </list>
+    <list id="ad772faf-20ec-4cf5-9d78-1277e115a1de" name="Changes by User" comment="Changes by User" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/cavaduiro/Monopoly.git&quot;,
+    &quot;accountId&quot;: &quot;826178c6-a166-4dad-965d-993bc3379734&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="33SkHNlCqGCowxZ6FsFDm3TOWWU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MonopolyETSE.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/isma/Documents/Monopoly",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "com.github.copilot.settings.general.GeneralConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/partida" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="monopoly.MonopolyETSE" />
+      <module name="Monopoly" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fdae3759-4ed5-4765-8bef-ab791caf0662" name="Changes" comment="" />
+      <created>1759317772063</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1759317772063</updated>
+      <workItem from="1759317773334" duration="635000" />
+      <workItem from="1759318454016" duration="1842000" />
+      <workItem from="1759320313675" duration="243000" />
+      <workItem from="1759856929239" duration="1738000" />
+      <workItem from="1759860178331" duration="350000" />
+      <workItem from="1759918072570" duration="8176000" />
+      <workItem from="1760178047594" duration="238000" />
+      <workItem from="1760260631763" duration="3748000" />
+      <workItem from="1760447106470" duration="1682000" />
+      <workItem from="1760522697856" duration="8687000" />
+      <workItem from="1760546734111" duration="1716000" />
+      <workItem from="1760697819936" duration="4856000" />
+      <workItem from="1760704226417" duration="109000" />
+      <workItem from="1760897687181" duration="3019000" />
+      <workItem from="1760976497553" duration="598000" />
+      <workItem from="1760982471371" duration="3498000" />
+      <workItem from="1761061223125" duration="6779000" />
+      <workItem from="1761068846683" duration="100000" />
+      <workItem from="1761069116378" duration="836000" />
+      <workItem from="1761124923313" duration="1659000" />
+      <workItem from="1761127488476" duration="734000" />
+      <workItem from="1761129387417" duration="89000" />
+      <workItem from="1761129494093" duration="5002000" />
+      <workItem from="1761226005783" duration="1552000" />
+      <workItem from="1761735866007" duration="8298000" />
+      <workItem from="1762340759594" duration="8025000" />
+      <workItem from="1762348924654" duration="42000" />
+      <workItem from="1762946067213" duration="3913000" />
+      <workItem from="1763401933273" duration="1272000" />
+      <workItem from="1763482824408" duration="9578000" />
+      <workItem from="1763504427764" duration="569000" />
+      <workItem from="1763505011320" duration="312000" />
+      <workItem from="1763505382805" duration="2749000" />
+      <workItem from="1763546583042" duration="29000" />
+      <workItem from="1763550359963" duration="5779000" />
+      <workItem from="1763627827649" duration="17000" />
+      <workItem from="1764155535002" duration="1055000" />
+      <workItem from="1764177187242" duration="42000" />
+    </task>
+    <task id="LOCAL-00001" summary="Funcion tirada dados, Cambios menu,Alguns getters añadidos. (8 de octubre)">
+      <option name="closed" value="true" />
+      <created>1759926200269</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1759926200269</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Funcion salirCarcel, prototipo moverJugador">
+      <option name="closed" value="true" />
+      <created>1760448170181</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760448170181</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Comandos menú">
+      <option name="closed" value="true" />
+      <created>1760531367882</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1760531367882</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Funcion para salir da carcel pagando imprimir casilla en venta, e algun cambio pequeno">
+      <option name="closed" value="true" />
+      <created>1760703453761</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1760703453761</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Funcion para salir da carcel pagando imprimir casilla en venta, e algun cambio pequeno">
+      <option name="closed" value="true" />
+      <created>1760704326808</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1760704326808</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Funcion para salir da carcel pagando imprimir casilla en venta, e algun cambio pequeno">
+      <option name="closed" value="true" />
+      <created>1760900428502</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1760900428502</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Changes by User">
+      <option name="closed" value="true" />
+      <created>1761135158897</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1761135158897</updated>
+    </task>
+    <task id="LOCAL-00008" summary="toString de stats e algunha funcion mais e uso de algunhas delas no resto do codigo">
+      <option name="closed" value="true" />
+      <created>1761227552243</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1761227552243</updated>
+    </task>
+    <task id="LOCAL-00009" summary="acabar stats empezar loxica sorte">
+      <option name="closed" value="true" />
+      <created>1761744156125</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1761744156125</updated>
+    </task>
+    <task id="LOCAL-00010" summary="5 nov">
+      <option name="closed" value="true" />
+      <created>1762348960939</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1762348960939</updated>
+    </task>
+    <task id="LOCAL-00011" summary="cambio en estadisticas para que colla o xogador con mais patrimonio e arreglo de null pointer exception ao acceder a grupo max.algun cambio pequeno mais">
+      <option name="closed" value="true" />
+      <created>1763490586458</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1763490586458</updated>
+    </task>
+    <task id="LOCAL-00012" summary="para vender o hotel non podes ter piscina e para vender piscina non podes ter pista">
+      <option name="closed" value="true" />
+      <created>1763492237196</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1763492237196</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Funcion tirar dado" />
+    <MESSAGE value="Funcion tirada dados, Cambios menu,Alguns getters añadidos. (8 de octubre)" />
+    <MESSAGE value="Funcion salirCarcel, prototipo moverJugador" />
+    <MESSAGE value="Comandos menú" />
+    <MESSAGE value="Funcion para salir da carcel pagando imprimir casilla en venta, e algun cambio pequeno" />
+    <MESSAGE value="Changes by User" />
+    <MESSAGE value="toString de stats e algunha funcion mais e uso de algunhas delas no resto do codigo" />
+    <MESSAGE value="acabar stats empezar loxica sorte" />
+    <MESSAGE value="5 nov" />
+    <MESSAGE value="cambio en estadisticas para que colla o xogador con mais patrimonio e arreglo de null pointer exception ao acceder a grupo max.algun cambio pequeno mais" />
+    <MESSAGE value="para vender o hotel non podes ter piscina e para vender piscina non podes ter pista" />
+    <option name="LAST_COMMIT_MESSAGE" value="para vender o hotel non podes ter piscina e para vender piscina non podes ter pista" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

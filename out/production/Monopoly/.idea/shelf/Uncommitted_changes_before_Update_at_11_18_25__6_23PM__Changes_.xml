@@ -1,0 +1,37 @@
+<changelist name="Uncommitted_changes_before_Update_at_11_18_25,_6_23 PM_[Changes]" date="1763486618772" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_18_25,_6_23 PM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/18/25, 6:23 PM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/Tablero.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/partida/Estats.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/partida/Dado.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/Valor.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/partida/Jugador.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/partida/Avatar.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/Casilla.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/Grupo.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/Menu.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/Edificios.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Monopoly/monopoly/MonopolyETSE.class" />
+  </binary>
+</changelist>

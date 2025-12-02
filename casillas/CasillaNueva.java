@@ -1,0 +1,39 @@
+package casillas;
+
+import java.io.Console;
+import partida.*;
+import java.util.ArrayList;
+import java.util.Map;
+
+import monopoly.Tablero;
+
+import java.util.HashMap;
+
+public abstract class CasillaNueva {
+    // Atributos
+    private ArrayList<Avatar> avatares;
+    private String nombre;
+    private int posicion;
+    private int frecuencia;
+
+    // Constructor
+    public CasillaNueva(String nombre, int posicion) {
+        this.avatares = new ArrayList<Avatar>();
+        this.nombre = nombre;
+        this.posicion = posicion;
+        this.frecuencia = 0;
+    }
+
+
+    public boolean estaAvatar(Avatar avatar) {
+        return avatares.contains(avatar);
+    }
+
+    public void sumarFreq() {
+        this.frecuencia += 1;
+    }
+
+    public ArrayList<Avatar> getAvatares() {
+        return avatares;
+    }
+}
