@@ -1,2 +1,17 @@
-Errores:
-    *Estadísticas:
+No prompt sáltanse varias liñas ¿?
+|-> hai só un \n
+
+Nunha das casillas de sorte, tes que dar cartos-> debes chequear se non tes suficientes cartos
+Pasa o mesmo nunha das casillas de comunidade
+
+Exepcións chequeables:
+· Jugador: 
+    |->Añadir propiedade
+    |->Eliminar propiedade
+
+· Casilla:
+    |->Non ter cartos para pagar impostos
+    (Buscar //error chequeable)
+    |->todo o tem de edificar xd
+
+

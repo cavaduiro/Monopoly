@@ -20,19 +20,20 @@ public class Comunidade extends Carta {
         switch(this.index){
             case 0:
                 this.sumar();
-                System.out.println("\nPaga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas\n");
+                Juego.consol.imprimir("Paga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas");
+                //CHEQUEAR FORTUNA, SE NON TEN, DEBERÍA MORRER
                 actual.sumarFortuna(-500000);
                 break;
             case 1:
                 this.sumar();
-                System.out.println("\nVas á cárcel sin pasar por casilla de salida e sin cobrar\n");
+                Juego.consol.imprimir("Vas á cárcel sin pasar por casilla de salida e sin cobrar");
                 actual.encarcelar(pos);
                 //actual.getEstatisticas().sumarCarcel();
                 break;
             case 2:
                 this.sumar();
                 //Colócate en casilla de salida cobrando 200000
-                System.out.println("\nVas á casilla de saída, cobrando 2000000 euros.\n");
+                Juego.consol.imprimir("Vas á casilla de saída, cobrando 2000000 euros.");;
                 Casilla casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
                 Casilla dest = actual.getAvatar().posIndex(0,pos);
@@ -44,13 +45,13 @@ public class Comunidade extends Carta {
                 break;
             case 3:
                 this.sumar();;
-                System.out.println("Devolución de Facenda, recibes 500000)\n");
+                Juego.consol.imprimir("Devolución de Facenda, recibes 500000");
                 actual.sumarFortuna(500000);
                 actual.getEstatisticas().sumarbote(500000);
                 break;
             case 4:
                 this.sumar();
-                System.out.println("Retrocede a Solar1\n");
+                Juego.consol.imprimir("Retrocede a Solar1");
                 casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
                 dest= actual.getAvatar().posIndex(1,pos);
@@ -60,7 +61,7 @@ public class Comunidade extends Carta {
                 break;
             case 5:
                 this.sumar();;
-                System.out.println("Vas ó Solar20\n");
+                Juego.consol.imprimir("Vas ó Solar20");
                 casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
                 dest= actual.getAvatar().posIndex(34,pos);

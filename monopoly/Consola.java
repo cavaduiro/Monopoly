@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 public class Consola {
     public void imprimir(String mensaje){
-        System.out.println("\n"+mensaje+"\n");
+        System.out.println(mensaje);
     }
     public String leer(String desc){
         Scanner scanner = new Scanner(System.in);
         String comando;
-        System.out.println("\n"+desc);
+        System.out.println(desc);
         comando = scanner.nextLine();
         return comando;
     }

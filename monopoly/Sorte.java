@@ -19,7 +19,7 @@ public class Sorte extends Carta {
         switch(this.index){
             case 0:
                 //Moverse a la casilla solar 19
-                System.out.println("Oh no excursión á solar 19\n");
+                Juego.consol.imprimir("Oh no excursión á solar 19");
                 Casilla casactual=actual.getAvatar().getLugar();
                 if(casactual.getPosicion()==36){
                     actual.sumarFortuna(Valor.SUMA_VUELTA);
@@ -34,8 +34,7 @@ public class Sorte extends Carta {
                 dest.evaluarCasilla(actual,banca,0,pos);
                 break;
             case 1:
-                System.out.println("\nVai o cárcere, sen pasar pola casilla de saída.\n");
-                //actual.getEstatisticas().sumarCarcel();
+                Juego.consol.imprimir("Vai o cárcere, sen pasar pola casilla de saída.");
                 if(actual.getAvatar().getLugar().getPosicion()!=7){
                     actual.getEstatisticas().sumarVoltas();
                 }
@@ -43,14 +42,14 @@ public class Sorte extends Carta {
                 this.sumar();
                 break;
             case 2:
-                System.out.println("\nRecibes 1.000.000! Lucky you...\n");
+                Juego.consol.imprimir("Recibes 1.000.000! Lucky you...");
                 //Recibir 1.000.000
                 actual.sumarFortuna(1000000);
                 actual.getEstatisticas().sumarbote(1000000);
                 this.sumar();
                 break;
             case 3:
-                System.out.println("\nPaga a cada xogador 250.000€\n");
+                Juego.consol.imprimir("Paga a cada xogador 250.000€");;
                 //Paga a cada xogador 250.000
                 float bote = 250000;
                 for(ArrayList<Casilla> lado: pos){
@@ -69,7 +68,7 @@ public class Sorte extends Carta {
                 this.sumar();
                 break;
             case 4:
-                System.out.println("Oh no! Retrocedes tres casillas\n");
+                Juego.consol.imprimir("Oh no! Retrocedes tres casillas");
                 //Retroceder tres casillas
                 casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
@@ -81,7 +80,7 @@ public class Sorte extends Carta {
                 dest.evaluarCasilla(actual,banca,0,pos);
                 break;
             case 5:
-                System.out.println("Múltanche por usar o teléfono mentres conduces, paga 150000 euros\n");
+                Juego.consol.imprimir("Múltanche por usar o teléfono mentres conduces, paga 150000 euros");
                 //Múltanche por usar o tlf mentres conduces, paga 150000
                 actual.sumarFortuna(-150000);
                 banca.sumarFortuna(150000);
@@ -89,7 +88,7 @@ public class Sorte extends Carta {
                 this.sumar();
                 break;
             case 6:
-                System.out.println("Avanza cara a casilla máis cercana (de transporte)\n");
+                Juego.consol.imprimir("Avanza cara a casilla máis cercana (de transporte)");
                 //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
                 boolean iterado= false;
                 Casilla destino = actual.getAvatar().getLugar();

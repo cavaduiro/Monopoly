@@ -22,7 +22,7 @@ public class Juego {
     private boolean partidaIniciada=false; //Booleano para comprobar si la partida ha comenzado (mínimo 2 jugadores creados).
     private boolean partidaFinalizada = false;
     private boolean comandos = false;
-    public static Consola consol;
+    final public static Consola consol = new Consola();
 
     public Juego(){
         Scanner scanner = new Scanner(System.in);
@@ -34,16 +34,17 @@ public class Juego {
         this.dado1 = new Dado();
         this.dado2 = new Dado();
         while(!partidaFinalizada){
-            System.out.println(tablero);
+            consol.impTablero(tablero);
             if(partidaIniciada){ //Mostramos o nome do xogador que ten o turno
-                consol.leer("\nTurno de "+"\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
+                consol.leer("Turno de "+"\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
             }else{ //Se a partida non comezou, mostramos o prompt xenérico
-                consol.imprimir("\n\033[1m$:\033[0m");
+                consol.imprimir("\033[1m$:\033[0m");
             }
-            comando = consol.leer("\n");
+            comando = consol.leer("");
             analizarComando(comando);
-            consol.cred();
+            
         }
+        consol.cred();
     }
 
     public Tablero getTablero() {

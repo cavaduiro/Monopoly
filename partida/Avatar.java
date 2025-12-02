@@ -62,10 +62,8 @@ public class Avatar {
             this.jugador.getEstatisticas().sumarVoltas();
             this.jugador.sumarFortuna(2000000);
             this.jugador.getEstatisticas().sumarsalidas();//El jugador recibe 2000000 por pasar por la salida.
-            System.out.println("O xogador " + this.jugador.getNombre() + " pasou pola saída e recibiu 2000000€.\n");
+            Juego.consol.imprimir("O xogador " + this.jugador.getNombre() + " pasou pola saída e recibiu 2000000€.");
         }
-
-
         casillaActual.eliminarAvatar(this);
         Casilla nueva = posIndex(nuevaPosicion, casillas);
         nueva.sumarFreq();
@@ -74,8 +72,7 @@ public class Avatar {
         if(casillaActual.getPosicion() > posicionActual && !jugador.getEnCarcel()){
             this.jugador.sumarFortuna(Valor.SUMA_VUELTA); //El jugador recibe 2000000 por pasar por la salida.
         }
-        System.out.println("O xogador " + this.jugador.getNombre() + " moveuse da casilla " + casillaActual.getNombre() + " á casilla " + this.lugar.getNombre() + ".\n");
-
+        Juego.consol.imprimir("O xogador " + this.jugador.getNombre() + " moveuse da casilla " + casillaActual.getNombre() + " á casilla " + this.lugar.getNombre() + ".");
     }
 
 
@@ -109,10 +106,8 @@ public class Avatar {
         }
 
         if (disp.isEmpty()) {
-            System.out.println("Non quedan IDs."); //Caso imposible
+            Valor.error("Non quedan IDs."); //caso imposible
         }
-
-
         int randomIndex = (int) (Math.random() * disp.size());
         this.id = disp.get(randomIndex);
     }
