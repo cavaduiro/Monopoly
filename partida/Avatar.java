@@ -58,8 +58,8 @@ public class Avatar {
         Casilla casillaActual = this.lugar;
         int posicionActual = this.lugar.getPosicion();
         int nuevaPosicion = posicionActual + valorTirada;
-        if (nuevaPosicion > 40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
-            nuevaPosicion = nuevaPosicion %40;
+        if (nuevaPosicion >40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
+            nuevaPosicion = nuevaPosicion %40; // Como van de 0 a 39, si pasa de 39 vuelve a empezar en 0
             this.jugador.getEstatisticas().sumarVoltas();
             this.jugador.sumarFortuna(2000000);
             this.jugador.getEstatisticas().sumarsalidas();//El jugador recibe 2000000 por pasar por la salida.

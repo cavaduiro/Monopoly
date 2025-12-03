@@ -32,6 +32,12 @@ public abstract class Casilla {
     public void sumarFreq() {
         this.frecuencia += 1;
     }
+    public int getFrecuencia() {
+        return this.frecuencia;
+    }
+    public String getNombre() {
+        return nombre;
+    }
 
     public ArrayList<Avatar> getAvatares() {
         return avatares;
