@@ -13,7 +13,7 @@ public class Jugador {
     private float fortuna; //Dinero que posee.
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
-    private ArrayList<Casillavella> propiedades; //Propiedades que posee el jugador.
+    private ArrayList<Propiedad> propiedades; //Propiedades que posee el jugador.
     private Estats estatisticas;
     private int indexsorte;
     private int indexcom;
@@ -35,7 +35,7 @@ public class Jugador {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
             this.fortuna = (float)Valor.FORTUNA_INICIAL;   
-            this.propiedades = new ArrayList<Casillavella>();
+            this.propiedades = new ArrayList<>();
             this.estatisticas = new Estats(this);
         }
     }
@@ -68,7 +68,7 @@ public class Jugador {
     }
 
 
-    public ArrayList<Casillavella> getPropiedades() {return propiedades;}
+    public ArrayList<Propiedad> getPropiedades() {return propiedades;}
 
     //Setters:
     public void setEnCarcel(boolean enCarcel) {
@@ -82,14 +82,14 @@ public class Jugador {
     public void setFortuna(int novaFortuna){this.fortuna = novaFortuna;}
     //Otros métodos:
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
-    public void anhadirPropiedad(Casillavella casilla) {
+    public void anhadirPropiedad(Propiedad casilla) {
         if (this.propiedades.contains(casilla)) {
             System.out.println("\nO xogador xa ten esa propiedade.\n");
             return;
         }
         if(this.fortuna < casilla.getValor()) {
+            //ERROR CHEQUEABLE
             System.out.println("\nO xogador non ten suficiente fortuna para comprar esa propiedade.\n");
-            return;
         }
         else {
             this.propiedades.add(casilla);
@@ -97,10 +97,11 @@ public class Jugador {
     }
 
     //Metodo para eliminar una propiedad del arraylist de propiedades de jugador.
-    public void eliminarPropiedad(Casillavella casilla) {
+    public void eliminarPropiedad(Propiedad casilla) {
         if(this.propiedades.contains(casilla)){
             this.propiedades.remove(casilla);
         }else{
+            //ERROR CHEQUEABLE
             System.out.println("\nO xogador non ten esa propiedade.\n");
         }
 
@@ -115,13 +116,13 @@ public class Jugador {
 
     /*Metodo para establecer al jugador en la cárcel.
     * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
-    public void encarcelar(ArrayList<ArrayList<Casillavella>> pos) {
+    public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
         this.estatisticas.sumarCarcel();
         this.enCarcel = true;
         this.tiradasCarcel = 0;
         //Buscamos la casilla de la cárcel y movemos el avatar allí.
-        for (ArrayList<Casillavella> lado : pos) {
-            for (Casillavella casilla : lado) {
+        for (ArrayList<Casilla> lado : pos) {
+            for (Casilla casilla : lado) {
                 if (casilla.getNombre().equals("Cárcel")) {
                     this.avatar.moverAvatar(pos, casilla.getPosicion() - this.avatar.getLugar().getPosicion());
                 }
@@ -150,7 +151,7 @@ public class Jugador {
           .append("\nPropiedades: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
             for (int i = 0; i < propiedades.size(); i++) {
-                Casillavella p = propiedades.get(i);
+                Propiedad p = propiedades.get(i);
                 sb.append(p != null ? p.getNombre() : "null");
                 if (i < propiedades.size() - 1) {
                     sb.append(", ");
@@ -161,7 +162,7 @@ public class Jugador {
         }
         sb.append("\nHipotecas: ");
          if (this.propiedades != null && !this.propiedades.isEmpty()) {
-            for(Casillavella propiedadesHipoteca: this.propiedades){
+            for(Propiedad propiedadesHipoteca: this.propiedades){
                 if(propiedadesHipoteca.getHipotecada()){
                     sb.append(propiedadesHipoteca.getNombre()).append(", ");
                 }
@@ -171,7 +172,7 @@ public class Jugador {
         }
         sb.append("\nEdificios: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
-            for(Casillavella propiedadesEdificio: this.propiedades){
+            for(Propiedad propiedadesEdificio: this.propiedades){
                 if(propiedadesEdificio.getEdificios()!= null){
                     if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
                         for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){

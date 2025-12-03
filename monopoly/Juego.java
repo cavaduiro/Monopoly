@@ -47,7 +47,7 @@ public class Juego implements Comando{
                 analizarComando(comando);
             } catch (ExcepcionSintaxis e) //aquí hai que facer multicatch
             {
-
+                consol.imprimir(e.getMessage());
             }
             
             

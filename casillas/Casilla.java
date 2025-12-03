@@ -36,5 +36,27 @@ public abstract class Casilla {
     public ArrayList<Avatar> getAvatares() {
         return avatares;
     }
+    
+    //Método utilizado para eliminar un avatar del array de avatares en casilla.
+    public void eliminarAvatar(Avatar av) {
+        this.avatares.remove(av);
+    }
+    public void anhadirAvatar(Avatar av){
+        this.avatares.add(av);
+    }
+    //GETTERS 
+    public String getNombre(){
+        return this.nombre;
+    }
+    public int getPosicion(){
+        return this.posicion;
+    }
+    //SETTERS
+
+
+    //métodos a implementar
     public abstract boolean  EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) ;
+
+
+
 }

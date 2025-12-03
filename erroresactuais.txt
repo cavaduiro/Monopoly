@@ -15,3 +15,5 @@ Exepcións chequeables:
     |->todo o tem de edificar xd -->>NO MENÚ ESTÁ MAL  
 
 
+· Nova clase de casilla
+    |-> eliminar avatar, añadir avatar

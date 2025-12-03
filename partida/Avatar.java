@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import monopoly.*;
+import casillas.*;
 
 
 public class Avatar {
@@ -12,7 +13,7 @@ public class Avatar {
     private String id; //Identificador: una letra generada aleatoriamente.
     private String tipo; //Sombrero, Esfinge, Pelota, Coche
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
-    private Casillavella lugar; //Los avatares se sitúan en casillas del tablero.
+    private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
 
     //Constructor vacío
     public Avatar() {
@@ -22,7 +23,7 @@ public class Avatar {
      * Tipo del avatar, jugador al que pertenece, lugar en el que estará ubicado, y un arraylist con los
      * avatares creados (usado para crear un ID distinto del de los demás avatares).
      */
-    public Avatar(String tipo, Jugador jugador, Casillavella lugar, ArrayList<Avatar> avCreados) {
+    public Avatar(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados) {
         this.tipo = tipo;
         this.jugador = jugador;
         this.lugar = lugar;
@@ -38,13 +39,13 @@ public class Avatar {
         return id;
     }
 
-    public Casillavella getLugar() {return lugar;}
+    public Casilla getLugar() {return lugar;}
 
     public Jugador getJugador() {
         return jugador;
     }
     //Setters:
-    public void setLugar(Casillavella lugar) {
+    public void setLugar(Casilla lugar) {
         this.lugar = lugar;
     }
     //A continuación, tenemos otros métodos útiles para el desarrollo del juego.
@@ -53,8 +54,8 @@ public class Avatar {
      * - Un entero que indica el numero de casillas a moverse (será el valor sacado en la tirada de los dados).
      * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
      */
-    public void moverAvatar(ArrayList<ArrayList<Casillavella>> casillas, int valorTirada) {
-        Casillavella casillaActual = this.lugar;
+    public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
+        Casilla casillaActual = this.lugar;
         int posicionActual = this.lugar.getPosicion();
         int nuevaPosicion = posicionActual + valorTirada;
         if (nuevaPosicion > 40 && !jugador.getEnCarcel()) { //Si se pasa de la última casilla, se da una vuelta al tablero.
@@ -65,7 +66,7 @@ public class Avatar {
             Juego.consol.imprimir("O xogador " + this.jugador.getNombre() + " pasou pola saída e recibiu 2000000€.");
         }
         casillaActual.eliminarAvatar(this);
-        Casillavella nueva = posIndex(nuevaPosicion, casillas);
+        Casilla nueva = posIndex(nuevaPosicion, casillas);
         nueva.sumarFreq();
         nueva.anhadirAvatar(this); //Añadimos el avatar a la casilla a la que se mueve
         this.lugar = nueva; //Actualizamos el lugar en el que está el avatar.
@@ -78,7 +79,7 @@ public class Avatar {
 
 
     //Devolve a casilla co índice de 0 a 40
-    public Casillavella posIndex(int index,ArrayList<ArrayList<Casillavella>> casillas){
+    public Casilla posIndex(int index,ArrayList<ArrayList<Casilla>> casillas){
         index= index%40;
         if(index<11){
             return casillas.get(0).get(index);
