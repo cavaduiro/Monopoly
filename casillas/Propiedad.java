@@ -11,6 +11,7 @@ public abstract class Propiedad extends Casilla {
     private float valor;
     private float alquiler;
     private float hipoteca;
+    private boolean hipotecada;
     public Propiedad(String nombre, int posicion,float valor, float alquiler,float hipoteca,Jugador duenho) {
         super(nombre, posicion);
         this.valor = valor;
@@ -50,6 +51,9 @@ public abstract class Propiedad extends Casilla {
     }
     public  float getAlquiler(){
         return this.alquiler;
+    }
+    public boolean getHipotecada(){
+        return hipotecada;
     }
     @Override
         public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones);

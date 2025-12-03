@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import partida.*;
+import casillas.*;
 
 
 public class Tablero {
     //Atributos.
-    private ArrayList<ArrayList<Casillavella>> posiciones; //Posiciones del tablero: se define como un arraylist de arraylists de casillas (uno por cada lado del tablero).
+    private ArrayList<ArrayList<Casilla>> posiciones; //Posiciones del tablero: se define como un arraylist de arraylists de casillas (uno por cada lado del tablero).
     private HashMap<String, Grupo> grupos; //Grupos del tablero, almacenados como un HashMap con clave String (será el color del grupo).
     private Jugador banca; //Un jugador que será la banca.
 
@@ -189,9 +190,9 @@ public class Tablero {
 
 
 
-private void imprimirLineaCasilla(List<Casillavella> lado, StringBuilder sb, int indice, int inicio, int fin) {
+private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indice, int inicio, int fin) {
     String color = lado.get(indice).getColorCasilla();
-    Casillavella casilla = lado.get(indice);
+    Casilla casilla = lado.get(indice);
     String nombre = casilla.getNombre();
 
     if (inicio == 0) { // primera línea: edificios / espacios
@@ -277,15 +278,16 @@ private void imprimirEspaciosCentrales(StringBuilder sb, int fila) {
 
 @Override
 public String toString() {
-    ArrayList<Casillavella> ladoEste = posiciones.get(1);
-    ArrayList<Casillavella> ladoNorte = posiciones.get(2);
-    ArrayList<Casillavella> ladoSur = posiciones.get(0);
-    ArrayList<Casillavella> ladoOeste = posiciones.get(3);
+    ArrayList<Casilla> ladoEste = posiciones.get(1);
+    ArrayList<Casilla> ladoNorte = posiciones.get(2);
+    ArrayList<Casilla> ladoSur = posiciones.get(0);
+    ArrayList<Casilla> ladoOeste = posiciones.get(3);
 
     StringBuilder sb = new StringBuilder();
 
     // Lado Norte
-    for (Casillavella casilla : ladoNorte) {
+    for (Casilla casilla : ladoNorte) {
+        //ERROR
         sb.append(casilla.getColorCasilla()).append(" __________ ");
     }
     sb.append("\n");
@@ -368,9 +370,9 @@ public String toString() {
     return sb.toString();
 }
     //Metodo usado para buscar la casilla con el nombre pasado como argumento:
-    public Casillavella encontrar_casilla(String nombre){
-        for (ArrayList<Casillavella> lado : this.posiciones) {
-            for (Casillavella casilla : lado) {
+    public Casilla encontrar_casilla(String nombre){
+        for (ArrayList<Casilla> lado : this.posiciones) {
+            for (Casilla casilla : lado) {
                 if (casilla.getNombre().equalsIgnoreCase(nombre)) {
                     return casilla;
                 }
@@ -379,7 +381,7 @@ public String toString() {
         return null;
     }
     //Getters y setters:
-    public ArrayList<ArrayList<Casillavella>> getPosiciones() {
+    public ArrayList<ArrayList<Casilla>> getPosiciones() {
         return posiciones;
     }
     public HashMap<String, Grupo> getGrupos() {

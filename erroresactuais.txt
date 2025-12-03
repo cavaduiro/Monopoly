@@ -17,3 +17,6 @@ Exepcións chequeables:
 
 · Nova clase de casilla
     |-> eliminar avatar, añadir avatar
+    |-> getcolorcasilla
+    |-> getedificios
+    |-> get tipo

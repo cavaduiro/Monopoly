@@ -1,5 +1,7 @@
 package monopoly;
 
+import casillas.Casilla;
+import casillas.Propiedad;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -26,8 +28,8 @@ public class Juego implements Comando{
     private boolean comandos = false;
     final public static Consola consol = new Consola();
 
+    @SuppressWarnings("Convert2Diamond")
     public Juego(){
-        Scanner scanner = new Scanner(System.in);
         String comando;
         this.banca = new Jugador();
         this.tablero = new Tablero(this.banca);
@@ -39,11 +41,11 @@ public class Juego implements Comando{
             try {
                 consol.impTablero(tablero);
                 if(partidaIniciada){ //Mostramos o nome do xogador que ten o turno
-                    consol.leer("Turno de "+"\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
+                    comando = consol.leer("Turno de "+"\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
                 }else{ //Se a partida non comezou, mostramos o prompt xenérico
-                    consol.imprimir("\033[1m$:\033[0m");
+                    comando = consol.leer("\033[1m$:\033[0m");
                 }
-                comando = consol.leer("");
+                
                 analizarComando(comando);
             } catch (ExcepcionSintaxis e) //aquí hai que facer multicatch
             {
@@ -286,7 +288,7 @@ public class Juego implements Comando{
                 return;
             }
         }
-        Casillavella auxsal = tablero.encontrar_casilla("Salida"); //Colocamos o xogador creado na casilla de saída
+        Casilla auxsal = tablero.encontrar_casilla("Salida"); //Colocamos o xogador creado na casilla de saída
         Jugador nuevo= new Jugador(partes[2],partes[3],auxsal,avatares);
 
         jugadores.add(nuevo);
@@ -322,7 +324,7 @@ public class Juego implements Comando{
      * Parámetro: nome da casilla a describir.
     */
     public void descCasilla(String[] nombre) {
-        Casillavella aux =tablero.encontrar_casilla(nombre[1]);
+        Casilla aux =tablero.encontrar_casilla(nombre[1]);
         if(aux != null){
             System.out.println(aux);
         }else{
@@ -450,7 +452,7 @@ public class Juego implements Comando{
             Valor.error("O xogador actual non é solvente, non pode facer compras ata pagar as súas débedas.");
             return;
         }
-        Casillavella casillaComprar = tablero.encontrar_casilla(nombre);
+        Casilla casillaComprar = tablero.encontrar_casilla(nombre);
         if(casillaComprar == null){
             Valor.error("Non existe ningunha casilla co nome "+ nombre);
             return;
@@ -485,7 +487,7 @@ public class Juego implements Comando{
         }
 
         //ERROR 
-        Casillavella casillaEdificar = jugadorActual.getAvatar().getLugar();
+        Casilla casillaEdificar = jugadorActual.getAvatar().getLugar();
 
         if(casillaEdificar.getDuenho() != jugadorActual){
             Valor.error("Non estás na túa propiedade.");
@@ -497,9 +499,9 @@ public class Juego implements Comando{
             return;
         }
 
-        ArrayList<Casillavella> casillasGrupo = casillaEdificar.getGrupo().getMiembros();
+        ArrayList<Propiedad> casillasGrupo = casillaEdificar.getGrupo().getMiembros();
 
-        for(Casillavella aux: casillasGrupo){
+        for(Propiedad aux: casillasGrupo){
             if(aux.getHipotecada()){
                 Valor.error("Non podes edificar neste grupo porque algunha casilla do grupo está hipotecada.");
                 return;
@@ -527,27 +529,28 @@ public class Juego implements Comando{
             Valor.error("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
             return;
         }
-        Casillavella casilla = tablero.encontrar_casilla(partes[2]);        
+        Casilla casillaex = tablero.encontrar_casilla(partes[2]);        
         
-        if(casilla==null){
+        if(casillaex==null){
             Valor.error("Non existe ningunha casilla co nome."+ partes[2]);
             return;
-        }
-        if(!casilla.getTipo().equals("Solar")){
+    
+        //AUÍ DEBERÍAMOS CHEQUER SE É INSTANCIA DE 
+        if(!casillaex.getTipo().equals("Solar")){
             Valor.error("Só podes vender edificios en solares.");
             return;
         }
-        if(casilla.getDuenho() != jugadorActual){
-            Valor.error("A casilla "+casilla.getNombre()+"non é da túa propiedade.");
+        if(casillaex.getDuenho() != jugadorActual){
+            Valor.error("A casilla "+casillaex.getNombre()+"non é da túa propiedade.");
             return;
         }
-        if(!casilla.getGrupo().esDuenhoGrupo(jugadorActual)){
+        if(!casillaex.getGrupo().esDuenhoGrupo(jugadorActual)){
             Valor.error("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
             return;
         }
         //Como paso partes[3] a tipo int??
     
-        casilla.vender(partes[1], Integer.parseInt(partes[3]), jugadorActual);
+        casillaex.vender(partes[1], Integer.parseInt(partes[3]), jugadorActual);
     }
     
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
