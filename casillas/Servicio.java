@@ -6,8 +6,8 @@ public class Servicio extends Propiedad {
     private static final float MULTIPLICADOR_ALQUILER = 2;
     private static final float MULTIPLICADOR_ALQUILER_DOS_SERVICIOS = 4;
 
-    public Servicio(String nombre, int precioCompra) {
-        super(nombre, precioCompra);
+    public Servicio(String nombre, int posicion,float valor, float alquiler,float hipoteca,Jugador duenho) {
+        super(nombre, posicion, valor, alquiler, hipoteca, duenho);
     }
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos){
@@ -35,6 +35,7 @@ public class Servicio extends Propiedad {
             }
             else{
                 actual.sumarFortuna(-impuesto);
+                super.getDuenho().sumarFortuna(impuesto);
             }
         }
         return true;

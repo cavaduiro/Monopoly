@@ -3,25 +3,31 @@ import java.util.ArrayList;
 import monopoly.*;
 import partida.*;
 public class Transporte extends Propiedad {
-    public Transporte(String nombre, int precioCompra) {
-        super(nombre, precioCompra);
+    public Transporte(String nombre, int posicion,float valor, float alquiler,float hipoteca,Jugador duenho) {
+        super(nombre, posicion, valor, alquiler, hipoteca, duenho);
     }
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos){
         if (perteneceAJugador(actual)){  
         }
         else if(perteneceAJugador(banca)){
-
         }
         else{
             int numTransportes=0;
             //ERROR
             for (Casilla propiedad : super.getDuenho().getPropiedades()) {
-                if (propiedad instanceof Servicio) {
+                if (propiedad instanceof Transporte) {
                     numTransportes++;
                 }
             }
-            
+            float impuesto = this.getAlquiler()*numTransportes;
+            if(actual.getFortuna()<impuesto){ //No puede pagar
+                return false;
+            }
+            else{
+            actual.sumarFortuna(-impuesto);
+            super.getDuenho().sumarFortuna(impuesto);
+            }
         }
         
         return true;
