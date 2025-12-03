@@ -1,0 +1,41 @@
+package casillas;
+import java.util.ArrayList;
+import monopoly.*;
+import partida.*;
+public class Transporte extends Propiedad {
+    public Transporte(String nombre, int precioCompra) {
+        super(nombre, precioCompra);
+    }
+    @Override
+    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos){
+        if (perteneceAJugador(actual)){  
+        }
+        else if(perteneceAJugador(banca)){
+
+        }
+        else{
+            int numTransportes=0;
+            //ERROR
+            for (Casilla propiedad : super.getDuenho().getPropiedades()) {
+                if (propiedad instanceof Servicio) {
+                    numTransportes++;
+                }
+            }
+            
+        }
+        
+        return true;
+   } 
+   @Override
+   public boolean alquiler( ){
+    return true;
+   }
+   @Override
+   public float valor( ){
+    return 0;
+   }
+   
+    
+
+    
+}

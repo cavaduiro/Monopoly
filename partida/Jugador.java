@@ -2,6 +2,7 @@ package partida;
 
 import java.util.ArrayList;
 import monopoly.*;
+import casillas.*;
 
 
 public class Jugador {
@@ -12,7 +13,7 @@ public class Jugador {
     private float fortuna; //Dinero que posee.
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
-    private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
+    private ArrayList<Casillavella> propiedades; //Propiedades que posee el jugador.
     private Estats estatisticas;
     private int indexsorte;
     private int indexcom;
@@ -29,12 +30,12 @@ public class Jugador {
     * avatares creados (usado para dos propósitos: evitar que dos jugadores tengan el mismo nombre y
     * que dos avatares tengan mismo ID). Desde este constructor también se crea el avatar.
      */
-    public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
+    public Jugador(String nombre, String tipoAvatar, Casillavella inicio, ArrayList<Avatar> avCreados) {
         {
             this.nombre = nombre;
             this.avatar = new Avatar(tipoAvatar,this, inicio, avCreados);
             this.fortuna = (float)Valor.FORTUNA_INICIAL;   
-            this.propiedades = new ArrayList<Casilla>();
+            this.propiedades = new ArrayList<Casillavella>();
             this.estatisticas = new Estats(this);
         }
     }
@@ -67,7 +68,7 @@ public class Jugador {
     }
 
 
-    public ArrayList<Casilla> getPropiedades() {return propiedades;}
+    public ArrayList<Casillavella> getPropiedades() {return propiedades;}
 
     //Setters:
     public void setEnCarcel(boolean enCarcel) {
@@ -81,7 +82,7 @@ public class Jugador {
     public void setFortuna(int novaFortuna){this.fortuna = novaFortuna;}
     //Otros métodos:
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
-    public void anhadirPropiedad(Casilla casilla) {
+    public void anhadirPropiedad(Casillavella casilla) {
         if (this.propiedades.contains(casilla)) {
             System.out.println("\nO xogador xa ten esa propiedade.\n");
             return;
@@ -96,7 +97,7 @@ public class Jugador {
     }
 
     //Metodo para eliminar una propiedad del arraylist de propiedades de jugador.
-    public void eliminarPropiedad(Casilla casilla) {
+    public void eliminarPropiedad(Casillavella casilla) {
         if(this.propiedades.contains(casilla)){
             this.propiedades.remove(casilla);
         }else{
@@ -114,13 +115,13 @@ public class Jugador {
 
     /*Metodo para establecer al jugador en la cárcel.
     * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
-    public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
+    public void encarcelar(ArrayList<ArrayList<Casillavella>> pos) {
         this.estatisticas.sumarCarcel();
         this.enCarcel = true;
         this.tiradasCarcel = 0;
         //Buscamos la casilla de la cárcel y movemos el avatar allí.
-        for (ArrayList<Casilla> lado : pos) {
-            for (Casilla casilla : lado) {
+        for (ArrayList<Casillavella> lado : pos) {
+            for (Casillavella casilla : lado) {
                 if (casilla.getNombre().equals("Cárcel")) {
                     this.avatar.moverAvatar(pos, casilla.getPosicion() - this.avatar.getLugar().getPosicion());
                 }
@@ -149,7 +150,7 @@ public class Jugador {
           .append("\nPropiedades: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
             for (int i = 0; i < propiedades.size(); i++) {
-                Casilla p = propiedades.get(i);
+                Casillavella p = propiedades.get(i);
                 sb.append(p != null ? p.getNombre() : "null");
                 if (i < propiedades.size() - 1) {
                     sb.append(", ");
@@ -160,7 +161,7 @@ public class Jugador {
         }
         sb.append("\nHipotecas: ");
          if (this.propiedades != null && !this.propiedades.isEmpty()) {
-            for(Casilla propiedadesHipoteca: this.propiedades){
+            for(Casillavella propiedadesHipoteca: this.propiedades){
                 if(propiedadesHipoteca.getHipotecada()){
                     sb.append(propiedadesHipoteca.getNombre()).append(", ");
                 }
@@ -170,7 +171,7 @@ public class Jugador {
         }
         sb.append("\nEdificios: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
-            for(Casilla propiedadesEdificio: this.propiedades){
+            for(Casillavella propiedadesEdificio: this.propiedades){
                 if(propiedadesEdificio.getEdificios()!= null){
                     if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
                         for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){

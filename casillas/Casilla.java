@@ -9,7 +9,7 @@ import monopoly.Tablero;
 
 import java.util.HashMap;
 
-public abstract class CasillaNueva {
+public abstract class Casilla {
     // Atributos
     private ArrayList<Avatar> avatares;
     private String nombre;
@@ -17,7 +17,7 @@ public abstract class CasillaNueva {
     private int frecuencia;
 
     // Constructor
-    public CasillaNueva(String nombre, int posicion) {
+    public Casilla(String nombre, int posicion) {
         this.avatares = new ArrayList<Avatar>();
         this.nombre = nombre;
         this.posicion = posicion;
@@ -36,4 +36,5 @@ public abstract class CasillaNueva {
     public ArrayList<Avatar> getAvatares() {
         return avatares;
     }
+    public abstract boolean  EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) ;
 }

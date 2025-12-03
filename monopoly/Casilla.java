@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 //Probando probando probando probandofijoiejfoewijwfoiwj
-public class Casilla {
+public class Casillavella {
 
     //Atributos:
     private String nombre; //Nombre de la casilla
@@ -24,14 +24,14 @@ public class Casilla {
     boolean hipotecada=false;
     private Map<String, Edificios> edificios; //Edificios construidos en la casilla (si es solar).
 
-    public Casilla() {
+    public Casillavella() {
     }//Parámetros vacíos
 
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
     * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.
      */
     @SuppressWarnings("Convert2Diamond")
-    public Casilla(String nombre, String tipo, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {
+    public Casillavella(String nombre, String tipo, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.posicion = posicion;
@@ -54,7 +54,7 @@ public class Casilla {
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
     * Parámetros: nombre, posición en el tablero, impuesto establecido y dueño.
      */
-    public Casilla(String nombre, String tipo, int posicion, Jugador duenho, float impuesto) {
+    public Casillavella(String nombre, String tipo, int posicion, Jugador duenho, float impuesto) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.posicion = posicion;
@@ -66,7 +66,7 @@ public class Casilla {
     /*Constructor utilizado para crear las otras casillas (Suerte, Caja de comunidad y Especiales):
     * Parámetros: nombre, tipo de la casilla (será uno de los que queda), posición en el tablero y dueño.
      */
-    public Casilla(String nombre, String tipo, int posicion, Jugador duenho) {
+    public Casillavella(String nombre, String tipo, int posicion, Jugador duenho) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.posicion = posicion;
@@ -156,7 +156,7 @@ public class Casilla {
     * en caso de no cumplirlas.
     * En caso de non cumprirse, declárase como en bancarrota ao xogador, e dalle todas as súas propiedas ao outro xogador
     * */
-    public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) {
+    public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casillavella>> pos) {
         if (this.duenho == banca) {
             if (this.tipo.equals("Impuesto")) {
                 if (actual.getFortuna() >= this.impuesto) {
@@ -236,7 +236,7 @@ public class Casilla {
                 } else if(this.tipo != null && this.tipo.equals("Transportes")) {
                     int numTransportes = 0;
                     Jugador propietario = this.duenho;
-                    for (Casilla propiedad : propietario.getPropiedades()) {
+                    for (Casillavella propiedad : propietario.getPropiedades()) {
                         if (propiedad.getTipo() != null && propiedad.getTipo().equals("Transportes") && !propiedad.hipotecada) {
                             numTransportes++;
                         }
@@ -262,7 +262,7 @@ public class Casilla {
                 } else if (this.tipo != null && this.tipo.equals("Servicios")) {
                     Jugador propietario = this.duenho;
                     int numServicios = 0;
-                    for (Casilla propiedad : propietario.getPropiedades()) {
+                    for (Casillavella propiedad : propietario.getPropiedades()) {
                         if (propiedad.getTipo() != null && propiedad.getTipo().equals("Servicios") && !propiedad.hipotecada) {
                             numServicios++;
                         }
@@ -296,20 +296,20 @@ public class Casilla {
     /**
      * Lóxica de sorte //DEBERÁ SER DEPRECADO
      */
-    private void loxicaSorte(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+    private void loxicaSorte(Jugador banca,Jugador actual, ArrayList<ArrayList<Casillavella>> pos){
 
         switch(banca.getIndexsorte()){
             case 0:
                 //Moverse a la casilla solar 19
                 System.out.println("Oh no excursión á solar 19\n");
-                Casilla casactual=actual.getAvatar().getLugar();
+                Casillavella casactual=actual.getAvatar().getLugar();
                 if(casactual.getPosicion()==36){
                     actual.sumarFortuna(Valor.SUMA_VUELTA);
                     actual.getEstatisticas().sumarsalidas();
                     actual.getEstatisticas().sumarVoltas();
                 }
                 casactual.eliminarAvatar(actual.getAvatar());
-                Casilla dest = actual.getAvatar().posIndex(32,pos);
+                Casillavella dest = actual.getAvatar().posIndex(32,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
                 banca.sumarSorte();
@@ -335,8 +335,8 @@ public class Casilla {
                 System.out.println("\nPaga a cada xogador 250.000€\n");
                 //Paga a cada xogador 250.000
                 float bote = 250000;
-                for(ArrayList<Casilla> lado: pos){
-                    for(Casilla cas: lado){
+                for(ArrayList<Casillavella> lado: pos){
+                    for(Casillavella cas: lado){
                         for(Avatar av: cas.getAvatares()){
                                 if(!av.getJugador().equals(actual)){
                                     actual.getEstatisticas().acImpPagado(bote);
@@ -374,7 +374,7 @@ public class Casilla {
                 System.out.println("Avanza cara a casilla máis cercana (de transporte)\n");
                 //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
                 boolean iterado= false;
-                Casilla destino = actual.getAvatar().getLugar();
+                Casillavella destino = actual.getAvatar().getLugar();
                 banca.sumarSorte();
                 for(int novacas : Valor.transportes){
                     if(actual.getAvatar().getLugar().getPosicion()<novacas && !iterado){
@@ -396,7 +396,7 @@ public class Casilla {
     /**
      * Lóxica comunidade DEBERÁA SER DEPRECADO
      */
-    private void loxicaComunidade(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+    private void loxicaComunidade(Jugador banca,Jugador actual, ArrayList<ArrayList<Casillavella>> pos){
 
         switch(banca.getIndexcom()){
             case 0:
@@ -414,9 +414,9 @@ public class Casilla {
                 banca.sumarCom();
                 //Colócate en casilla de salida cobrando 200000
                 Juego.consol.imprimir("Vas á casilla de saída, cobrando 2000000 euros.");
-                Casilla casactual=actual.getAvatar().getLugar();
+                Casillavella casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
-                Casilla dest = actual.getAvatar().posIndex(0,pos);
+                Casillavella dest = actual.getAvatar().posIndex(0,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getEstatisticas().sumarVoltas();
                 actual.sumarFortuna(Valor.SUMA_VUELTA);

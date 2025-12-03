@@ -7,7 +7,7 @@ import java.util.ArrayList;
 class Grupo {
 
     //Atributos
-    private ArrayList<Casilla> miembros; //Casillas miembros del grupo.
+    private ArrayList<Casillavella> miembros; //Casillas miembros del grupo.
     private String colorGrupo; //Color del grupofewfe
     private int numCasillas; //Número de casillas del grupo.
 
@@ -18,8 +18,8 @@ class Grupo {
     /*Constructor para cuando el grupo está formado por DOS CASILLAS:
     * Requiere como parámetros las dos casillas miembro y el color del grupo.
      */
-    public Grupo(Casilla cas1, Casilla cas2, String colorGrupo) {
-        this.miembros = new ArrayList<Casilla>();
+    public Grupo(Casillavella cas1, Casillavella cas2, String colorGrupo) {
+        this.miembros = new ArrayList<Casillavella>();
         this.miembros.add(cas1);
         cas1.setGrupo(this);
         this.miembros.add(cas2);
@@ -31,8 +31,8 @@ class Grupo {
     /*Constructor para cuando el grupo está formado por TRES CASILLAS:
     * Requiere como parámetros las tres casillas miembro y el color del grupo.
      */
-    public Grupo(Casilla cas1, Casilla cas2, Casilla cas3, String colorGrupo) {
-        this.miembros = new ArrayList<Casilla>();
+    public Grupo(Casillavella cas1, Casillavella cas2, Casillavella cas3, String colorGrupo) {
+        this.miembros = new ArrayList<Casillavella>();
         this.miembros.add(cas1);
         cas1.setGrupo(this);
         this.miembros.add(cas2);
@@ -49,7 +49,7 @@ class Grupo {
     /* Método que añade una casilla al array de casillas miembro de un grupo.
     * Parámetro: casilla que se quiere añadir.
      */
-    public void anhadirCasilla(Casilla miembro) {
+    public void anhadirCasilla(Casillavella miembro) {
         this.miembros.add(miembro);
         this.numCasillas++;
     }
@@ -59,7 +59,7 @@ class Grupo {
     * Valor devuelto: true si es dueño de todas las casillas del grupo, false en otro caso.
      */
     public boolean esDuenhoGrupo(Jugador jugador) {
-        for (Casilla casilla : miembros) { //Por cada casilla del grupo
+        for (Casillavella casilla : miembros) { //Por cada casilla del grupo
             if (casilla.getDuenho() != jugador) {
 
                 return false;
@@ -70,7 +70,7 @@ class Grupo {
         
     }
 
-    public ArrayList<Casilla> getMiembros() {
+    public ArrayList<Casillavella> getMiembros() {
         return miembros;
     }
 }

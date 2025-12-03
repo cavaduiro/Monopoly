@@ -15,7 +15,7 @@ public class Comunidade extends Carta {
         this.index = this.index%6;
     }
     @Override
-    public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+    public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casillavella>> pos){
 
         switch(this.index){
             case 0:
@@ -34,9 +34,9 @@ public class Comunidade extends Carta {
                 this.sumar();
                 //Colócate en casilla de salida cobrando 200000
                 Juego.consol.imprimir("Vas á casilla de saída, cobrando 2000000 euros.");;
-                Casilla casactual=actual.getAvatar().getLugar();
+                Casillavella casactual=actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
-                Casilla dest = actual.getAvatar().posIndex(0,pos);
+                Casillavella dest = actual.getAvatar().posIndex(0,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getEstatisticas().sumarVoltas();
                 actual.sumarFortuna(Valor.SUMA_VUELTA);

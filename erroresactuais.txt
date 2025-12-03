@@ -12,6 +12,6 @@ Exepcións chequeables:
 · Casilla:
     |->Non ter cartos para pagar impostos
     (Buscar //error chequeable)
-    |->todo o tem de edificar xd
+    |->todo o tem de edificar xd -->>NO MENÚ ESTÁ MAL  
 
 

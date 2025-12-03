@@ -16,10 +16,10 @@ public class Edificios {
     private boolean tenEdificio;
     private int custo;
     private int alquiler;
-    private Casilla casilla;
+    private Casillavella casilla;
     // Constructor para propiedades con casas (o máis simple posible)
     // NON xenera ids aquí; so declara a lista e o número de casas local
-    public Edificios(String tipo, int custo, int alquiler, int numCasas, Casilla casilla){
+    public Edificios(String tipo, int custo, int alquiler, int numCasas, Casillavella casilla){
         this.tipo = tipo;
         this.custo = custo;
         this.alquiler = alquiler;
@@ -30,7 +30,7 @@ public class Edificios {
 
     // Constructor para edificios únicos (p.ex. piscina, deporte, hotel)
     // NON xenera id aquí nin lista de casas
-    public Edificios(String tipo, int custo, int alquiler, boolean tenEdificio, Casilla casilla){
+    public Edificios(String tipo, int custo, int alquiler, boolean tenEdificio, Casillavella casilla){
         this.tipo = tipo;
         this.custo = custo;
         this.alquiler = alquiler;

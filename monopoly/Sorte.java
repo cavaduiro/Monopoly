@@ -14,20 +14,20 @@ public class Sorte extends Carta {
         this.index = this.index%7;
     }
     @Override
-    public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+    public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casillavella>> pos){
 
         switch(this.index){
             case 0:
                 //Moverse a la casilla solar 19
                 Juego.consol.imprimir("Oh no excursión á solar 19");
-                Casilla casactual=actual.getAvatar().getLugar();
+                Casillavella casactual=actual.getAvatar().getLugar();
                 if(casactual.getPosicion()==36){
                     actual.sumarFortuna(Valor.SUMA_VUELTA);
                     actual.getEstatisticas().sumarsalidas();
                     actual.getEstatisticas().sumarVoltas();
                 }
                 casactual.eliminarAvatar(actual.getAvatar());
-                Casilla dest = actual.getAvatar().posIndex(32,pos);
+                Casillavella dest = actual.getAvatar().posIndex(32,pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
                 this.sumar();
@@ -52,8 +52,8 @@ public class Sorte extends Carta {
                 Juego.consol.imprimir("Paga a cada xogador 250.000€");;
                 //Paga a cada xogador 250.000
                 float bote = 250000;
-                for(ArrayList<Casilla> lado: pos){
-                    for(Casilla cas: lado){
+                for(ArrayList<Casillavella> lado: pos){
+                    for(Casillavella cas: lado){
                         for(Avatar av: cas.getAvatares()){
                                 if(!av.getJugador().equals(actual)){
                                     actual.getEstatisticas().acImpPagado(bote);
@@ -91,7 +91,7 @@ public class Sorte extends Carta {
                 Juego.consol.imprimir("Avanza cara a casilla máis cercana (de transporte)");
                 //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
                 boolean iterado= false;
-                Casilla destino = actual.getAvatar().getLugar();
+                Casillavella destino = actual.getAvatar().getLugar();
                 this.sumar();
                 for(int novacas : Valor.transportes){
                     if(actual.getAvatar().getLugar().getPosicion()<novacas && !iterado){
