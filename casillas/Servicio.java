@@ -6,9 +6,15 @@ public class Servicio extends Propiedad {
     private static final float MULTIPLICADOR_ALQUILER = 2;
     private static final float MULTIPLICADOR_ALQUILER_DOS_SERVICIOS = 4;
 
-    public Servicio(String nombre, int posicion,float valor, float alquiler,float hipoteca,Jugador duenho) {
-        super(nombre, posicion, valor, alquiler, hipoteca, duenho);
+    public Servicio(String nombre, int posicion, float valor, Jugador duenho, float alquiler, float hipoteca) {
+        super(nombre, posicion, valor, duenho, alquiler, hipoteca);
     }
+
+    /**
+     * public Transporte(String nombre, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {
+        super(nombre, posicion, valor, duenho, impuesto, hipoteca);
+    }
+     */
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos){
         float impuesto=0;

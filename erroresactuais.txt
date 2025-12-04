@@ -20,3 +20,6 @@ Exepcións chequeables:
     |-> getcolorcasilla
     |-> getedificios
     |-> get tipo
+· En casilla sorte, deberí haber un singleton de sorte, e en comunidade o análogo
+
+Hai que meter cada solar no seu grupo

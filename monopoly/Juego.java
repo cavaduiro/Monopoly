@@ -1,7 +1,6 @@
 package monopoly;
 
-import casillas.Casilla;
-import casillas.Propiedad;
+import casillas.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -531,20 +530,23 @@ public class Juego implements Comando{
         }
         Casilla casillaex = tablero.encontrar_casilla(partes[2]);        
         
-        if(casillaex==null){
-            Valor.error("Non existe ningunha casilla co nome."+ partes[2]);
+        if (casillaex == null) {
+            Valor.error("Non existe ningunha casilla co nome." + partes[2]);
             return;
-    
+        }
         //AUÍ DEBERÍAMOS CHEQUER SE É INSTANCIA DE 
-        if(!casillaex.getTipo().equals("Solar")){
+
+        
+        if (!(casillaex instanceof Solar)) {
+            //error chequeable
             Valor.error("Só podes vender edificios en solares.");
             return;
         }
-        if(casillaex.getDuenho() != jugadorActual){
-            Valor.error("A casilla "+casillaex.getNombre()+"non é da túa propiedade.");
-            return;
+        Solar solarex = (Solar) casillaex;
+        if (solarex.getDuenho() != jugadorActual) {
+            Valor.error("Non podes vender se non eres dueño do solar.");
         }
-        if(!casillaex.getGrupo().esDuenhoGrupo(jugadorActual)){
+        if(!solarex.getGrupo().esDuenhoGrupo(jugadorActual)){
             Valor.error("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
             return;
         }
@@ -862,10 +864,10 @@ public class Juego implements Comando{
         }
 
         Set<String> set = this.tablero.getGrupos().keySet();
-        Grupo grupomax = null;
+        GrupoVello grupomax = null;
         grupoComprado = false;
         for (String key : set) {
-            Grupo grupo=this.tablero.getGrupos().get(key);
+            GrupoVello grupo=this.tablero.getGrupos().get(key);
             //ERROR
             for(Casillavella aux: grupo.getMiembros()){
                 if(aux.getDuenho()!=banca){

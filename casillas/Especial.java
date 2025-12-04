@@ -4,8 +4,11 @@ import monopoly.Juego;
 import partida.Jugador;
 
 public class Especial extends Casilla {
-    public Especial(String nombre, int posicion) {
+
+    private Jugador duenho;
+    public Especial(String nombre, int posicion, Jugador banca) {
         super(nombre, posicion);
+        this.duenho = banca;
     }
 
     @Override

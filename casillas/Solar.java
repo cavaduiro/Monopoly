@@ -2,14 +2,23 @@ package casillas;
 import java.util.ArrayList;
 import monopoly.*;
 import partida.*;
+
 public class Solar extends Propiedad {
-    public Solar(String nombre, int posicion, float valor, float alquiler, float hipoteca, Jugador duenho) {
-        super(nombre, posicion, valor, alquiler, hipoteca, duenho);
+    private Grupo grupo;
+    public Solar(String nombre, int posicion, float valor, Jugador duenho, float alquiler, float hipoteca) {
+        //super(nombre, posicion, valor, alquiler, hipoteca, duenho);
+        super(nombre, posicion, valor, duenho, alquiler, hipoteca);
     }
 
     
     
 
+
+
+
+    public void setGrupo(Grupo grup) {
+        this.grupo = grup;
+    }
     //OVERRIDES
        @Override
         public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones)

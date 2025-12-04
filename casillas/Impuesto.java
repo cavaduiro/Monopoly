@@ -5,10 +5,12 @@ import partida.Jugador;
 
 public class Impuesto extends Casilla {
     private float impuesto;
+    private Jugador duenho;
 
-    public Impuesto(String nombre, int posicion, float impuesto) {
+    public Impuesto(String nombre, int posicion, Jugador dono, float impuesto) {
         super(nombre, posicion);
         this.impuesto = impuesto;
+        this.duenho = dono;
     }
 
     @Override

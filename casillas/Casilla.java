@@ -15,7 +15,6 @@ public abstract class Casilla {
     private String nombre;
     private int posicion;
     private int frecuencia;
-
     // Constructor
     public Casilla(String nombre, int posicion) {
         this.avatares = new ArrayList<Avatar>();
@@ -35,9 +34,7 @@ public abstract class Casilla {
     public int getFrecuencia() {
         return this.frecuencia;
     }
-    public String getNombre() {
-        return nombre;
-    }
+
 
     public ArrayList<Avatar> getAvatares() {
         return avatares;
