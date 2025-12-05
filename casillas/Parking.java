@@ -24,4 +24,16 @@ public class Parking extends Accion {
     public Jugador getDuenho() {
        return banca;
     }
+        @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\tnombre: ").append(this.getNombre()).append("\n");
+        sb.append(" \ttipo: ").append(" Accion").append("\n");
+          for (Avatar avatarEnCasilla : this.getAvatares()) {
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+
+            }
+        return sb.toString();
+    }
+    
 }

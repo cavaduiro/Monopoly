@@ -1,11 +1,11 @@
 package edificios;
 
-import casillas.Casilla;
+import casillas.*;
 
 public class Pista extends Edificio {
 
-    public Pista(Casilla casilla, float custo, float alquiler) {
-        super(casilla, custo, alquiler);
+    public Pista(Solar casilla, float custo, float alquiler, String tipo) {
+        super(casilla, custo, alquiler, tipo);
     }
     
 }

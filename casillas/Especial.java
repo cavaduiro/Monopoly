@@ -1,11 +1,12 @@
 package casillas;
 
 import monopoly.Juego;
-import partida.Jugador;
+import partida.*;
 
 public class Especial extends Casilla {
 
     private Jugador duenho;
+
     public Especial(String nombre, int posicion, Jugador banca) {
         super(nombre, posicion);
         this.duenho = banca;
@@ -23,8 +24,43 @@ public class Especial extends Casilla {
         }
         return true;
     }
+
     @Override
     public Jugador getDuenho() {
-       return duenho;
+        return duenho;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (this.getNombre().equalsIgnoreCase("Cárcel")) {
+            sb.append("\tNome: Cárcel\n");
+            sb.append("\tTipo: Especial\n");
+            sb.append("{\tCusto salir: 5000000\n");
+            sb.append(" \tXogadores na casilla: [");
+            for (Avatar avatarEnCasilla : this.getAvatares()) {
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+
+            }
+        }
+        else if (this.getNombre().equalsIgnoreCase("Salida")) {
+            sb.append("\tNome: Salida\n");
+            sb.append("\tTipo: Especial\n");
+            sb.append(" \tXogadores na casilla: [");
+            for (Avatar avatarEnCasilla : this.getAvatares()) {
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+
+            }
+        }
+        else {
+            sb.append("\tNome: IrCarcel\n");
+            sb.append("\tTipo: Especial\n");
+            sb.append(" \tXogadores na casilla: [");
+            for (Avatar avatarEnCasilla : this.getAvatares()) {
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+
+            }
+        }
+        return sb.toString(); 
     }
 }

@@ -1,11 +1,11 @@
 package edificios;
 
-import casillas.Casilla;
+import casillas.*;
 
 public class Piscina extends Edificio {
 
-    public Piscina(Casilla casilla, float custo, float alquiler) {
-        super(casilla, custo, alquiler);
+    public Piscina(Solar casilla, float custo, float alquiler, String tipo) {
+        super(casilla, custo, alquiler, tipo);
     }
     
 }

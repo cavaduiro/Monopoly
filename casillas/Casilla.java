@@ -4,23 +4,19 @@ import java.io.Console;
 import partida.*;
 import java.util.ArrayList;
 import java.util.Map;
-
-import monopoly.Tablero;
-import monopoly.Valor;
-
 import java.util.HashMap;
-import monopoly.Juego;
+import monopoly.*;
 
 public abstract class Casilla {
     // Atributos
-    private ArrayList<Avatar> avatares;
-    private String nombre;
-    private int posicion;
+    private final ArrayList<Avatar> avatares;
+    private final String nombre;
+    private final int posicion;
     private int frecuencia;
     private Jugador duenho;
     // Constructor
     public Casilla(String nombre, int posicion) {
-        this.avatares = new ArrayList<Avatar>();
+        this.avatares = new ArrayList<>();
         this.nombre = nombre;
         this.posicion = posicion;
         this.frecuencia = 0;
@@ -76,7 +72,9 @@ public abstract class Casilla {
     //métodos a implementar
     public abstract boolean  EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) ;
     
-    public abstract Jugador getDuenho();
+    public Jugador getDuenho() {
+        return this.duenho;
+    }
 
     public int getCaidas() 
     {

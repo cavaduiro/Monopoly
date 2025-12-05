@@ -23,7 +23,7 @@ public class CasillaVella2 {
     private float rentabilidad;
     private int caidas;
     boolean hipotecada=false;
-    private Map<String, Edificios> edificios; //Edificios construidos en la casilla (si es solar).
+    private Map<String, Edificiosvello> edificios; //Edificios construidos en la casilla (si es solar).
 
     public CasillaVella2() {
     }//Parámetros vacíos
@@ -44,11 +44,11 @@ public class CasillaVella2 {
         this.rentabilidad=-impuesto;
         this.hipotecada=false;
         if(tipo.equals("Solar")){
-            this.edificios = new HashMap<String, Edificios>();
-            this.edificios.put("casa", new Edificios("casa", Valor.getCosteCompraEdificio(posicion, "casa"), Valor.getCosteAlquilerEdificio(posicion, "casa"), 0, this));
-            this.edificios.put("hotel", new Edificios("hotel", Valor.getCosteCompraEdificio(posicion, "hotel"), Valor.getCosteAlquilerEdificio(posicion, "hotel"), false, this));
-            this.edificios.put("piscina", new Edificios("piscina", Valor.getCosteCompraEdificio(posicion, "piscina"), Valor.getCosteAlquilerEdificio(posicion, "piscina"), false, this));
-            this.edificios.put("deporte", new Edificios("deporte", Valor.getCosteCompraEdificio(posicion, "deporte"), Valor.getCosteAlquilerEdificio(posicion, "deporte"), false, this));
+            this.edificios = new HashMap<String, Edificiosvello>();
+            this.edificios.put("casa", new Edificiosvello("casa", Valor.getCosteCompraEdificio(posicion, "casa"), Valor.getCosteAlquilerEdificio(posicion, "casa"), 0, this));
+            this.edificios.put("hotel", new Edificiosvello("hotel", Valor.getCosteCompraEdificio(posicion, "hotel"), Valor.getCosteAlquilerEdificio(posicion, "hotel"), false, this));
+            this.edificios.put("piscina", new Edificiosvello("piscina", Valor.getCosteCompraEdificio(posicion, "piscina"), Valor.getCosteAlquilerEdificio(posicion, "piscina"), false, this));
+            this.edificios.put("deporte", new Edificiosvello("deporte", Valor.getCosteCompraEdificio(posicion, "deporte"), Valor.getCosteAlquilerEdificio(posicion, "deporte"), false, this));
         }
     }
 
@@ -113,7 +113,7 @@ public class CasillaVella2 {
 
     public boolean getHipotecada() {return this.hipotecada;}
 
-    public Map<String, Edificios> getEdificios() {return this.edificios;}
+    public Map<String, Edificiosvello> getEdificios() {return this.edificios;}
 
     /****************************/
 
