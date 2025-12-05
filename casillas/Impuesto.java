@@ -12,6 +12,9 @@ public class Impuesto extends Casilla {
         this.impuesto = impuesto;
         this.duenho = dono;
     }
+    public float getImpuesto(){
+        return this.impuesto;
+    }
 
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,java.util.ArrayList<java.util.ArrayList<Casilla>> pos) {
@@ -27,5 +30,13 @@ public class Impuesto extends Casilla {
     @Override
     public Jugador getDuenho() {
        return duenho;
+    }
+ @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\tnombre: ").append(this.getNombre()).append("\n");
+        sb.append(" \ttipo: ").append(" Servicio").append("\n");
+        sb.append(" \talquiler: ").append(this.getImpuesto()).append("\n}");
+        return sb.toString();
     }
 }

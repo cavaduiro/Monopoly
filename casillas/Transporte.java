@@ -41,6 +41,20 @@ public class Transporte extends Propiedad {
     return 0;
    }
    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\tnombre: ").append(this.getNombre()).append("\n");
+        sb.append(" \ttipo: ").append(" Transporte").append("\n");
+        sb.append(" \tpropietario: ").append(this.getDuenho().getNombre()).append("\n");
+        sb.append(" \tvalor: ").append(this.getValor()).append("\n");
+        sb.append(" \talquiler: ").append(this.getAlquiler()).append("\n}");
+          for (Avatar avatarEnCasilla : this.getAvatares()) {
+                sb.append(avatarEnCasilla.getJugador().getNombre()).append(", ");
+
+            }
+        return sb.toString();
+    }
     
 
     

@@ -385,11 +385,11 @@ public class Juego implements Comando{
                 jugadorActual.setEnCarcel(false);
                 lanzamientos=0;
                 tirado=false;
-                System.out.println("\nSacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m. Saíches do cárcere.\n");
+                consol.imprimir("Sacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m. Saíches do cárcere.");
                 return;
             }else{
                 jugadorActual.sumartiradascarcel();
-                System.out.println("\nSegues na cárcere. Levas "+"\033[1m"+jugadorActual.getTiradasCarcel()+" turnos.\033[0m\n");
+                consol.imprimir("Segues na cárcere. Levas "+"\033[1m"+jugadorActual.getTiradasCarcel()+" turnos.\033[0m");
                 tirado =true;
                 return;
             }
@@ -403,7 +403,7 @@ public class Juego implements Comando{
             return;
         }
         lanzamientos++;
-        System.out.println("Sacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m.\n");
+        consol.imprimir("Sacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m.\n");
         jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
 
         solvente = jugadorActual.getAvatar().getLugar().EvaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
@@ -517,7 +517,7 @@ public class Juego implements Comando{
             return;
         }
 
-        casillaEdificar.edificar(partes[1], jugadorActual);
+        solaredificar.edificar(partes[1], jugadorActual);
     }
 
     @Override
@@ -607,12 +607,12 @@ public class Juego implements Comando{
                     continue;
                 }
                 //ERROR
-                Edificios edificioCasa = casilla.getEdificios().get("casa");
+                Edificiosvello edificioCasa = casilla.getEdificios().get("casa");
                 if(edificioCasa.getNumCasas() > 0){
                     atopou=true;
                     System.out.println(edificioCasa);
                 }
-                Edificios edificioUnico;
+                Edificiosvello edificioUnico;
                 for(String tipo : new String[]{"hotel", "piscina", "deporte"}){
                     edificioUnico = casilla.getEdificios().get(tipo);
                     if(edificioUnico.getTenEdificio()){
@@ -641,12 +641,12 @@ public class Juego implements Comando{
                 }
                 Solar solaredif = (Solar) casilla;
                 if(Valor.getNombreColor(solaredif.getGrupo().getColorGrupo()).equalsIgnoreCase(colorGrupo)){        
-                    Edificios edificioCasa = solaredif.getEdificios().get("casa");
+                    Edificiosvello edificioCasa = solaredif.getEdificios().get("casa");
                     if(edificioCasa.getNumCasas() > 0){
                         casas=edificioCasa.getNumCasas();
                         System.out.println(edificioCasa);
                     }
-                    Edificios edificioUnico;
+                    Edificiosvello edificioUnico;
                     for (String tipo : new String[] { "hotel", "piscina", "deporte" }) {
                         edificioUnico = solaredif.getEdificios().get(tipo);
                         if (edificioUnico.getTenEdificio()) {

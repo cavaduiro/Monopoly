@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Edificios {
+public class Edificiosvello {
     // contador global por clave (tipo, tipo-casa, etc.)
     // Mantémse global e só incrementa: nunca decrementa. Conta para todos os edificios.
     private static Map<String, Integer> counters = new HashMap<>();
@@ -19,7 +19,7 @@ public class Edificios {
     private Casillavella casilla;
     // Constructor para propiedades con casas (o máis simple posible)
     // NON xenera ids aquí; so declara a lista e o número de casas local
-    public Edificios(String tipo, int custo, int alquiler, int numCasas, Casillavella casilla){
+    public Edificiosvello(String tipo, int custo, int alquiler, int numCasas, Casillavella casilla){
         this.tipo = tipo;
         this.custo = custo;
         this.alquiler = alquiler;
@@ -30,7 +30,7 @@ public class Edificios {
 
     // Constructor para edificios únicos (p.ex. piscina, deporte, hotel)
     // NON xenera id aquí nin lista de casas
-    public Edificios(String tipo, int custo, int alquiler, boolean tenEdificio, Casillavella casilla){
+    public Edificiosvello(String tipo, int custo, int alquiler, boolean tenEdificio, Casillavella casilla){
         this.tipo = tipo;
         this.custo = custo;
         this.alquiler = alquiler;
