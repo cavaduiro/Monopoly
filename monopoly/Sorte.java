@@ -7,6 +7,7 @@ import partida.Jugador;
 
 public class Sorte extends Carta {
 
+    private static Sorte instancia = null;
     private int index = 0;
     @Override
     public void sumar(){    
@@ -14,28 +15,28 @@ public class Sorte extends Carta {
         this.index = this.index%7;
     }
     @Override
-    public void loxica(Jugador banca,Jugador actual, ArrayList<ArrayList<Casilla>> pos){
+    public void loxica(Jugador banca, Jugador actual, ArrayList<ArrayList<Casilla>> pos) {
 
-        switch(this.index){
+        switch (this.index) {
             case 0:
                 //Moverse a la casilla solar 19
                 Juego.consol.imprimir("Oh no excursión á solar 19");
-                Casilla casactual=actual.getAvatar().getLugar();
-                if(casactual.getPosicion()==36){
+                Casilla casactual = actual.getAvatar().getLugar();
+                if (casactual.getPosicion() == 36) {
                     actual.sumarFortuna(Valor.SUMA_VUELTA);
                     actual.getEstatisticas().sumarsalidas();
                     actual.getEstatisticas().sumarVoltas();
                 }
                 casactual.eliminarAvatar(actual.getAvatar());
-                Casillaa dest = actual.getAvatar().posIndex(32,pos);
+                Casilla dest = actual.getAvatar().posIndex(32, pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
                 this.sumar();
-                dest.evaluarCasilla(actual,banca,0,pos);
+                dest.EvaluarCasilla(actual, banca, 0, pos);
                 break;
             case 1:
                 Juego.consol.imprimir("Vai o cárcere, sen pasar pola casilla de saída.");
-                if(actual.getAvatar().getLugar().getPosicion()!=7){
+                if (actual.getAvatar().getLugar().getPosicion() != 7) {
                     actual.getEstatisticas().sumarVoltas();
                 }
                 actual.encarcelar(pos);
@@ -49,35 +50,36 @@ public class Sorte extends Carta {
                 this.sumar();
                 break;
             case 3:
-                Juego.consol.imprimir("Paga a cada xogador 250.000€");;
+                Juego.consol.imprimir("Paga a cada xogador 250.000€");
+                ;
                 //Paga a cada xogador 250.000
                 float bote = 250000;
-                for(ArrayList<Casilla> lado: pos){
-                    for(Casilla cas: lado){
-                        for(Avatar av: cas.getAvatares()){
-                                if(!av.getJugador().equals(actual)){
-                                    actual.getEstatisticas().acImpPagado(bote);
-                                    actual.sumarFortuna(-bote);
-                                    av.getJugador().sumarFortuna(bote);
-                                    av.getJugador().getEstatisticas().sumarbote(bote);
-                                }
+                for (ArrayList<Casilla> lado : pos) {
+                    for (Casilla cas : lado) {
+                        for (Avatar av : cas.getAvatares()) {
+                            if (!av.getJugador().equals(actual)) {
+                                actual.getEstatisticas().acImpPagado(bote);
+                                actual.sumarFortuna(-bote);
+                                av.getJugador().sumarFortuna(bote);
+                                av.getJugador().getEstatisticas().sumarbote(bote);
                             }
                         }
                     }
+                }
 
                 this.sumar();
                 break;
             case 4:
                 Juego.consol.imprimir("Oh no! Retrocedes tres casillas");
                 //Retroceder tres casillas
-                casactual=actual.getAvatar().getLugar();
+                casactual = actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
-                int posdest= casactual.getPosicion()-3;
-                dest = actual.getAvatar().posIndex(posdest,pos);
+                int posdest = casactual.getPosicion() - 3;
+                dest = actual.getAvatar().posIndex(posdest, pos);
                 dest.anhadirAvatar(actual.getAvatar());
                 actual.getAvatar().setLugar(dest);
                 this.sumar();
-                dest.evaluarCasilla(actual,banca,0,pos);
+                dest.EvaluarCasilla(actual, banca, 0, pos);
                 break;
             case 5:
                 Juego.consol.imprimir("Múltanche por usar o teléfono mentres conduces, paga 150000 euros");
@@ -90,22 +92,29 @@ public class Sorte extends Carta {
             case 6:
                 Juego.consol.imprimir("Avanza cara a casilla máis cercana (de transporte)");
                 //Avanza ata a casilla de transporte máis cercana, se non ten dono podes mercala. Se o ten, pagas o doble do habitual
-                boolean iterado= false;
-                Casilla destino = actual.getAvatar().getLugar();
+                boolean iterado = false;
+                //Casilla destino = actual.getAvatar().getLugar();
                 this.sumar();
-                for(int novacas : Valor.transportes){
-                    if(actual.getAvatar().getLugar().getPosicion()<novacas && !iterado){
-                        casactual=actual.getAvatar().getLugar();
+                for (int novacas : Valor.transportes) {
+                    if (actual.getAvatar().getLugar().getPosicion() < novacas && !iterado) {
+                        casactual = actual.getAvatar().getLugar();
                         casactual.eliminarAvatar(actual.getAvatar());
-                        destino = actual.getAvatar().posIndex(novacas,pos);  
+                        Casilla destino = actual.getAvatar().posIndex(novacas, pos);
                         destino.anhadirAvatar(actual.getAvatar());
                         actual.getAvatar().setLugar(destino);
                         iterado = true;
-                        destino.evaluarCasilla(actual,banca,0,pos);
+                        destino.EvaluarCasilla(actual, banca, 0, pos);
                         return;
                     }
                 }
                 break;
         }
-    };
+    }
+        public static synchronized Sorte getInstance()
+    {
+        if (instancia == null)
+            instancia = new Sorte();
+
+        return instancia;
+    }
 }

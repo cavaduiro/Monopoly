@@ -19,6 +19,10 @@ public class Solar extends Propiedad {
     public void setGrupo(Grupo grup) {
         this.grupo = grup;
     }
+
+    public Grupo getGrupo() {
+        return this.grupo;
+    }
     //OVERRIDES
        @Override
         public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones)

@@ -103,20 +103,20 @@ public class Tablero {
 
     //Método para insertar las casillas del lado norte.
     private void insertarLadoNorte() {
-        Casillavella parking = new Casillavella("Parking", "Especial", 20, this.banca); //O impuesto de Parking vai ser o bote
-        Casillavella solar12 = new Casillavella("Solar12", "Solar", 21, 2200000, this.banca, 180000, 1100000);
-        Casillavella suerte2 = new Casillavella("Suerte", "Especial", 22, this.banca);
-        Casillavella solar13 = new Casillavella("Solar13", "Solar", 23, 2200000, this.banca, 180000, 1100000);
-        Casillavella solar14 = new Casillavella("Solar14", "Solar", 24, 2400000, this.banca, 200000, 120000);
-        Casillavella trans3 = new Casillavella("Trans3", "Transportes", 25, 500000, this.banca, 250000, 250000);
-        Casillavella solar15 = new Casillavella("Solar15", "Solar", 26, 2600000, this.banca, 220000, 1300000);
-        Casillavella solar16 = new Casillavella("Solar16", "Solar", 27, 2600000, this.banca, 220000, 1300000);  
-        Casillavella serv2 = new Casillavella("Serv2", "Servicios", 28, 1500000, this.banca, 50000, 50000);
-        Casillavella solar17 = new Casillavella("Solar17", "Solar", 29, 2800000, this.banca, 240000, 1400000);
-        Casillavella irCarcel = new Casillavella("IrCarcel", "Especial", 30, this.banca);
+        Especial parking = new Especial("Parking", 20, this.banca); //O impuesto de Parking vai ser o bote
+        Solar solar12 = new Solar("Solar12", 21, 2200000, this.banca, 180000, 1100000);
+        CasillaSorte suerte2 = new CasillaSorte("Suerte", 22, this.banca);
+        Solar solar13 = new Solar("Solar13", 23, 2200000, this.banca, 180000, 1100000);
+        Solar solar14 = new Solar("Solar14", 24, 2400000, this.banca, 200000, 120000);
+        Transporte trans3 = new Transporte("Trans3", 25, 500000, this.banca, 250000, 250000);
+        Solar solar15 = new Solar("Solar15", 26, 2600000, this.banca, 220000, 1300000);
+        Solar solar16 = new Solar("Solar16", 27, 2600000, this.banca, 220000, 1300000);  
+        Servicio serv2 = new Servicio("Serv2", 28, 1500000, this.banca, 50000, 50000);
+        Solar solar17 = new Solar("Solar17", 29, 2800000, this.banca, 240000, 1400000);
+        Especial irCarcel = new Especial("IrCarcel", 30, this.banca);
 
         //Ahora metemos as casillas no lado norte na posición 2 do array de arrays de posicións
-        ArrayList<Casillavella> ladoNorte = new ArrayList<>();
+        ArrayList<Casilla> ladoNorte = new ArrayList<>();
         ladoNorte.add(parking);
         ladoNorte.add(solar12);
         ladoNorte.add(suerte2);
@@ -131,26 +131,26 @@ public class Tablero {
         this.posiciones.add(ladoNorte);
 
         //Agora facemos os grupos
-        GrupoVello grupoRojo = new GrupoVello(solar12, solar13, solar14, Valor.RED);
-        GrupoVello grupoMorado = new GrupoVello(solar15, solar16, solar17, Valor.PURPLE);
+        Grupo grupoRojo = new Grupo(solar12, solar13, solar14, Valor.RED);
+        Grupo grupoMorado = new Grupo(solar15, solar16, solar17, Valor.PURPLE);
         this.grupos.put("Rojo", grupoRojo);
         this.grupos.put("Morado", grupoMorado);
     }
 
     //Metodo que inserta las casillas del lado este.
     private void insertarLadoEste() {
-        Casillavella solar18 = new Casillavella("Solar18", "Solar", 31, 3000000, this.banca, 260000, 1500000);
-        Casillavella solar19 = new Casillavella("Solar19", "Solar", 32, 3000000, this.banca, 260000, 1500000);
-        Casillavella caja3 = new Casillavella("Caja", "Especial", 33, this.banca);
-        Casillavella solar20 = new Casillavella("Solar20", "Solar", 34, 3200000, this.banca, 280000, 160000);
-        Casillavella trans4 = new Casillavella("Trans4", "Transportes", 35, 500000, this.banca, 250000, 250000);
-        Casillavella suerte3 = new Casillavella("Suerte", "Especial", 36, this.banca);
-        Casillavella solar21 = new Casillavella("Solar21", "Solar", 37, 3500000, this.banca, 350000, 1750000);
-        Casillavella impuesto2 = new Casillavella("Imp2", "Impuesto", 38, this.banca, 2000000);
-        Casillavella solar22 = new Casillavella("Solar22", "Solar", 39, 4000000, this.banca, 500000, 2000000);
+        Solar solar18 = new Solar("Solar18", 31, 3000000, this.banca, 260000, 1500000);
+        Solar solar19 = new Solar("Solar19", 32, 3000000, this.banca, 260000, 1500000);
+        CajaCom caja3 = new CajCom("Caja", 33, this.banca);
+        Solar solar20 = new Solar("Solar20", 34, 3200000, this.banca, 280000, 160000);
+        Transporte trans4 = new Transporte("Trans4", 35, 500000, this.banca, 250000, 250000);
+        CasillaSorte suerte3 = new CasillaSorte("Suerte", 36, this.banca);
+        Solar solar21 = new Solar("Solar21", 37, 3500000, this.banca, 350000, 1750000);
+        Impuesto impuesto2 = new Impuesto("Imp2", 38, this.banca, 2000000);
+        Solar solar22 = new Solar("Solar22", 39, 4000000, this.banca, 500000, 2000000);
 
         //Ahora metemos as casillas no lado este na posición 3 do array de arrays de posicións
-        ArrayList<Casillavella> ladoEste = new ArrayList<>();
+        ArrayList<Casilla> ladoEste = new ArrayList<>();
         ladoEste.add(solar18);
         ladoEste.add(solar19);
         ladoEste.add(caja3);
@@ -163,13 +163,13 @@ public class Tablero {
         this.posiciones.add(ladoEste);
 
         //Agora facemos os grupos
-        GrupoVello grupoVerde = new GrupoVello(solar18, solar19, solar20, Valor.GREEN);
-        GrupoVello grupoAzul = new GrupoVello(solar21, solar22, Valor.BLUE);
+        Grupo grupoVerde = new Grupo(solar18, solar19, solar20, Valor.GREEN);
+        Grupo grupoAzul = new Grupo(solar21, solar22, Valor.BLUE);
         this.grupos.put("Verde", grupoVerde);
         this.grupos.put("Azul", grupoAzul);
 
     }
-    private StringBuilder imprimirAvatares(StringBuilder sb, String color, ArrayList<Casillavella> lado, int indice) {
+    private StringBuilder imprimirAvatares(StringBuilder sb, String color, ArrayList<Casilla> lado, int indice) {
     sb.append(color).append("|");
     int espacioLibre = 10;
     for (int j = 0; j < lado.get(indice).getAvatares().size(); j++) {
@@ -196,7 +196,9 @@ private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indi
     String nombre = casilla.getNombre();
 
     if (inicio == 0) { // primera línea: edificios / espacios
-        if ("Solar".equalsIgnoreCase(casilla.getTipo())&& !casilla.getHipotecada()) {
+        bool prova = casilla instanceof Solar;
+        if ((casilla instanceof Solar) && !((Solar) casilla).getHipotecada()) {
+            //if ("Solar".equalsIgnoreCase(casilla.getTipo())&& !casilla.getHipotecada()) {
             boolean haiHotel = casilla.getEdificios().get("hotel").getTenEdificio();
             boolean haiPiscina = casilla.getEdificios().get("piscina").getTenEdificio();
             boolean haiDeporte = casilla.getEdificios().get("deporte").getTenEdificio();
@@ -206,12 +208,17 @@ private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indi
             int espaciosBlanco = Math.max(0, 10 - usados);
 
             sb.append(color).append("|");
-            if (haiDeporte) sb.append("● ");
-            if (haiHotel) sb.append("▲ ");
-            if (haiPiscina) sb.append("◆ ");
-            for (int k = 0; k < numCasas; k++) sb.append("■ ");
+            if (haiDeporte)
+                sb.append("● ");
+            if (haiHotel)
+                sb.append("▲ ");
+            if (haiPiscina)
+                sb.append("◆ ");
+            for (int k = 0; k < numCasas; k++)
+                sb.append("■ ");
             sb.append(" ".repeat(espaciosBlanco)).append(color).append("|");
-        } else if ("Solar".equalsIgnoreCase(casilla.getTipo()) && casilla.getHipotecada()) {
+
+            }else if((casilla instanceof Solar && ((Solar) casilla).getHipotecada())){     
             sb.append(color).append("|").append("-".repeat(10)).append("|");
         } else{
             sb.append(color).append("|").append(" ".repeat(10)).append(color).append("|");
@@ -384,7 +391,7 @@ public String toString() {
     public ArrayList<ArrayList<Casilla>> getPosiciones() {
         return posiciones;
     }
-    public HashMap<String, GrupoVello> getGrupos() {
+    public HashMap<String, Grupo> getGrupos() {
         return grupos;
     }
     public Jugador getBanca() {

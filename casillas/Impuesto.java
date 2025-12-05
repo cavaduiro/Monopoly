@@ -24,5 +24,8 @@ public class Impuesto extends Casilla {
         }
         return true;
     }
-
+    @Override
+    public Jugador getDuenho() {
+       return duenho;
+    }
 }

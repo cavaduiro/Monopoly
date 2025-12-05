@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import monopoly.Tablero;
+import monopoly.Valor;
 
 import java.util.HashMap;
+import monopoly.Juego;
 
 public abstract class Casilla {
     // Atributos
@@ -15,6 +17,7 @@ public abstract class Casilla {
     private String nombre;
     private int posicion;
     private int frecuencia;
+    private Jugador duenho;
     // Constructor
     public Casilla(String nombre, int posicion) {
         this.avatares = new ArrayList<Avatar>();
@@ -44,22 +47,41 @@ public abstract class Casilla {
     public void eliminarAvatar(Avatar av) {
         this.avatares.remove(av);
     }
-    public void anhadirAvatar(Avatar av){
+
+    public void anhadirAvatar(Avatar av) {
         this.avatares.add(av);
+    }
+
+    public String getColorCasilla() {
+        if (this instanceof Solar aux) {
+            return aux.getGrupo().getColorGrupo();
+        }
+        return Valor.WHITE;
     }
     //GETTERS 
     public String getNombre(){
         return this.nombre;
     }
-    public int getPosicion(){
+
+    public int getPosicion() {
         return this.posicion;
     }
-    //SETTERS
 
+
+    //SETTERS
+    public void setDuenho(Jugador novo) {
+        duenho = novo;
+    }
 
     //métodos a implementar
     public abstract boolean  EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) ;
+    
+    public abstract Jugador getDuenho();
 
+    public int getCaidas() 
+    {
+        return frecuencia;
+    }
 
 
 }

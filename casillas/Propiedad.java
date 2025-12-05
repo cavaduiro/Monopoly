@@ -1,5 +1,6 @@
 
 package casillas;
+import casillas.Casilla;
 import partida.Jugador;
 import java.util.ArrayList;
 
@@ -30,32 +31,26 @@ public abstract class Propiedad extends Casilla {
 
     public abstract float valor( );
 
-      public void comprarCasilla(Jugador solicitante, Jugador banca) {
-       if(this.getDuenho()==banca) {
-           solicitante.anhadirPropiedad(this);
-           this.duenho = solicitante;
-           solicitante.sumarFortuna(-this.valor);
-           solicitante.getEstatisticas().pagoinversion(this.valor);
-            Juego.consol.imprimir("nO xogador " + solicitante.getNombre() + " comprou a casilla " + this.getNombre() + " por " + this.valor + " $.");
+    public void comprarCasilla(Jugador solicitante, Jugador banca) {
+        if (this.getDuenho() == banca) {
+            solicitante.anhadirPropiedad(this);
+            this.duenho = solicitante;
+            solicitante.sumarFortuna(-this.valor);
+            solicitante.getEstatisticas().pagoinversion(this.valor);
+            Juego.consol.imprimir("O xogador " + solicitante.getNombre() + " comprou a casilla " + getNombre() + " por "
+                    + this.valor + " $.");
 
-       }
-       else {
+        } else {
             //ERROR CHEQUEABLE
-           Juego.consol.imprimir("\nA casilla xa ten dono.\n");
-       }
+            Juego.consol.imprimir("\nA casilla xa ten dono.\n");
+        }
     }
-    public Jugador getDuenho(){
-        return this.duenho;
-    }
+
     public  float getValor(){
         return this.valor;
     }
     public  float getAlquiler(){
         return this.alquiler;
-    }
-
-    public boolean getHipotecada() {
-        return hipotecada;
     }
 
     public float getRentabilidade() {
@@ -65,6 +60,35 @@ public abstract class Propiedad extends Casilla {
     public void setRentabilidade(float rent) {
         this.rentabilidade = rent;
     }
-    @Override
-        public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones);
+
+    public boolean getHipotecada() {
+        return this.hipotecada;
     }
+    
+
+
+
+
+    @Override
+    public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,
+            ArrayList<ArrayList<Casilla>> posiciones);
+        
+    public void hipotecarCasilla() {
+        
+    }
+    //HAY QUE IMPLEMENTALO ABAIXO LOL     
+    public void deshipotecarCasilla() {
+
+    }
+
+    public void setDueño(Jugador Recaudador) {
+        duenho = Recaudador;
+    }
+
+    public float getRentabilidad() {
+        return 0; //HAI QUE IMPLEMENTALO
+    }
+    
+    }
+
+    

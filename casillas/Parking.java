@@ -20,5 +20,8 @@ public class Parking extends Accion {
         banca.setFortuna(0);
         return true;
     }
-
+    @Override
+    public Jugador getDuenho() {
+       return banca;
+    }
 }

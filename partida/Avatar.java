@@ -98,7 +98,8 @@ public class Avatar {
      */
     private void generarId(ArrayList<Avatar> avCreados)
     {
-        String[] Ids = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M", "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+        String[] Ids = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+                "T", "U", "V", "W", "X", "Y", "Z" };
         List<String> disp = new ArrayList<>(Arrays.asList(Ids));
 
         // Quitamos os creados xa
@@ -112,6 +113,7 @@ public class Avatar {
         int randomIndex = (int) (Math.random() * disp.size());
         this.id = disp.get(randomIndex);
     }
+    /** 
     private boolean esDupe(ArrayList<Avatar> avCreados){
         for(Avatar aux: avCreados){
             if(aux.id.equalsIgnoreCase(this.id)){
@@ -120,4 +122,5 @@ public class Avatar {
         }
         return false;
     }
+        **/
 }

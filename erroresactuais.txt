@@ -15,11 +15,13 @@ Exepcións chequeables:
     |->todo o tem de edificar xd -->>NO MENÚ ESTÁ MAL  
 
 
+
+    //comprar 
+    //HIPOTECAR ->ten que estar en propiedad
+
+    //RENTABILIDADE
 · Nova clase de casilla
     |-> eliminar avatar, añadir avatar
     |-> getcolorcasilla
     |-> getedificios
     |-> get tipo
-· En casilla sorte, deberí haber un singleton de sorte, e en comunidade o análogo
-
-Hai que meter cada solar no seu grupo
