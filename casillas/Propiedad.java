@@ -65,7 +65,9 @@ public abstract class Propiedad extends Casilla {
     public boolean getHipotecada() {
         return this.hipotecada;
     }
-    
+    public float getHipoteca() {
+        return this.hipoteca;
+    }
 
 
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import casillas.*;
+import monopoly.Valor;
 
 public abstract class Edificio {
     private static Map<String, Integer> counters = new HashMap<>();
@@ -40,6 +41,9 @@ public abstract class Edificio {
     public int getCusto() {
         return (int)custo;
     }
+    public int getAlquiler() {
+        return (int)alquiler;
+    }
 
     public void setTenEdificio(boolean tenEdificio){
         if(tenEdificio && !this.tenEdificio){
@@ -56,6 +60,15 @@ public abstract class Edificio {
             this.tenEdificio = tenEdificio; // sen cambio de id
         }
     }
-    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+            sb.append("\nid: ").append(this.id);
+            sb.append("\npropietario: ").append(this.casilla.getDuenho().getNombre());
+            sb.append("\ncasilla: ").append(this.casilla.getNombre());
+            sb.append("\ngrupo: ").append(Valor.getNombreColor(this.casilla.getGrupo().getColorGrupo()));
+            sb.append("\ncoste: ").append(this.custo);
+            return sb.toString();
+    }
 
 }

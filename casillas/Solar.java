@@ -280,6 +280,40 @@ public class Solar extends Propiedad {
        @Override
         public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones)
         {
+            if(this.getDuenho() != null && this.getDuenho() != actual && !this.getHipotecada())
+            {
+                float alquilerTotal = this.getAlquiler();
+                // engadir casas
+                for(Casa casa : this.casas)
+                {
+                    alquilerTotal += casa.getAlquiler();
+                }
+                // engadir hotel
+                if(this.tenhotel())
+                {
+                    alquilerTotal += this.getHotel().getAlquiler();
+                }
+                // engadir piscina
+                if(this.tenpiscina())
+                {
+                    alquilerTotal += this.getPiscina().getAlquiler();
+                }
+                // engadir pista
+                if(this.tenpista())
+                {
+                    alquilerTotal += this.getPista().getAlquiler();
+                }
+                Juego.consol.imprimir(actual.getNombre()+" paga "+alquilerTotal+"€ de aluguer por caer en "+this.getNombre()+" de "+this.getDuenho().getNombre());
+                if(actual.getFortuna() < alquilerTotal)
+                {
+                    Juego.consol.imprimir(actual.getNombre()+" non ten suficiente fortuna para pagar o aluguer de "+alquilerTotal+"€");
+                    return false;
+                }
+                actual.sumarFortuna(-alquilerTotal);
+                this.getDuenho().sumarFortuna(alquilerTotal);
+                actual.getEstatisticas().transAlq(alquilerTotal);
+                return true;
+            }
 
             return false;
         }
@@ -310,6 +344,37 @@ public class Solar extends Propiedad {
         while(this.numCasas > numCasas){
             eliminarCasa();
         }
-    }    
+    }  
+      public String infoCasilla() {
+        String info = new String();
+        info+= "\n{\nTipo: Solar";
+        info+= "\nGrupo: " + this.grupo.getColorGrupo();
+        info+= "\nPropietario: " + this.getDuenho().getNombre();
+        info+= "\nValor: " + this.getValor();
+        info+= "\nAlquiler: " + this.getAlquiler();
+        info+= "\nHipoteca: " + this.getHipoteca();
+        info+= "\n}";
+        return info;
     }
+    @Override
+    public String toString(){
+               StringBuilder sb = new StringBuilder();
+            sb.append("{\n\tnombre: ").append(this.getNombre()).append("\n");
+            sb.append(" \ttgrupo: ").append(Valor.getNombreColor(this.grupo.getColorGrupo())).append("\n");
+            sb.append(" \ttipo: ").append("\tSolar").append("\n");
+            sb.append(" \tpropietario: ").append(this.getDuenho().getNombre()).append("\n");
+            sb.append(" \tvalor: ").append(this.getValor()).append("\n");
+            sb.append(" \talquiler: ").append(this.getAlquiler()).append("\n");
+            sb.append(" \tvalor casa: ").append(this.getCasas().get(0).getCusto()).append("\n");
+            sb.append(" \tvalor hotel: ").append(this.getHotel().getCusto()).append("\n");
+            sb.append(" \tvalor piscina: ").append(this.getPiscina().getCusto()).append("\n");
+            sb.append(" \tvalor deporte: ").append(this.getPista().getCusto()).append("\n");
+            sb.append(" \talquiler casa: ").append(this.getCasas().get(0).getAlquiler()).append("\n");
+            sb.append(" \talquiler hotel: ").append(this.getHotel().getAlquiler()).append("\n");
+            sb.append(" \talquiler piscina: ").append(this.getPiscina().getAlquiler()).append("\n");
+            sb.append(" \talquiler deporte: ").append(this.getPista().getAlquiler()).append("\n}");
+            return sb.toString();
+    }
+
+}
     
