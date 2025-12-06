@@ -65,9 +65,10 @@ public class Grupo
         }
 
         return true;
-        
+
     }
 
+        
     public ArrayList<Solar> getMiembros() {
         return miembros;
     }

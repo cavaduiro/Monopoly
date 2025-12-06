@@ -5,6 +5,7 @@ import partida.Jugador;
 import java.util.ArrayList;
 
 import monopoly.Juego;
+import monopoly.Valor;
 import partida.*;
 
 public abstract class Propiedad extends Casilla {
@@ -74,11 +75,26 @@ public abstract class Propiedad extends Casilla {
             ArrayList<ArrayList<Casilla>> posiciones);
         
     public void hipotecarCasilla() {
-        
+        this.hipotecada = true;
+        this.duenho.sumarFortuna(this.hipoteca);
+        Juego.consol.imprimir("A casilla " + this.getNombre() + " foi hipotecada por " + this.hipoteca + " euros.\n Ata que a deshipoteques, non poderás cobrar aluguer por esta casilla.");
+        if (this instanceof Solar casaux) {
+            Juego.consol.imprimir("Ademais, tampouco poderás construir no grupo "+Valor.getNombreColor((casaux.getGrupo().getColorGrupo())+"."));
+        }
     }
     //HAY QUE IMPLEMENTALO ABAIXO LOL     
     public void deshipotecarCasilla() {
-
+        if(this.duenho.getFortuna() < this.hipoteca) {
+            //ERROR CHEQUEABLE
+            System.out.println("\nNon tes suficiente fortuna para deshipotecar esta casilla. Tes "+this.duenho.getFortuna()+" euros, pero necesitas "+this.hipoteca+" euros.\n");
+            return;
+        }
+        this.hipotecada = false;
+        this.duenho.sumarFortuna(-this.hipoteca);
+        Juego.consol.imprimir("A casilla " + getNombre() + " foi deshipotecada por " + this.hipoteca + " euros.\n Xa podes cobrar aluguer por esta casilla.");
+        if(this instanceof Solar casaux){
+            Juego.consol.imprimir("Ademais, xa podes construir no grupo "+Valor.getNombreColor(casaux.getGrupo().getColorGrupo())+".");
+        }
     }
 
     public void setDueño(Jugador Recaudador) {

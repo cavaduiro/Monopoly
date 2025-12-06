@@ -141,7 +141,7 @@ public class Tablero {
     private void insertarLadoEste() {
         Solar solar18 = new Solar("Solar18", 31, 3000000, this.banca, 260000, 1500000);
         Solar solar19 = new Solar("Solar19", 32, 3000000, this.banca, 260000, 1500000);
-        CajaCom caja3 = new CajCom("Caja", 33, this.banca);
+        CajaCom caja3 = new CajaCom("Caja", 33, this.banca);
         Solar solar20 = new Solar("Solar20", 34, 3200000, this.banca, 280000, 160000);
         Transporte trans4 = new Transporte("Trans4", 35, 500000, this.banca, 250000, 250000);
         CasillaSorte suerte3 = new CasillaSorte("Suerte", 36, this.banca);
@@ -196,13 +196,14 @@ private void imprimirLineaCasilla(List<Casilla> lado, StringBuilder sb, int indi
     String nombre = casilla.getNombre();
 
     if (inicio == 0) { // primera línea: edificios / espacios
-        bool prova = casilla instanceof Solar;
-        if ((casilla instanceof Solar) && !((Solar) casilla).getHipotecada()) {
+
+        if ((casilla instanceof Solar solaraux) && !((Solar) casilla).getHipotecada()) {
             //if ("Solar".equalsIgnoreCase(casilla.getTipo())&& !casilla.getHipotecada()) {
-            boolean haiHotel = casilla.getEdificios().get("hotel").getTenEdificio();
-            boolean haiPiscina = casilla.getEdificios().get("piscina").getTenEdificio();
-            boolean haiDeporte = casilla.getEdificios().get("deporte").getTenEdificio();
-            int numCasas = casilla.getEdificios().get("casa").getNumCasas();
+
+            boolean haiHotel = solaraux.tenhotel();
+            boolean haiPiscina = solaraux.tenpiscina();
+            boolean haiDeporte = solaraux.tenpista();
+            int numCasas = solaraux.getNumCasas();
 
             int usados = (haiHotel ? 2 : 0) + (haiPiscina ? 2 : 0) + (haiDeporte ? 2 : 0) + (numCasas * 2);
             int espaciosBlanco = Math.max(0, 10 - usados);

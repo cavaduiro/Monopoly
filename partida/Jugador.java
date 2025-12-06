@@ -3,6 +3,7 @@ package partida;
 import java.util.ArrayList;
 import monopoly.*;
 import casillas.*;
+import edificios.*;
 
 
 public class Jugador {
@@ -173,20 +174,20 @@ public class Jugador {
         sb.append("\nEdificios: ");
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
             for(Propiedad propiedadesEdificio: this.propiedades){
-                if(propiedadesEdificio.getEdificios()!= null){
-                    if(propiedadesEdificio.getEdificios().get("casa").getNumCasas()>0){
-                        for(String casaId : propiedadesEdificio.getEdificios().get("casa").getIdCasas()){
-                            sb.append(casaId).append(", ");
+                if(propiedadesEdificio instanceof Solar solaraux && solaraux.tenEdificio()){
+                    if(solaraux.getNumCasas()>0){
+                        for(Casa casitas : solaraux.getCasas()){
+                            sb.append(casitas.getId()).append(", ");
                         }
                     }
-                    if(propiedadesEdificio.getEdificios().get("hotel").getTenEdificio()){
-                        sb.append(propiedadesEdificio.getEdificios().get("hotel").getId()).append(", ");
+                    if(solaraux.tenhotel()){
+                        sb.append(solaraux.getHotel().getId()).append(", ");
                     }
-                    if(propiedadesEdificio.getEdificios().get("piscina").getTenEdificio()){
-                        sb.append(propiedadesEdificio.getEdificios().get("piscina").getId()).append(", ");
+                    if(solaraux.tenpiscina()){
+                        sb.append(solaraux.getPiscina().getId()).append(", ");
                     }
-                    if(propiedadesEdificio.getEdificios().get("deporte").getTenEdificio()){
-                        sb.append(propiedadesEdificio.getEdificios().get("deporte").getId()).append(", ");
+                    if(solaraux.tenpista()){
+                        sb.append(solaraux.getPista().getId()).append(", ");
                     }
                 }
 
