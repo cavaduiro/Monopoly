@@ -1026,7 +1026,7 @@ public class Juego implements Comando{
         tratos.get(receptor).remove(trato);
     }
 
-
+    @Override
     public void eliminarTrato(String idTrato){
         Jugador jugadorActual = jugadores.get(turno);
         boolean existeTrato = false;
@@ -1056,7 +1056,7 @@ public class Juego implements Comando{
         consol.imprimir("Trato eliminado correctamente.");
     }
 
-
+    @Override
     public void verTratos(){
         Jugador jugadorActual = jugadores.get(turno);
         if(tratos.get(jugadorActual)==null || tratos.get(jugadorActual).isEmpty()){

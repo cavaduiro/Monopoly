@@ -20,6 +20,9 @@ public interface  Comando {
     public void deshipotecar(String[] partes);
     public void tratos(String[] partes);
     public void aceptarTrato(String idTrato);
+    public void eliminarTrato(String idTrato);
+    public void verTratos();
+
     public void mostrarAxuda();
 
 
