@@ -18,6 +18,8 @@ public interface  Comando {
     public void vender(String[] partes);
     public void hipotecar(String[] partes);
     public void deshipotecar(String[] partes);
+    public void tratos(String[] partes);
+    public void aceptarTrato(String idTrato);
     public void mostrarAxuda();
 
 

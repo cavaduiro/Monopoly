@@ -1,9 +1,9 @@
 package partida;
 
-import java.util.ArrayList;
-import monopoly.*;
 import casillas.*;
 import edificios.*;
+import java.util.ArrayList;
+import monopoly.*;
 
 
 public class Jugador {

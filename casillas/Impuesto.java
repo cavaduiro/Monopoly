@@ -24,9 +24,14 @@ public class Impuesto extends Casilla {
             Juego.consol.imprimir("O xogador " + actual.getNombre() + " pagou " + this.impuesto
                     + " á banca por caer na casilla " + this.getNombre() + ".");
             banca.sumarFortuna(this.impuesto);
+                    return true;
+        } else {
+            Juego.consol.imprimir("O xogador " + actual.getNombre() + " non pode pagar o imposto de "
+                    + this.impuesto + ", xa que só ten " + actual.getFortuna() + ".");
+            return false;
         }
-        return true;
     }
+    
     @Override
     public Jugador getDuenho() {
        return duenho;

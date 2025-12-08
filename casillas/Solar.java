@@ -1,11 +1,8 @@
 package casillas;
+import edificios.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import monopoly.*;
 import partida.*;
-import edificios.*;
-import javax.net.ssl.HostnameVerifier;
 
 public class Solar extends Propiedad {
     private Grupo grupo;
@@ -22,9 +19,11 @@ public class Solar extends Propiedad {
                 (int) Valor.getCosteAlquilerEdificio(posicion, "piscina"), "piscina");
         piscina = new Piscina(this, (int) Valor.getCosteCompraEdificio(posicion, "piscina"),
                 (int) Valor.getCosteAlquilerEdificio(posicion, "piscina"), "piscina");
-        pista = new Pista(this, (int) Valor.getCosteCompraEdificio(posicion, "pista"),
-                (int) Valor.getCosteAlquilerEdificio(posicion, "pista"), "pista");
-        custoCasa = Valor.getCosteCompraEdificio(getPosicion(), "casa");
+        pista = new Pista(this, (int) Valor.getCosteCompraEdificio(posicion, "deporte"),
+                (int) Valor.getCosteAlquilerEdificio(posicion, "deporte"), "deporte");
+        casas = new ArrayList<>();
+        this.numCasas = 0;
+        this.custoCasa = Valor.getCosteCompraEdificio(getPosicion(), "casa");
     }
 
     
@@ -280,7 +279,7 @@ public class Solar extends Propiedad {
        @Override
         public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones)
         {
-            if(this.getDuenho() != null && this.getDuenho() != actual && !this.getHipotecada())
+            if(this.getDuenho() != banca && this.getDuenho() != actual && !this.getHipotecada())
             {
                 float alquilerTotal = this.getAlquiler();
                 // engadir casas
@@ -314,9 +313,14 @@ public class Solar extends Propiedad {
                 actual.getEstatisticas().transAlq(alquilerTotal);
                 return true;
             }
-
-            return false;
+            if(this.getHipotecada())
+            {
+                Juego.consol.imprimir("A propiedade "+this.getNombre()+" está hipotecada, non se paga aluguer");
+            }
+            Juego.consol.imprimir(actual.getNombre()+" non paga aluguer por caer en "+this.getNombre()  );
+            return true;
         }
+
         @Override
         public float valor( )
         {
@@ -327,7 +331,7 @@ public class Solar extends Propiedad {
         {
             return true;
         }
-
+        
 
         public void eliminarCasa(){
             if (this.numCasas > 0 && !this.casas.isEmpty()) {
@@ -365,11 +369,11 @@ public class Solar extends Propiedad {
             sb.append(" \tpropietario: ").append(this.getDuenho().getNombre()).append("\n");
             sb.append(" \tvalor: ").append(this.getValor()).append("\n");
             sb.append(" \talquiler: ").append(this.getAlquiler()).append("\n");
-            sb.append(" \tvalor casa: ").append(this.getCasas().get(0).getCusto()).append("\n");
+            sb.append(" \tvalor casa: ").append(this.custoCasa).append("\n");
             sb.append(" \tvalor hotel: ").append(this.getHotel().getCusto()).append("\n");
             sb.append(" \tvalor piscina: ").append(this.getPiscina().getCusto()).append("\n");
             sb.append(" \tvalor deporte: ").append(this.getPista().getCusto()).append("\n");
-            sb.append(" \talquiler casa: ").append(this.getCasas().get(0).getAlquiler()).append("\n");
+            sb.append(" \talquiler casa: ").append((float) Valor.getCosteAlquilerEdificio(this.getPosicion(), "casa")).append("\n");
             sb.append(" \talquiler hotel: ").append(this.getHotel().getAlquiler()).append("\n");
             sb.append(" \talquiler piscina: ").append(this.getPiscina().getAlquiler()).append("\n");
             sb.append(" \talquiler deporte: ").append(this.getPista().getAlquiler()).append("\n}");

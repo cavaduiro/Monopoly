@@ -39,6 +39,7 @@ public class Servicio extends Propiedad {
                 impuesto = this.getAlquiler() * tirada * MULTIPLICADOR_ALQUILER_DOS_SERVICIOS;
             }
             if (actual.getFortuna() < impuesto) { // No puede pagar
+                Juego.consol.imprimir("O xogador "+actual.getNombre()+" non pode pagar, debe "+impuesto+" e ten "+actual.getFortuna());
                 return false;
             } else {
                 actual.sumarFortuna(-impuesto);

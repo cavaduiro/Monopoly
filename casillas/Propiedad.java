@@ -1,12 +1,9 @@
 
 package casillas;
-import casillas.Casilla;
-import partida.Jugador;
 import java.util.ArrayList;
-
 import monopoly.Juego;
 import monopoly.Valor;
-import partida.*;
+import partida.Jugador;
 
 public abstract class Propiedad extends Casilla {
     private Jugador duenho;
@@ -69,8 +66,15 @@ public abstract class Propiedad extends Casilla {
         return this.hipoteca;
     }
 
+    @Override
+    public Jugador getDuenho() {
+        return this.duenho;
+    }   
 
-
+    @Override
+    public void setDuenho(Jugador novo) {
+        this.duenho = novo;
+    }
 
     @Override
     public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,
@@ -81,7 +85,7 @@ public abstract class Propiedad extends Casilla {
         this.duenho.sumarFortuna(this.hipoteca);
         Juego.consol.imprimir("A casilla " + this.getNombre() + " foi hipotecada por " + this.hipoteca + " euros.\n Ata que a deshipoteques, non poderás cobrar aluguer por esta casilla.");
         if (this instanceof Solar casaux) {
-            Juego.consol.imprimir("Ademais, tampouco poderás construir no grupo "+Valor.getNombreColor((casaux.getGrupo().getColorGrupo())+"."));
+            Juego.consol.imprimir("Ademais, tampouco poderás construir no grupo "+Valor.getNombreColor((casaux.getGrupo().getColorGrupo())));
         }
     }
     //HAY QUE IMPLEMENTALO ABAIXO LOL     

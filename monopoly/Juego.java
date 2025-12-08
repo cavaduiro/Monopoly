@@ -2,17 +2,13 @@ package monopoly;
 
 
 
+import casillas.*;
+import exception.ExcepcionSintaxis;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
-
-
 import partida.*;
-import casillas.*;
-import casillas.Propiedad;
-import exception.ExcepcionSintaxis;
-import javax.net.ssl.TrustManager;
 
 public class Juego implements Comando{
     //Atributos
@@ -30,6 +26,8 @@ public class Juego implements Comando{
     private boolean partidaFinalizada = false;
     private boolean comandos = false;
     final public static Consola consol = new Consola();
+    private HashMap<Jugador, ArrayList<Tratos>> tratos;
+    private boolean primeiraBancarrota = true;
 
     @SuppressWarnings("Convert2Diamond")
     public Juego(){
@@ -40,15 +38,27 @@ public class Juego implements Comando{
         this.avatares = new ArrayList<Avatar>();
         this.dado1 = new Dado();
         this.dado2 = new Dado();
+        this.tratos = new HashMap<Jugador, ArrayList<Tratos>>();
         while(!partidaFinalizada){
             try {
                 consol.impTablero(tablero);
+                if(partidaIniciada&&lanzamientos==0){ //Ao cambiar o turno, dinse os tratos pendentes
+                    if(tratos.get(jugadores.get(turno)) != null && !tratos.get(jugadores.get(turno)).isEmpty()){
+                        consol.imprimir("\n\033[1mTes tratos pendentes por aceptar.\033[0m");
+                        for(Tratos trato : tratos.get(jugadores.get(turno))){
+                            consol.imprimir("*ID - "+trato.getId());
+                            consol.imprimir("    "+trato.getOfertante().getNombre()+" ofrece: "+(trato.getDineroOfrecido()>0 ? trato.getDineroOfrecido()+" euros " : "")+(trato.getPropiedadOfrecida()!=null ? trato.getPropiedadOfrecida().getNombre() : ""));
+                            consol.imprimir("    Pide a "+trato.getReceptor().getNombre()+": "+(trato.getDineroSolicitado()>0 ? trato.getDineroSolicitado()+" euros " : "")+(trato.getPropiedadSolicitada()!=null ? trato.getPropiedadSolicitada().getNombre() : "")+"\n\n");
+                        }
+                    }
+                }
                 if(partidaIniciada){ //Mostramos o nome do xogador que ten o turno
-                    comando = consol.leer("Turno de "+"\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
-                }else{ //Se a partida non comezou, mostramos o prompt xenérico
+                    comando = consol.leer("Turno de " + "\033[1m" + jugadores.get(turno).getNombre() + ": \033[0m");
+                } else { //Se a partida non comezou, mostramos o prompt xenérico
                     comando = consol.leer("\033[1m$:\033[0m");
                 }
-                
+
+
                 analizarComando(comando);
             } catch (ExcepcionSintaxis e) //aquí hai que facer multicatch
             {
@@ -205,6 +215,54 @@ public class Juego implements Comando{
                     break;
                 }
                 deshipotecar(cmdseparado);
+                break;
+            case "trato":
+                if(!partidaIniciada){
+                    Valor.error("A partida aínda non comezou, non se poden facer tratos.");
+                    break;
+                }
+                if(cmdseparado.length!=5 && cmdseparado.length!=7){
+                    Valor.error("Número de argumentos erróneo.");
+                    consol.imprimir("Uso: trato <nombreReceptor> <propiedadOfrecida/dineroOfrecido> <propiedadSolicitada/dineroSolicitado>");
+                    break;
+                }
+                tratos(cmdseparado);
+                break;
+            case "aceptar":
+                if(!partidaIniciada){
+                    Valor.error("A partida aínda non comezou, non se poden aceptar tratos.");
+                    break;
+                }
+                if(cmdseparado.length!=2){
+                    Valor.error("Número de argumentos erróneo.");
+                    consol.imprimir("Uso: aceptar <idTrato>");
+                    break;
+                }
+                aceptarTrato(cmdseparado[1]);
+                break;
+            case "eliminar":
+                if(!partidaIniciada){
+                    Valor.error("A partida aínda non comezou, non se poden eliminar tratos.");
+                    break;
+                }
+                if(cmdseparado.length!=2){
+                    Valor.error("Número de argumentos erróneo.");
+                    consol.imprimir("Uso: eliminar <idTrato>");
+                    break;
+                }
+                eliminarTrato(cmdseparado[1]);
+                break;
+            case "tratos":
+                if(!partidaIniciada){
+                    Valor.error("A partida aínda non comezou, non se poden ver tratos.");
+                    break;
+                }
+                if(cmdseparado.length!=1){
+                    Valor.error("Número de argumentos erróneo.");
+                    consol.imprimir("Uso: tratos");
+                    break;
+                }
+                verTratos();
                 break;
             case "axuda":
                 mostrarAxuda();
@@ -407,8 +465,8 @@ public class Juego implements Comando{
         consol.imprimir("Sacaches un "+"\033[1m"+valor1+" e un "+valor2+"\033[0m.\n");
         jugadorActual.getAvatar().moverAvatar(tablero.getPosiciones(),valor1+valor2);
 
-        solvente = jugadorActual.getAvatar().getLugar().EvaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
-
+        this.solvente = jugadorActual.getAvatar().getLugar().EvaluarCasilla(jugadorActual,banca,valor1+valor2, getTablero().getPosiciones());
+        
         tirado=true;
         if(valor1==valor2&&!jugadorActual.getEnCarcel()){
             System.out.println("Sacaches dobles");
@@ -721,9 +779,10 @@ public class Juego implements Comando{
                 return;
             }
 
-    }
+        }
         casillaPropiedade.hipotecarCasilla();
-}
+    }   
+
     @Override
     public void deshipotecar(String[] partes){
         Jugador jugadorActual= jugadores.get(turno);
@@ -750,6 +809,266 @@ public class Juego implements Comando{
         casdeship.deshipotecarCasilla();
     }
 
+
+    private boolean esFloat(String str) {
+        try {
+            Float.parseFloat(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }   
+
+    @Override
+    public void tratos(String[] partes){
+        Jugador solicitante = jugadores.get(turno);
+        Jugador receptor = null;
+        Propiedad propiedadOfrecida= null;
+        float dineroOfrecido=0;
+        Propiedad propiedadSolicitada= null;
+        float dineroSolicitado=0;
+        int caso = 0;
+        String nombreReceptor = partes[1].split(":")[0];
+        for(Jugador aux : jugadores){
+            if(aux.getNombre().equalsIgnoreCase(nombreReceptor)){
+            receptor = aux;
+            break;
+            }
+        }
+        if(receptor == null){
+            Valor.error("Non existe un xogador co nome " + nombreReceptor);
+            return;
+        }
+        if(receptor == solicitante){
+            Valor.error("Non te Dineropodes facer un trato a ti mesmo.");
+            return;
+        }
+        if(partes.length==7){
+            if(partes[4].equalsIgnoreCase("y")){ //Trato do estilo (Casilla e diñeiro, Casilla)
+                caso = 5;
+                String argumento1 = partes[3].replace("(", "").trim(); //Aquí eliminamos el paréntesis de apertura
+                propiedadOfrecida = (Propiedad) tablero.encontrar_casilla(argumento1);          
+
+                String argumento2 = partes[5].replace(",", "").trim(); //Aquí eliminamos a coma de despois da cantidade de diñeiro ofrecida
+                if(!esFloat(argumento2)){
+                    Valor.error("O diñeiro ofrecido non é válido.");
+                    return;
+                }
+                dineroOfrecido = Float.parseFloat(argumento2);
+
+                String argumento3 = partes[6].replace(")", "").trim(); //Aquí eliminamos o paréntese de peche
+                propiedadSolicitada = (Propiedad) tablero.encontrar_casilla(argumento3);
+
+            }
+            else if(partes[5].equalsIgnoreCase("y")){ //Trato do estilo (Casilla, Casilla e diñeiro)
+                caso = 4;
+                String argumento1 = partes[3].replace("(", "").replace(",", "").trim(); //Aquí eliminamos el paréntesis de apertura e a coma despois da casilla ofrecida
+                propiedadOfrecida = (Propiedad) tablero.encontrar_casilla(argumento1);          
+
+                propiedadSolicitada = (Propiedad) tablero.encontrar_casilla(partes[5]);
+
+                String argumento2 = partes[6].replace(")", "").trim(); //Aquí eliminamos o paréntese de peche
+                if(!esFloat(argumento2)){
+                    Valor.error("O diñeiro solicitado non é válido.");
+                    return;
+                }
+                dineroSolicitado = Float.parseFloat(argumento2);
+            }
+        }
+        else{
+            String argumento1 = partes[3].replace("(", "").replace(",", "").trim(); //Aquí eliminamos el paréntesis de apertura e a coma despois
+            String argumento2 = partes[4].replace(")", "").trim(); //Aquí eliminamos o paréntese de peche
+            if(!esFloat(argumento1)&&!esFloat(argumento2)){
+                caso = 1; //Trato do estilo (Casilla, Casilla)
+                propiedadOfrecida = (Propiedad) tablero.encontrar_casilla(argumento1);
+                propiedadSolicitada = (Propiedad) tablero.encontrar_casilla(argumento2);
+            }
+            else if(esFloat(argumento1)){
+                caso = 3; //Trato do estilo (Diñeiro, Casilla)
+                dineroOfrecido = Float.parseFloat(argumento1);
+                propiedadSolicitada = (Propiedad) tablero.encontrar_casilla(argumento2);
+            }
+            else if(esFloat(argumento2)){
+                caso = 2; //Trato do estilo (Casilla, Diñeiro)
+                propiedadOfrecida = (Propiedad) tablero.encontrar_casilla(argumento1);
+                dineroSolicitado = Float.parseFloat(argumento2);
+            }
+            else{
+                consol.imprimir("O trato non ten argumentos válidos.");
+            }
+        }
+
+
+        if(caso==1||caso==2||caso==4||caso==5){
+            if(propiedadOfrecida == null){
+                Valor.error("A propiedade ofrecida non existe.");
+                return;
+            }
+        }
+
+        if(caso==1||caso==3||caso==4||caso==5){
+            if(propiedadSolicitada == null){
+                Valor.error("A propiedade solicitada non existe.");
+                return;
+            }
+        }
+
+        Tratos nuevoTrato = new Tratos(solicitante, receptor, propiedadOfrecida, dineroOfrecido, propiedadSolicitada, dineroSolicitado, caso);
+        //tratos é un hashmap onde a clave é o id do trato e o valor é un arraylst de tratos
+        tratos.computeIfAbsent(receptor, k -> new ArrayList<>()).add(nuevoTrato);
+    }
+
+    @Override
+    public void aceptarTrato(String idTrato){
+        Jugador receptor = jugadores.get(turno);
+        boolean existeTrato = false;
+        Tratos trato=null;
+        for(Tratos t : tratos.get(receptor)){
+            if(t.getId().equalsIgnoreCase(idTrato)){
+                existeTrato = true;
+                trato = t;
+                break;
+            }
+        }
+        if(!existeTrato){
+            Valor.error("Non existe ningún trato con ese ID para este xogador.");
+            return;
+        }
+
+
+        if(trato.getTipoTrato()==1||trato.getTipoTrato()==2||trato.getTipoTrato()==3||trato.getTipoTrato()==4||trato.getTipoTrato()==5){
+            if(trato.getPropiedadOfrecida().getDuenho() != trato.getOfertante()){
+                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " xa non é de " + trato.getOfertante().getNombre() + ".");
+                return;
+            }
+            if(trato.getPropiedadOfrecida().getHipotecada()){
+                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " está hipotecada.");
+                return;
+            }
+            if(trato.getPropiedadOfrecida() instanceof Solar solarOfrecida){
+                if(solarOfrecida.tenEdificio() || solarOfrecida.getNumCasas()>0){
+                    Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " ten edificios construídos.");
+                    return;
+                }
+            }
+        }
+
+
+        if(trato.getTipoTrato()==1||trato.getTipoTrato()==3||trato.getTipoTrato()==4||trato.getTipoTrato()==5){
+            if(trato.getPropiedadSolicitada().getDuenho() != receptor){
+                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " xa non é túa.");
+                return;
+            }
+            if(trato.getPropiedadSolicitada().getHipotecada()){
+                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " está hipotecada.");
+                return;
+            }
+            if(trato.getPropiedadSolicitada() instanceof Solar solarSolicitada){
+                if(solarSolicitada.tenEdificio() || solarSolicitada.getNumCasas()>0){
+                    Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " ten edificios construídos.");
+                    return;
+                }
+            }
+
+        }
+
+        if(trato.getTipoTrato()==2||trato.getTipoTrato()==4){
+            if(trato.getDineroSolicitado() > receptor.getFortuna()){
+                Valor.error("Pídense " + trato.getDineroSolicitado() + "€ pero só tes " + receptor.getFortuna() + "€ para aceptar este trato.");
+                return;
+            }
+        }
+
+        if(trato.getTipoTrato()==3||trato.getTipoTrato()==5){
+            if(trato.getDineroOfrecido() > trato.getOfertante().getFortuna()){
+                Valor.error("Pídense " + trato.getDineroOfrecido() + "€ ao ofertante, pero só ten " + trato.getOfertante().getFortuna() + "€ para aceptar este trato.");
+                return;
+            }
+        }
+
+        Jugador solicitante = trato.getOfertante();
+        Propiedad propiedadOfrecida = trato.getPropiedadOfrecida();
+        Propiedad propiedadSolicitada = trato.getPropiedadSolicitada();
+        float dineroOfrecido = trato.getDineroOfrecido();
+        float dineroSolicitado = trato.getDineroSolicitado();
+        int tipoTrato = trato.getTipoTrato();
+        switch(tipoTrato){
+            case 1: //Casilla por casilla
+                propiedadOfrecida.setDuenho(receptor);
+                propiedadSolicitada.setDuenho(solicitante);
+                consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " intercambia " + propiedadOfrecida.getNombre() + " por " + propiedadSolicitada.getNombre() + " con " + receptor.getNombre() + ".");
+                break;
+            case 2: //Casilla por diñeiro
+                propiedadOfrecida.setDuenho(receptor);
+                solicitante.sumarFortuna(dineroSolicitado);
+                receptor.sumarFortuna(-dineroSolicitado);
+                consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " vende " + propiedadOfrecida.getNombre() + " por " + dineroSolicitado + "€ a " + receptor.getNombre() + ".");
+                break;
+            case 3: //Diñeiro por casilla
+                propiedadSolicitada.setDuenho(solicitante);
+                receptor.sumarFortuna(dineroOfrecido);
+                solicitante.sumarFortuna(-dineroOfrecido);
+                consol.imprimir("Trato realizado!!: " + receptor.getNombre() + " vende " + propiedadSolicitada.getNombre() + " por " + dineroOfrecido + "€ a " + solicitante.getNombre() + ".");
+                break;
+            case 4: //Casilla por casilla e diñeiro
+                propiedadOfrecida.setDuenho(receptor);
+                propiedadSolicitada.setDuenho(solicitante);
+                receptor.sumarFortuna(-dineroSolicitado);
+                solicitante.sumarFortuna(dineroSolicitado);
+                consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " intercambia " + propiedadOfrecida.getNombre() + " e "+dineroSolicitado+"€ por " + propiedadSolicitada.getNombre() + " con " + receptor.getNombre() + ".");
+                break;
+            case 5: //Casilla e diñeiro por casilla
+                propiedadOfrecida.setDuenho(receptor);
+                propiedadSolicitada.setDuenho(solicitante);
+                solicitante.sumarFortuna(-dineroOfrecido);
+                receptor.sumarFortuna(dineroOfrecido);
+        }
+        tratos.get(receptor).remove(trato);
+    }
+
+
+    public void eliminarTrato(String idTrato){
+        Jugador jugadorActual = jugadores.get(turno);
+        boolean existeTrato = false;
+        Tratos trato=null;
+        //Quero facer que itere por todos os tratos que EFECTUOU o xogador actual, non por todos os tratos que ten o xogador actual
+        //Pa eso, facemos:
+        for(Jugador j: jugadores){
+            if(j == jugadorActual){
+                continue;
+            }
+            for(Tratos t : tratos.get(j)){
+                if(t.getId().equalsIgnoreCase(idTrato)){
+                    existeTrato = true;
+                    trato = t;
+                    break;
+                }
+            }
+        }
+
+        if(!existeTrato){
+            Valor.error("Non existe ningún trato con ese ID feito polo xogador " + jugadorActual.getNombre() + ".");
+            return;
+        }
+
+
+        tratos.get(trato.getReceptor()).remove(trato);
+        consol.imprimir("Trato eliminado correctamente.");
+    }
+
+
+    public void verTratos(){
+        Jugador jugadorActual = jugadores.get(turno);
+        if(tratos.get(jugadorActual)==null || tratos.get(jugadorActual).isEmpty()){
+            consol.imprimir("Non tes ningún trato pendente.");
+            return;
+        }
+        for(Tratos t : tratos.get(jugadorActual)){
+            consol.imprimir(t.toString());
+        }
+    }
+
+    
     // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
     @Override
     public void acabarTurno() {
@@ -774,10 +1093,37 @@ public class Juego implements Comando{
 
         }
         if(!solvente){
+            if(!primeiraBancarrota){
+                solvente = jugadorActual.getAvatar().getLugar().EvaluarCasilla(jugadorActual,banca,0, getTablero().getPosiciones());
+            }
+            if(solvente){
+                consol.imprimir("\nXa pagaches as túas débedas, podes seguir xogando normalmente.\n");
+                primeiraBancarrota=true;
+                tirado=false;
+                lanzamientos=0;
+                turno++;
+                if(turno==jugadores.size()){
+                    turno=0;
+                }
+                return;
+            }
             Jugador Recaudador = jugadorActual.getAvatar().getLugar().getDuenho();
-            consol.imprimir("\nNon pagaches as débedas.");
-            bancarrota(jugadorActual, Recaudador);
-            //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(jugadorActual,banca,0); <-non ten sentido facer aquí solvente, xa se fai cando tiras os dados.
+            consol.imprimir("\nTes débedas pendentes sen pagar");
+            String resposta = consol.leer("Queres rendirte? (Si, Non)\n");
+            if(resposta.equalsIgnoreCase("Non")){
+                if(primeiraBancarrota){
+                    primeiraBancarrota=false;
+                    consol.imprimir("\nLembrámosche que podes obter cartos vendendo edificios ou hipotecando propiedades.\n");
+                    return;
+                }else{
+                    consol.imprimir("\nXa te avisamos unha vez, non podes seguir xogando sen pagar as túas débedas.\n");
+                    return;
+                }
+                
+            }if(resposta.equalsIgnoreCase("Si")) {
+                bancarrota(jugadorActual, Recaudador);
+            }
+            //solvente = jugadorActual.getAvatar().getLugar().EvaluarCasilla(jugadorActual,banca,0, getTablero().getPosiciones()); <-non ten sentido facer aquí solvente, xa se fai cando tiras os dados.
             //^^, senón tiras os dados, non cambia o teu estado do xogo. Con saber en que casilla estás xa sabes a quen lle debes os cartos
             //^^ non lle vas pagar a ningúen máis que ao xogador da casilla que che fixo perder os cartos
             consol.imprimir("\nTurno acabado. O xogador "+ jugadorActual.getNombre()+ " foi eliminado. \n");

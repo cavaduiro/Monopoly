@@ -1,8 +1,7 @@
 package monopoly;
 
-import java.util.ArrayList;
 import casillas.*;
-
+import java.util.ArrayList;
 import partida.Jugador;
 
 public class Comunidade extends Carta {
@@ -19,27 +18,29 @@ public class Comunidade extends Carta {
 
     
     @Override
-    public void loxica(Jugador banca, Jugador actual, ArrayList<ArrayList<Casilla>> pos) {
+    public boolean loxica(Jugador banca, Jugador actual, ArrayList<ArrayList<Casilla>> pos) {
 
         switch (this.index) {
             case 0:
                 this.sumar();
-                Juego.consol
-                        .imprimir("Paga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas");
-                //CHEQUEAR FORTUNA, SE NON TEN, DEBERÍA MORRER
+                Juego.consol.imprimir("Paga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas");
+                if(actual.getFortuna() < 500000){
+                    Juego.consol.imprimir("O xogador " + actual.getNombre() + " non pode pagar a multa de 500000, xa que só ten "
+                             + actual.getFortuna() + ".");
+                    return false;
+                }
                 actual.sumarFortuna(-500000);
+                actual.getEstatisticas().acImpPagado(500000);
+
                 break;
             case 1:
-                this.sumar();
                 Juego.consol.imprimir("Vas á cárcel sin pasar por casilla de salida e sin cobrar");
                 actual.encarcelar(pos);
                 //actual.getEstatisticas().sumarCarcel();
                 break;
             case 2:
-                this.sumar();
                 //Colócate en casilla de salida cobrando 200000
                 Juego.consol.imprimir("Vas á casilla de saída, cobrando 2000000 euros.");
-                ;
                 Casilla casactual = actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
                 Casilla dest = actual.getAvatar().posIndex(0, pos);
@@ -50,14 +51,11 @@ public class Comunidade extends Carta {
                 actual.getAvatar().setLugar(dest);
                 break;
             case 3:
-                this.sumar();
-                ;
                 Juego.consol.imprimir("Devolución de Facenda, recibes 500000");
                 actual.sumarFortuna(500000);
                 actual.getEstatisticas().sumarbote(500000);
                 break;
             case 4:
-                this.sumar();
                 Juego.consol.imprimir("Retrocede a Solar1");
                 casactual = actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
@@ -67,7 +65,6 @@ public class Comunidade extends Carta {
                 dest.EvaluarCasilla(actual, banca, 0, pos);
                 break;
             case 5:
-                this.sumar();
                 Juego.consol.imprimir("Vas ó Solar20");
                 casactual = actual.getAvatar().getLugar();
                 casactual.eliminarAvatar(actual.getAvatar());
@@ -77,6 +74,8 @@ public class Comunidade extends Carta {
                 dest.EvaluarCasilla(actual, banca, 0, pos);
                 break;
         }
+        this.sumar();
+        return true;
     }
     
     public static synchronized Comunidade getInstance()

@@ -259,7 +259,7 @@ private void imprimirEspaciosCentrales(StringBuilder sb, int fila) {
     ascii[2] = " ".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      " + " ".repeat(espaciosDespois);
     ascii[3] = " ".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⡟⠛⠛⠛⠻⢶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-18)+"______________"+" ".repeat(4);
     ascii[4] = " ".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⠃⠀⠀⠀⢠⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"|___Leyenda____|"+" ".repeat(3);
-    ascii[5] = " ".repeat(espaciosAntes) + "        ⠀⠀⠀⢀⣤⠶⡶⢶⡶⣒⣲⠆⢰⣿⣿⣏⣀⣀⡀⢠⣿⣿⣿⣿⣿⡿⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ■ Casas      |"+" ".repeat(3);
+    ascii[5] = " ".repeat(espaciosAntes) + "        ⠀⠀⢀⣤⠶⡶⢶⡶⣒⣲⠆⢰⣿⣿⣏⣀⣀⡀⢠⣿⣿⣿⣿⣿⡿⢹⡇⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ■ Casas      |"+" ".repeat(3);
     ascii[6] = " ".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⢴⣄⠹⣦⠙⣯⠀⣠⣿⣿⠟⠛⠻⠿⢛⣿⣿⣿⣿⣿⡟⣰⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ▲ Hotel      |"+" ".repeat(3);
     ascii[7] = " ".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⠀⠀⠀⣸⠏⠀⢸⡏⢛⡿⠿⣿⣾⣿⣿⣯⣤⣤⣤⣤⣼⣿⣿⣿⣿⣿⣧⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ◆ Piscina    |"+" ".repeat(3);
     ascii[8] = " ".repeat(espaciosAntes) + "⠀⠀⠀⠀⠀⢀⣰⣦⡿⠀⠀⠋⢀⣠⡴⢞⡿⢻⠆⠀⠀⠩⠿⠻⣯⠉⠙⠛⢻⣿⣭⡛⢷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"+ " ".repeat(espaciosDespois-19)+"| ● P.Deporte  |"+" ".repeat(3);

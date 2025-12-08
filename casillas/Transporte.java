@@ -1,6 +1,5 @@
 package casillas;
 import java.util.ArrayList;
-import monopoly.*;
 import partida.*;
 public class Transporte extends Propiedad {
     public Transporte(String nombre, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {

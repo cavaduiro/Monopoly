@@ -1,8 +1,8 @@
 package casillas;
 
+import java.util.ArrayList;
 import monopoly.*;
 import partida.*;
-import java.util.ArrayList;
 
 public class CasillaSorte extends Accion {
     private Jugador duenho;
@@ -16,10 +16,10 @@ public class CasillaSorte extends Accion {
 
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, ArrayList<ArrayList<Casilla>> pos) {
-        sorte.loxica(banca, actual, pos);
-        return true;
+        return sorte.loxica(banca, actual, pos);
     }
-            @Override
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{\tnombre: ").append(this.getNombre()).append("\n");
