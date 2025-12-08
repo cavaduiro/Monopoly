@@ -1,5 +1,7 @@
 package casillas;
 import java.util.ArrayList;
+
+import monopoly.Juego;
 import partida.*;
 public class Transporte extends Propiedad {
     public Transporte(String nombre, int posicion, float valor, Jugador duenho, float impuesto, float hipoteca) {
@@ -24,10 +26,17 @@ public class Transporte extends Propiedad {
                 return false;
             }
             else{
+            if(!this.getHipotecada()){
             actual.sumarFortuna(-impuesto);
             super.getDuenho().sumarFortuna(impuesto);
+            Juego.consol.imprimir("O xogador " + actual.getNombre() + " pagou " + impuesto + " $ de aluguer a " + super.getDuenho().getNombre() + " por caer na casilla "+ this.getNombre() + ".");
+            actual.getEstatisticas().transAlq(impuesto);
+            }
+            else{
+                Juego.consol.imprimir("A casilla "+ this.getNombre() + " está hipotecada, polo que non se paga aluguer.");
             }
         }
+     }
         
         return true;
    } 

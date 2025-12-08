@@ -16,7 +16,7 @@ public class Especial extends Casilla {
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,
             java.util.ArrayList<java.util.ArrayList<Casilla>> pos) {
         if (this.getNombre().equals("Salida")) {
-        } else if (this.getNombre().equals("Cárcel")) {
+        } else if (this.getNombre().equals("IrCarcel")) {
             Juego.consol.imprimir("Caíches en IrCarcel, irás ao cárcere...");
             actual.encarcelar(pos);
         } else if (this.getNombre().equals("Carcel")) {

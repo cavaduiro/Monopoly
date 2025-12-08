@@ -91,8 +91,8 @@ public class Juego implements Comando{
                 crearxogador(cmdseparado);
                 break;
             case "describir":
-                if(cmdseparado.length!=2){
-                 System.out.println("Uso: describir jugador <nombreJugador>  -  describir <nombreCasilla>");
+                if(cmdseparado.length!=3){
+                 consol.imprimir("Uso: describir jugador <nombreJugador>  -  describir <nombreCasilla>");
                  break;
                 }
                 describir(cmdseparado);
@@ -211,7 +211,7 @@ public class Juego implements Comando{
                     }
                 if (cmdseparado.length < 2){
                     Valor.error("Número de argumentos erróneo.");
-                    System.out.println("Uso: deshipotecar <propiedad>");
+                    consol.imprimir("Uso: deshipotecar <propiedad>");
                     break;
                 }
                 deshipotecar(cmdseparado);
@@ -283,7 +283,7 @@ public class Juego implements Comando{
     public void listar(String[] partes){
         if(partes.length<2){
             Valor.error("Non inseriu o número de comandos suficientes");
-            System.out.println("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
+            consol.imprimir("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
         }
         if(partes[1].equalsIgnoreCase("jugadores")){
             listarJugadores();
@@ -306,7 +306,7 @@ public class Juego implements Comando{
     public void describir(String[] partes){
         if(partes.length < 2 || partes.length > 3){
             Valor.error("Número de parámetros incorrecto");
-            System.out.println("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
+            consol.imprimir("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
             return;
         }
         if(partes[1].equalsIgnoreCase("jugador")&& partes.length==3){
@@ -328,7 +328,7 @@ public class Juego implements Comando{
         }
         if(partes.length !=4){
             Valor.error("Número de parámetros incorrecto.");
-            System.out.println("Uso: crear jugador nome tipoAvatar");
+            consol.imprimir("Uso: crear jugador nome tipoAvatar");
             return;
         }
         if(jugadores.size()==4){
@@ -365,7 +365,7 @@ public class Juego implements Comando{
             Valor.error("Non hai xogadores aínda.");
             return;
         }
-        //System.out.println("Nome do xogador a describir: "+partes[2] );
+        //consol.imprimir("Nome do xogador a describir: "+partes[2] );
         boolean encontrado = false;
         for(Jugador aux:jugadores){
             if(aux.getNombre().equals(partes[2])){
@@ -411,7 +411,7 @@ public class Juego implements Comando{
     public void lanzarDados(String[] partes) {
         if(partidaIniciada==false && jugadores.size()>=2){
             partidaIniciada=true;
-            System.out.println("\033[1m\nA partida comezou\033[0m\n");
+            consol.imprimir("\033[1m\nA partida comezou\033[0m\n");
         }
         else if(partidaIniciada==false && jugadores.size()<2){
             Valor.error("A partida aínda non comezou, necesítanse dous xogadores.");
@@ -455,7 +455,7 @@ public class Juego implements Comando{
         }
 
         if(lanzamientos==2 && valor1==valor2){
-            System.out.println("\nSacaches tres dobles seguidos, \033[1mvas ao cárcere.\033[0m\n");
+            consol.imprimir("\nSacaches tres dobles seguidos, \033[1mvas ao cárcere.\033[0m\n");
             jugadorActual.encarcelar(tablero.getPosiciones());
             lanzamientos=0;
             tirado=true;
@@ -469,7 +469,7 @@ public class Juego implements Comando{
         
         tirado=true;
         if(valor1==valor2&&!jugadorActual.getEnCarcel()){
-            System.out.println("Sacaches dobles");
+            consol.imprimir("Sacaches dobles");
             tirado=false;
 
         }
@@ -498,7 +498,7 @@ public class Juego implements Comando{
             actual.sumarFortuna(-500000);
             actual.getEstatisticas().acImpPagado(500000);
             actual.setEnCarcel(false);
-            System.out.println(actual.getNombre()+" pagaches a cuota de 500000€ e saíches do cárcere, podes tirar os dados.");
+            consol.imprimir(actual.getNombre()+" pagaches a cuota de 500000€ e saíches do cárcere, podes tirar os dados.");
 
         }
     }
@@ -632,7 +632,7 @@ public class Juego implements Comando{
         else{
             jugadorActual.setEnCarcel(false);
 
-            System.out.println("Saíches do cárcere.");
+            consol.imprimir("Saíches do cárcere.");
         }
     }
 
@@ -726,25 +726,25 @@ public class Juego implements Comando{
         }
         if (!atopou) {
             //ERROR CHEQUEABLE
-            System.out.println("Non hai edificios construídos neste grupo de cor ou a cor non é válida.");
+            consol.imprimir("Non hai edificios construídos neste grupo de cor ou a cor non é válida.");
         }else{
             if(deporte){
-                System.out.println("Xa non podes construír máis edificios neste grupo.");
+                consol.imprimir("Xa non podes construír máis edificios neste grupo.");
                 return;
             }
             if(piscina){
-                System.out.println("Xa non podes construír máis casas, hoteis nin piscinas, pero aínda podes construír un deporte.");
+                consol.imprimir("Xa non podes construír máis casas, hoteis nin piscinas, pero aínda podes construír un deporte.");
                 return;
             }
             if(hotel){
-                System.out.println("Xa non podes construír máis casas nin hoteis, pero aínda podes construír unha piscina e un deporte.");
+                consol.imprimir("Xa non podes construír máis casas nin hoteis, pero aínda podes construír unha piscina e un deporte.");
                 return;
             }
             if(casas == 4){
-                System.out.println("Xa non podes construír máis casas neste grupo, pero aínda podes construír un hotel, unha piscina e un deporte.");
+                consol.imprimir("Xa non podes construír máis casas neste grupo, pero aínda podes construír un hotel, unha piscina e un deporte.");
             }
             if(casas < 4){
-                System.out.println("Aínda podes construír "+(4-casas)+" casas neste grupo, un hotel, unha piscina e un deporte.");
+                consol.imprimir("Aínda podes construír "+(4-casas)+" casas neste grupo, un hotel, unha piscina e un deporte.");
             }
         }
     }
@@ -1164,7 +1164,7 @@ public class Juego implements Comando{
             }
         }else{
             //ERROR CHEQUEABLE
-                System.out.println("\nO xogador endeudado non ten propiedades...");
+                consol.imprimir("\nO xogador endeudado non ten propiedades...");
             }
 
     }
@@ -1184,16 +1184,16 @@ public class Juego implements Comando{
             
             for(String comando : comandos) {
                 if(!comando.trim().isEmpty()) {
-                    System.out.println("Executando: " + comando);
+                    consol.imprimir("Executando: " + comando);
                     analizarComando(comando);
                 }
             }
         } catch (java.io.FileNotFoundException e) {
             //ERROR CHEQUEABLE
-            System.out.println("Non se atopou o arquivo: " + nomeArquivo);
+            consol.imprimir("Non se atopou o arquivo: " + nomeArquivo);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error ao ler o arquivo: " + e.getMessage());
+            consol.imprimir("Error ao ler o arquivo: " + e.getMessage());
         }
         this.comandos = false;
     }
@@ -1206,7 +1206,7 @@ public class Juego implements Comando{
         for(Propiedad aux : ganhador.getPropiedades()){
             consol.imprimir(aux.getNombre());
         }
-        System.out.println("}");
+        consol.imprimir("}");
     return true;
     }
     @Override
@@ -1248,7 +1248,7 @@ public class Juego implements Comando{
         }
         if (casillaMax.getDuenho() == banca) {
             //error chequeable
-            System.out.println("\n -*Ningunha propiedade foi comprada aínda.\n");
+            consol.imprimir("\n -*Ningunha propiedade foi comprada aínda.\n");
             primeraComprada = false;
         }else{
             consol.imprimir(" -*Casilla máis rentable: "+casillaMax.getNombre()+".\n");
@@ -1308,12 +1308,12 @@ public class Juego implements Comando{
             }
         }
         if(voltasmax.getEstatisticas().getVoltasDadas()!=0){
-            System.out.println(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
+            consol.imprimir(" -*Xogador con máis voltas: "+voltasmax.getNombre()+".\n");
         }else{
-            System.out.println(" -*Ningún xogador ten voltas todavía.\n");
+            consol.imprimir(" -*Ningún xogador ten voltas todavía.\n");
         }
 
-        System.out.println(" -*Xogador en cabeza: "+fortunamax.getNombre()+", con unha fortuna de "+fortunamax.getFortuna()+" €.\n");
+        consol.imprimir(" -*Xogador en cabeza: "+fortunamax.getNombre()+", con unha fortuna de "+fortunamax.getFortuna()+" €.\n");
 
         *
         *

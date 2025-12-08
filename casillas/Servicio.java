@@ -42,8 +42,15 @@ public class Servicio extends Propiedad {
                 Juego.consol.imprimir("O xogador "+actual.getNombre()+" non pode pagar, debe "+impuesto+" e ten "+actual.getFortuna());
                 return false;
             } else {
+                if(!this.getHipotecada()){
                 actual.sumarFortuna(-impuesto);
                 this.getDuenho().sumarFortuna(impuesto);
+                Juego.consol.imprimir("O xogador " + actual.getNombre() + " pagou " + impuesto + " $ de aluguer a " + this.getDuenho().getNombre() + " por caer na casilla " + this.getNombre() + ".");
+                actual.getEstatisticas().transAlq(impuesto);
+                }
+                else{
+                    Juego.consol.imprimir("A casilla "+ this.getNombre() + " está hipotecada, polo que non se paga aluguer.");
+                }
             }
         }
         return true;
