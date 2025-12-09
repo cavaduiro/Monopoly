@@ -602,7 +602,7 @@ public class Juego implements Comando{
         for (ArrayList<Casilla> lado : pos) {
             for (Casilla casilla : lado) {
                 if (casilla.getDuenho() == banca && (casilla instanceof Propiedad)) {
-                    System.out.println(casilla);
+                    consol.imprimir(casilla.toString());
                 }
             }
         }
@@ -611,7 +611,7 @@ public class Juego implements Comando{
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
         for(Jugador aux:jugadores){
-            System.out.println(aux);
+            consol.imprimir(aux.toString());
         }
     }
     private void listarEdificios() throws ExcepcionLoxicaPartida {

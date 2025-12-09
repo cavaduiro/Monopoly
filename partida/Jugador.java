@@ -85,7 +85,7 @@ public class Jugador {
     //Metodo para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Propiedad casilla) {
         if (this.propiedades.contains(casilla)) {
-            System.out.println("\nO xogador xa ten esa propiedade.\n");
+            Juego.consol.imprimir("\nO xogador xa ten esa propiedade.\n");
             return;
         }
         if(this.fortuna < casilla.getValor()) {

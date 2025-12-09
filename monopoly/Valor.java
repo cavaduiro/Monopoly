@@ -192,6 +192,6 @@ public class Valor {
         }
 
         public static void error(String mensaje) {
-            System.out.println(RED + "\033[1mError: \033[0m" + mensaje + RESET);
+            Juego.consol.imprimir(RED + "\033[1mError: \033[0m" + mensaje + RESET);
         }
 }
