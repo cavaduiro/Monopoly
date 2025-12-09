@@ -65,9 +65,7 @@ public class Sorte extends Carta {
                 int numJugadores = auxJugadores.size();
                 float totalPagar = bote * numJugadores;
                 if (actual.getFortuna() < totalPagar) {
-                    Juego.consol.imprimir("O xogador " + actual.getNombre() + " non pode pagar o bote total de "
-                            + totalPagar + ", xa que só ten " + actual.getFortuna() + ".");
-                    return false;
+                    throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), (int)totalPagar);
                 } else {
                     for (Jugador aux : auxJugadores) {
                         actual.getEstatisticas().acImpPagado(bote);
