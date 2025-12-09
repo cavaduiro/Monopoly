@@ -51,7 +51,7 @@ public abstract class Propiedad extends Casilla {
         return this.alquiler;
     }
 
-    public float getRentabilidade() {
+    public float getRentabilidad() {
         return rentabilidade;
     }
 
@@ -107,9 +107,6 @@ public abstract class Propiedad extends Casilla {
         duenho = Recaudador;
     }
 
-    public float getRentabilidad() {
-        return 0; //HAI QUE IMPLEMENTALO
-    }
     
     }
 

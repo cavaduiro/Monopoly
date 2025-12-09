@@ -26,9 +26,6 @@ public class Solar extends Propiedad {
         this.custoCasa = Valor.getCosteCompraEdificio(getPosicion(), "casa");
     }
 
-    
-    
-
 
 
 

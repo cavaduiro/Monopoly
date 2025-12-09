@@ -3,7 +3,14 @@ package monopoly;
 
 
 import casillas.*;
+import exception.Excepcion;
+import exception.valorInvalido.ExcepcionOOR;
+import exception.ExcepcionNoExiste;
+import exception.ExcepcionPartida;
 import exception.ExcepcionSintaxis;
+import exception.ExcepcionValorInvalido;
+import exception.valorInvalido.ExcepcionOOR;
+import exception.valorInvalido.ExcepcionSinCartos;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -57,12 +64,21 @@ public class Juego implements Comando{
                 } else { //Se a partida non comezou, mostramos o prompt xenérico
                     comando = consol.leer("\033[1m$:\033[0m");
                 }
-
-
                 analizarComando(comando);
             } catch (ExcepcionSintaxis e) //aquí hai que facer multicatch
             {
                 consol.imprimir(e.getMessage());
+            }catch(ExcepcionNoExiste e){
+
+            }catch(ExcepcionOOR e)
+            {
+                
+            } catch (ExcepcionSinCartos e) {
+                
+            } catch (ExcepcionPartida e) {
+                
+            } catch (ExcepcionValorInvalido e) {
+                
             }
             
             
@@ -81,7 +97,7 @@ public class Juego implements Comando{
      * Método que analiza el comando introducido por el usuario y llama a los métodos correspondientes.
      * Parámetro: cadena de caracteres con el comando introducido.
     */
-    private void analizarComando(String comando) throws ExcepcionSintaxis{
+    private void analizarComando(String comando) throws ExcepcionSintaxis, ExcepcionNoExiste, ExcepcionValorInvalido,  ExcepcionOOR, ExcepcionSinCartos, ExcepcionPartida{
         String[] cmdseparado = comando.split(" "); //Separamos el comando por espacios para analizarlo mejor, .split(" ") separa en cada espacio
         switch (cmdseparado[0]){
             case "crear":
@@ -92,8 +108,7 @@ public class Juego implements Comando{
                 break;
             case "describir":
                 if(cmdseparado.length!=3){
-                 consol.imprimir("Uso: describir jugador <nombreJugador>  -  describir <nombreCasilla>");
-                 break;
+                 throw new ExcepcionSintaxis("Uso: describir jugador <nombreJugador>  -  describir <nombreCasilla>");
                 }
                 describir(cmdseparado);
                 break;
@@ -113,8 +128,8 @@ public class Juego implements Comando{
             case "lanzar":
                 if(cmdseparado.length<2){
                     //ERROR CHEQUEABLE
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: lanzar dados  -  lanzar dados dado1+dado2");
+                    // ("Número de argumentos erróneo.");
+                    throw new ExcepcionSintaxis("Uso: lanzar dados  -  lanzar dados dado1+dado2");
                 }
                 if(cmdseparado[1].equalsIgnoreCase("dados")){
                     lanzarDados(cmdseparado);
@@ -122,9 +137,7 @@ public class Juego implements Comando{
                 break;
             case "salir":
                 if(cmdseparado.length<2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: salir carcel");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: salir carcel");
                 }
                 if(cmdseparado[1].equalsIgnoreCase("cárcel") || cmdseparado[1].equalsIgnoreCase("carcel")){
                     salirCarcelPagando();
@@ -137,130 +150,113 @@ public class Juego implements Comando{
                 break;
             case "comprar":
                 if(cmdseparado.length<2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: comprar <propiedad>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: comprar <propiedad>");
                 }
                 comprar(cmdseparado[1]);
                 break;
             case "comandos":
                 if(cmdseparado.length < 2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: comandos <archivo>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: comandos <archivo>");
                 }
                 leerArquivo(cmdseparado[1]);
                 break;
             case "estadisticas":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non hai estatísticas que mostrar.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non hai estatísticas que mostrar.");
                 }
                 if (cmdseparado.length < 2){
                     estadisticasPartida();
                     break;
                 }else if(cmdseparado.length>3)
                 {
-                    Valor.error("Numero de comandos erróneo");
-                    consol.imprimir("Uso: estadisticas <opcional: jugador>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: estadisticas <opcional: jugador>");
                 }
                 estadisticasXogador(cmdseparado);
                 break;
             case "edificar":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden edificar edificios.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden edificar edificios.");
                 }
                 if(cmdseparado.length<2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: edificar <propiedad>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: edificar <propiedad>");
+                
                 }
                 edificar(cmdseparado);
                 break;
             case "vender":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden vender edificios.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden vender edificios.");
                 }
                 if(cmdseparado.length<4){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: vender <tipo> <solar> <cantidade>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: vender <tipo> <solar> <cantidade>");
                 }
                 
                 vender(cmdseparado);
                 break;
             case "hipotecar":
                 if (!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden hipotecar propiedades.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden hipotecar propiedades.");
                 }
                 if (cmdseparado.length < 2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: hipotecar <propiedad>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: hipotecar <propiedad>");
+                    
                 }
                 hipotecar(cmdseparado);
                 break;
             case "deshipotecar":
                 if (!partidaIniciada){
-                        Valor.error("A partida aínda non comezou, non se poden hipotecar propiedades.");
-                        break;
+                       throw new ExcepcionPartida("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                        
                     }
                 if (cmdseparado.length < 2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: deshipotecar <propiedad>");
-                    break;
+                    
+                    throw new ExcepcionSintaxis("Uso: deshipotecar <propiedad>");
                 }
                 deshipotecar(cmdseparado);
                 break;
             case "trato":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden facer tratos.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden facer tratos.");
+                    
                 }
                 if(cmdseparado.length!=5 && cmdseparado.length!=7){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: trato <nombreReceptor> <propiedadOfrecida/dineroOfrecido> <propiedadSolicitada/dineroSolicitado>");
-                    break;
+                    
+                    throw new ExcepcionSintaxis("Uso: trato <nombreReceptor> <propiedadOfrecida/dineroOfrecido> <propiedadSolicitada/dineroSolicitado>");
+                   
                 }
                 tratos(cmdseparado);
                 break;
             case "aceptar":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden aceptar tratos.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden aceptar tratos.");
+                    
                 }
                 if(cmdseparado.length!=2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: aceptar <idTrato>");
-                    break;
+                    throw new ExcepcionSintaxis("Uso: aceptar <idTrato>");
+                    
                 }
                 aceptarTrato(cmdseparado[1]);
                 break;
             case "eliminar":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden eliminar tratos.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden eliminar tratos.");
+                
                 }
                 if(cmdseparado.length!=2){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: eliminar <idTrato>");
-                    break;
+                   
+                    throw new ExcepcionSintaxis("Uso: eliminar <idTrato>");
+                    
                 }
                 eliminarTrato(cmdseparado[1]);
                 break;
             case "tratos":
                 if(!partidaIniciada){
-                    Valor.error("A partida aínda non comezou, non se poden ver tratos.");
-                    break;
+                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden ver tratos.");
+           
                 }
-                if(cmdseparado.length!=1){
-                    Valor.error("Número de argumentos erróneo.");
-                    consol.imprimir("Uso: tratos");
-                    break;
+                if(cmdseparado.length!=1){ 
+                    throw new ExcepcionSintaxis("Uso: tratos");
+                 
                 }
                 verTratos();
                 break;
@@ -280,10 +276,9 @@ public class Juego implements Comando{
      * Parámetro: array de cadenas de caracteres con las partes del comando. 
     */
     @Override
-    public void listar(String[] partes){
+    public void listar(String[] partes) throws ExcepcionSintaxis{
         if(partes.length<2){
-            Valor.error("Non inseriu o número de comandos suficientes");
-            consol.imprimir("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
+            throw new ExcepcionSintaxis("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
         }
         if(partes[1].equalsIgnoreCase("jugadores")){
             listarJugadores();
@@ -294,7 +289,7 @@ public class Juego implements Comando{
         }else if(partes[1].equalsIgnoreCase("edificios") && partes.length==3){
             listarEdificiosGrupo(partes[2]);
         }else{
-            Valor.error("Comando introducido erróneo.");
+            throw new ExcepcionSintaxis("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
         }
     }
 
@@ -303,11 +298,9 @@ public class Juego implements Comando{
      * Parámetro: array de cadenas de caracteres con las partes del comando. 
     */
     @Override
-    public void describir(String[] partes){
+    public void describir(String[] partes) throws ExcepcionSintaxis, ExcepcionPartida, ExcepcionValorInvalido, ExcepcionNoExiste{
         if(partes.length < 2 || partes.length > 3){
-            Valor.error("Número de parámetros incorrecto");
-            consol.imprimir("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
-            return;
+            throw new ExcepcionSintaxis("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
         }
         if(partes[1].equalsIgnoreCase("jugador")&& partes.length==3){
             descJugador(partes);
@@ -321,32 +314,26 @@ public class Juego implements Comando{
      * Parámetro: nome do xogador a crear. 
     */
    @Override
-    public void crearxogador(String[] partes) {
+    public void crearxogador(String[] partes) throws ExcepcionPartida, ExcepcionSintaxis, ExcepcionOOR, ExcepcionValorInvalido{
         if(partidaIniciada){
-            Valor.error("A partida xa comezou. Non se poden engadir máis xogadores.");
-            return;
+            throw new ExcepcionPartida("A partida xa comezou. Non se poden engadir máis xogadores.");
         }
         if(partes.length !=4){
-            Valor.error("Número de parámetros incorrecto.");
-            consol.imprimir("Uso: crear jugador nome tipoAvatar");
-            return;
+            throw new ExcepcionSintaxis("Uso: crear jugador nome tipoAvatar");
         }
         if(jugadores.size()==4){
-            Valor.error("Número máximo de xogadores alcanzado (4).");
-            return;
+            throw new ExcepcionOOR("Número máximo de xogadores alcanzado (4).");
+    
         }
         if(!partes[3].equalsIgnoreCase("coche")&&!partes[3].equalsIgnoreCase("sombrero")&&!partes[3].equalsIgnoreCase("esfinge")&&!partes[3].equalsIgnoreCase("pelota"))    {
-            Valor.error("Tipo de avatar non válido. Os tipos dispoñibles son: coche, sombrero, esfinge e pelota.");
-                return;
+            throw new ExcepcionValorInvalido("Tipo de avatar non válido. Os tipos dispoñibles son: coche, sombrero, esfinge e pelota.");
         }
         for(Jugador aux:jugadores){
-            if(aux.getNombre().equals(partes[2])){
-                Valor.error("Xa existe un xogador co nome "+partes[2]+".");
-                return;
+            if (aux.getNombre().equals(partes[2])) {
+                throw new ExcepcionValorInvalido("X;a existe un xogador co nome " + partes[2] + ".");
             }
             else if(aux.getAvatar().getTipo().equalsIgnoreCase(partes[3])){
-                Valor.error("Xa existe un xogador co avatar "+partes[3]+".");
-                return;
+                throw new ExcepcionValorInvalido("Xa existe un xogador co avatar "+partes[3]+".");
             }
         }
         Casilla auxsal = tablero.encontrar_casilla("Salida"); //Colocamos o xogador creado na casilla de saída
@@ -360,22 +347,22 @@ public class Juego implements Comando{
      *Describe un xogador dado polo nome.
      * Parámetro: nome do xogador a describir. 
     */
-    private void descJugador(String[] partes) {
+    private void descJugador(String[] partes) throws ExcepcionPartida,ExcepcionNoExiste {
         if(jugadores.isEmpty()){
-            Valor.error("Non hai xogadores aínda.");
-            return;
+            throw new ExcepcionPartida("Non hai xogadores aínda.");
+            
         }
         //consol.imprimir("Nome do xogador a describir: "+partes[2] );
         boolean encontrado = false;
         for(Jugador aux:jugadores){
             if(aux.getNombre().equals(partes[2])){
-                System.out.println(aux);
+                consol.imprimir(aux.toString());
                 encontrado = true;
                 break;
             }
         }
         if(!encontrado){
-            Valor.error("Non existe un xogador co nome" + partes[2]);
+            throw new ExcepcionNoExiste("Non existe un xogador co nome" + partes[2]);
         }
     }
     
@@ -384,12 +371,12 @@ public class Juego implements Comando{
      *Describe unha casilla dado polo nome.
      * Parámetro: nome da casilla a describir.
     */
-    public void descCasilla(String[] nombre) {
+    public void descCasilla(String[] nombre) throws ExcepcionNoExiste {
         Casilla aux =tablero.encontrar_casilla(nombre[1]);
         if(aux != null){
-            System.out.println(aux);
+            consol.imprimir(aux.toString());
         }else{
-            Valor.error("Non existe ningunha casilla chamada " + nombre[1]);
+            throw new ExcepcionNoExiste("Non existe ningunha casilla chamada " + nombre[1]);
         }
     }
 
@@ -400,7 +387,7 @@ public class Juego implements Comando{
     @Override
     public void xogadorturno(){
         Jugador jugadorActual = jugadores.get(turno);
-        System.out.println(jugadorActual);
+        consol.imprimir(jugadorActual.toString());
     }
 
     /*
@@ -408,14 +395,13 @@ public class Juego implements Comando{
      * Parámetro: os números dos dados (opcional).
     */ 
    @Override
-    public void lanzarDados(String[] partes) {
+    public void lanzarDados(String[] partes) throws ExcepcionPartida {
         if(partidaIniciada==false && jugadores.size()>=2){
             partidaIniciada=true;
             consol.imprimir("\033[1m\nA partida comezou\033[0m\n");
         }
         else if(partidaIniciada==false && jugadores.size()<2){
-            Valor.error("A partida aínda non comezou, necesítanse dous xogadores.");
-            return;
+            throw new ExcepcionPartida("A partida aínda non comezou, necesítanse dous xogadores.");
         }
 
         boolean forzar=false;
