@@ -1221,7 +1221,7 @@ public void leerArquivo(String nomeArquivo){
         }
         if(grupoComprado){ 
             //ERROR
-            consol.imprimir(" -*O grupo máis rentable é: "+grupomax.getColorGrupo());
+            consol.imprimir(" -*O grupo máis rentable é: "+ Valor.getNombreColor(grupomax.getColorGrupo()));
         }else{
             consol.imprimir(" -*Ningún grupo foi comprado aínda.\n");
         }
