@@ -1,11 +1,14 @@
 package exception;
+
+import monopoly.Valor;
+
 public class ExcepcionValorInvalido extends Excepcion {
     public ExcepcionValorInvalido(){
         super();
     }
     
     public ExcepcionValorInvalido(String mensaje){
-       super("\033[1mValor inválido: \033[0m" + mensaje);
+        super(Valor.RED+"Valor inválido: "+Valor.RESET+Valor.NEGRITA+mensaje+Valor.RESET);
     }
     
 }

@@ -7,7 +7,7 @@ public class ExcepcionLoxicaPartida extends Excepcion {
     }
     
     public ExcepcionLoxicaPartida(String mensaje){
-       super(Valor.RED + "Lóxica inválida: "+Valor.RESET+Valor.NEGRITA+mensaje + Valor.RESET);
+        super(Valor.RED+"Lóxica inválida: "+Valor.RESET+Valor.NEGRITA+mensaje+Valor.RESET);
     }
     
 }

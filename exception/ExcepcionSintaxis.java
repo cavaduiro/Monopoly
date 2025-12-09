@@ -1,10 +1,13 @@
 package exception;
+
+import monopoly.Valor;
+
 public class ExcepcionSintaxis extends Excepcion {
     public ExcepcionSintaxis(){
         super();
     }
     
     public ExcepcionSintaxis(String mensaje){
-       super("\033[1mComando incorrecto: \033[0m" + mensaje);
+        super(Valor.RED+"Sintaxis incorrecta: "+Valor.RESET+Valor.NEGRITA+mensaje+Valor.RESET);
     }
 }
