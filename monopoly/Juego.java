@@ -14,6 +14,8 @@ import exception.comandoInvalido.ExcepcionPartidaXaEmpezou;
 import exception.comandoInvalido.ExcepcionXaTirachesDados;
 import exception.valorInvalido.ExcepcionOOR;
 import exception.valorInvalido.ExcepcionSinCartos;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -99,7 +101,7 @@ public class Juego implements Comando{
                 crearxogador(cmdseparado);
                 break;
             case "describir":
-                if(cmdseparado.length!=3){
+                if(cmdseparado.length!=3&&cmdseparado.length!=2){
                  throw new ExcepcionSintaxis("Uso: describir jugador <nombreJugador>  -  describir <nombreCasilla>");
                 }
                 describir(cmdseparado);
@@ -730,7 +732,9 @@ public class Juego implements Comando{
             if(casaux.tenEdificio()){
                 throw new ExcepcionLoxicaPartida("Esta propiedade ten edificios construídos, debes vendelos antes de hipotecar.");
             }
-
+            if(casaux.getGrupo().haiEdificiosNoGrupo()){
+                throw new ExcepcionLoxicaPartida("Non podes hipotecar esta propiedade porque hai edificios construídos noutro solar do mesmo grupo "+Valor.getNombreColor(casaux.getGrupo().getColorGrupo())+".");
+            }
         }
         casillaPropiedade.hipotecarCasilla();
     }   
@@ -810,13 +814,13 @@ public class Juego implements Comando{
                 String argumento1 = partes[3].replace("(", "").replace(",", "").trim(); //Aquí eliminamos el paréntesis de apertura e a coma despois da casilla ofrecida
                 propiedadOfrecida = (Propiedad) tablero.encontrar_casilla(argumento1);          
 
-                propiedadSolicitada = (Propiedad) tablero.encontrar_casilla(partes[5]);
+                propiedadSolicitada = (Propiedad) tablero.encontrar_casilla(partes[4]);
 
-                String argumento2 = partes[6].replace(")", "").trim(); //Aquí eliminamos o paréntese de peche
-                if(!esFloat(argumento2)){
+                String argumento3 = partes[6].replace(")", "").trim(); //Aquí eliminamos o paréntese de peche
+                if(!esFloat(argumento3)){
                     throw new ExcepcionValorInvalido("O diñeiro solicitado non é válido.");
                 }
-                dineroSolicitado = Float.parseFloat(argumento2);
+                dineroSolicitado = Float.parseFloat(argumento3);
             }
         }
         else{
@@ -880,16 +884,19 @@ public class Juego implements Comando{
         }
 
 
-        if(trato.getTipoTrato()==1||trato.getTipoTrato()==2||trato.getTipoTrato()==3||trato.getTipoTrato()==4||trato.getTipoTrato()==5){
+        if(trato.getTipoTrato()==1||trato.getTipoTrato()==2||trato.getTipoTrato()==4||trato.getTipoTrato()==5){
             if(trato.getPropiedadOfrecida().getDuenho() != trato.getOfertante()){
                 throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " xa non pertence ao ofertante.");
-            }
+            }   
             if(trato.getPropiedadOfrecida().getHipotecada()){
                 throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " está hipotecada.");
             }
             if(trato.getPropiedadOfrecida() instanceof Solar solarOfrecida){
-                if(solarOfrecida.tenEdificio() || solarOfrecida.getNumCasas()>0){
+                if(solarOfrecida.tenEdificio()){
                     throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " ten edificios construídos.");
+                }
+                if(solarOfrecida.getGrupo().haiEdificiosNoGrupo()){
+                    throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque hai edificios construídos noutro solar do mesmo grupo que " + trato.getPropiedadOfrecida().getNombre() + ", o grupo "+Valor.getNombreColor(solarOfrecida.getGrupo().getColorGrupo())+".");
                 }
             }
         }
@@ -903,10 +910,14 @@ public class Juego implements Comando{
                 throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " está hipotecada.");
             }
             if(trato.getPropiedadSolicitada() instanceof Solar solarSolicitada){
-                if(solarSolicitada.tenEdificio() || solarSolicitada.getNumCasas()>0){
+                if(solarSolicitada.tenEdificio()){
                     throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " ten edificios construídos.");
                 }
+                if(solarSolicitada.getGrupo().haiEdificiosNoGrupo()){
+                    throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque hai edificios construídos noutro solar do mesmo grupo que " + trato.getPropiedadSolicitada().getNombre() + ", o grupo "+Valor.getNombreColor(solarSolicitada.getGrupo().getColorGrupo())+".");
+                }
             }
+            
 
         }
 
@@ -930,34 +941,36 @@ public class Juego implements Comando{
         int tipoTrato = trato.getTipoTrato();
         switch(tipoTrato){
             case 1: //Casilla por casilla
-                propiedadOfrecida.setDuenho(receptor);
-                propiedadSolicitada.setDuenho(solicitante);
+                propiedadOfrecida.intercambiarDuenho(receptor, solicitante);
+                propiedadSolicitada.intercambiarDuenho(solicitante, receptor);
                 consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " intercambia " + propiedadOfrecida.getNombre() + " por " + propiedadSolicitada.getNombre() + " con " + receptor.getNombre() + ".");
                 break;
             case 2: //Casilla por diñeiro
-                propiedadOfrecida.setDuenho(receptor);
+                propiedadOfrecida.intercambiarDuenho(receptor, solicitante);
                 solicitante.sumarFortuna(dineroSolicitado);
                 receptor.sumarFortuna(-dineroSolicitado);
                 consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " vende " + propiedadOfrecida.getNombre() + " por " + dineroSolicitado + "€ a " + receptor.getNombre() + ".");
                 break;
             case 3: //Diñeiro por casilla
-                propiedadSolicitada.setDuenho(solicitante);
+                propiedadSolicitada.intercambiarDuenho(solicitante, receptor);
                 receptor.sumarFortuna(dineroOfrecido);
                 solicitante.sumarFortuna(-dineroOfrecido);
                 consol.imprimir("Trato realizado!!: " + receptor.getNombre() + " vende " + propiedadSolicitada.getNombre() + " por " + dineroOfrecido + "€ a " + solicitante.getNombre() + ".");
                 break;
             case 4: //Casilla por casilla e diñeiro
-                propiedadOfrecida.setDuenho(receptor);
-                propiedadSolicitada.setDuenho(solicitante);
+                propiedadOfrecida.intercambiarDuenho(receptor, solicitante);
+                propiedadSolicitada.intercambiarDuenho(solicitante, receptor);
                 receptor.sumarFortuna(-dineroSolicitado);
                 solicitante.sumarFortuna(dineroSolicitado);
-                consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " intercambia " + propiedadOfrecida.getNombre() + " e "+dineroSolicitado+"€ por " + propiedadSolicitada.getNombre() + " con " + receptor.getNombre() + ".");
+                consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " intercambia " + propiedadOfrecida.getNombre() + " por "+dineroSolicitado+"$ e " + propiedadSolicitada.getNombre() + " con " + receptor.getNombre() + ".");
                 break;
             case 5: //Casilla e diñeiro por casilla
-                propiedadOfrecida.setDuenho(receptor);
-                propiedadSolicitada.setDuenho(solicitante);
+                propiedadOfrecida.intercambiarDuenho(receptor, solicitante);
+                propiedadSolicitada.intercambiarDuenho(solicitante, receptor);
                 solicitante.sumarFortuna(-dineroOfrecido);
                 receptor.sumarFortuna(dineroOfrecido);
+                consol.imprimir("Trato realizado!!: " + solicitante.getNombre() + " intercambia " + propiedadOfrecida.getNombre() + " e "+dineroOfrecido+"$ por " + propiedadSolicitada.getNombre() + " con " + receptor.getNombre() + ".");
+                break;
         }
         tratos.get(receptor).remove(trato);
     }

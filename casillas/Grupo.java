@@ -68,6 +68,16 @@ public class Grupo
 
     }
 
+    public boolean haiEdificiosNoGrupo() {
+        for (Solar casilla : miembros) { //Por cada casilla del grupo
+            if (casilla.tenEdificio()) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
         
     public ArrayList<Solar> getMiembros() {
         return miembros;

@@ -17,8 +17,8 @@ public class Solar extends Propiedad {
     public Solar(String nombre, int posicion, float valor, Jugador duenho, float alquiler, float hipoteca) {
         //super(nombre, posicion, valor, alquiler, hipoteca, duenho);
         super(nombre, posicion, valor, duenho, alquiler, hipoteca);
-        hotel= new Hotel(this, (int) Valor.getCosteCompraEdificio(posicion, "piscina"),
-                (int) Valor.getCosteAlquilerEdificio(posicion, "piscina"), "piscina");
+        hotel= new Hotel(this, (int) Valor.getCosteCompraEdificio(posicion, "hotel"),
+                (int) Valor.getCosteAlquilerEdificio(posicion, "hotel"), "hotel");
         piscina = new Piscina(this, (int) Valor.getCosteCompraEdificio(posicion, "piscina"),
                 (int) Valor.getCosteAlquilerEdificio(posicion, "piscina"), "piscina");
         pista = new Pista(this, (int) Valor.getCosteCompraEdificio(posicion, "deporte"),
@@ -167,7 +167,7 @@ public class Solar extends Propiedad {
     
      public boolean tenEdificio()
      {
-         return tenhotel() || tenpiscina() || tenpista();
+         return tenhotel() || tenpiscina() || tenpista() || getNumCasas() > 0;
      }
 
 
@@ -231,7 +231,7 @@ public class Solar extends Propiedad {
      // Engadir unha casa: xera id e anade ao array (ata 4)
      public void anhadirCasa() {
          if (this.numCasas < 4) {
-             String newId = Casa.generateID("Casa");
+             String newId = Casa.generateID("casa");
              Casa casa = new Casa(this, (int) Valor.getCosteCompraEdificio(getPosicion(), "casa"),
                      (int) Valor.getCosteAlquilerEdificio(getPosicion(), "casa"), newId, "casa");
              casas.add(casa);

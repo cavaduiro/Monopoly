@@ -75,6 +75,13 @@ public abstract class Propiedad extends Casilla {
     @Override
     public void setDuenho(Jugador novo) {
         this.duenho = novo;
+
+    }
+
+    public void intercambiarDuenho(Jugador nuevoDuenho, Jugador antiguoDuenho) {
+        antiguoDuenho.eliminarPropiedad(this);
+        nuevoDuenho.anhadirPropiedad(this);
+        this.duenho = nuevoDuenho;
     }
 
     @Override

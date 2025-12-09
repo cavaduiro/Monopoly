@@ -18,7 +18,7 @@ public class Tratos {
         4: Propiedad por Propiedad y Diñeiro
         5: Propiedad e Diñeiro por Propiedad
     */
-    static int contadorID = 0;
+    static int contadorID = 1;
 
     int generarID() {
         return contadorID++;

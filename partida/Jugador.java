@@ -170,25 +170,36 @@ public class Jugador {
             sb.append(" - ");
         }
         sb.append("\nEdificios: ");
+        ArrayList<String> edificios = new ArrayList<>();
         if (this.propiedades != null && !this.propiedades.isEmpty()) {
             for(Propiedad propiedadesEdificio: this.propiedades){
                 if(propiedadesEdificio instanceof Solar solaraux && solaraux.tenEdificio()){
                     if(solaraux.getNumCasas()>0){
                         for(Casa casitas : solaraux.getCasas()){
-                            sb.append(casitas.getId()).append(", ");
+                            edificios.add(casitas.getIdCasas());
                         }
                     }
                     if(solaraux.tenhotel()){
-                        sb.append(solaraux.getHotel().getId()).append(", ");
+                        edificios.add(solaraux.getHotel().getId());
                     }
                     if(solaraux.tenpiscina()){
-                        sb.append(solaraux.getPiscina().getId()).append(", ");
+                        edificios.add(solaraux.getPiscina().getId());
                     }
                     if(solaraux.tenpista()){
-                        sb.append(solaraux.getPista().getId()).append(", ");
+                        edificios.add(solaraux.getPista().getId());
                     }
                 }
 
+            }
+            if (!edificios.isEmpty()) {
+                for (int i = 0; i < edificios.size(); i++) {
+                    sb.append(edificios.get(i));
+                    if (i < edificios.size() - 1) {
+                        sb.append(", ");
+                    }
+                }
+            } else {
+                sb.append(" - ");
             }
         } else {
             sb.append(" - ");
