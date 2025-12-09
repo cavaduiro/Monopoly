@@ -865,6 +865,9 @@ public class Juego implements Comando{
         Jugador receptor = jugadores.get(turno);
         boolean existeTrato = false;
         Tratos trato=null;
+        if(!tratos.containsKey(receptor) || tratos.get(receptor).isEmpty()){
+            throw new ExcepcionNoExiste("Non tes ningún trato pendente.");
+        }
         for(Tratos t : tratos.get(receptor)){
             if(t.getId().equalsIgnoreCase(idTrato)){
                 existeTrato = true;
@@ -966,6 +969,9 @@ public class Juego implements Comando{
         Tratos trato=null;
         //Quero facer que itere por todos os tratos que EFECTUOU o xogador actual, non por todos os tratos que ten o xogador actual
         //Pa eso, facemos:
+        if(tratos.get(jugadorActual)==null || tratos.get(jugadorActual).isEmpty()){
+            throw new ExcepcionNoExiste("Non tes ningún trato efectuado pendente.");
+        }
         for(Jugador j: jugadores){
             if(j == jugadorActual){
                 continue;
@@ -1098,36 +1104,44 @@ public class Juego implements Comando{
                 consol.imprimir("\nO xogador endeudado non ten propiedades...");
             }
 
-    }
-    @Override
-    @SuppressWarnings("ConvertToTryWithResources")
-    public void leerArquivo(String nomeArquivo){
-        this.comandos = true;
-        try {
-            java.io.File archivo = new java.io.File(nomeArquivo);
-            Scanner lector = new Scanner(archivo);
-            ArrayList<String> comandos = new ArrayList<>();
-            
-            while(lector.hasNextLine()) {
-                comandos.add(lector.nextLine());
-            }
-            lector.close();
-            
-            for(String comando : comandos) {
-                if(!comando.trim().isEmpty()) {
-                    consol.imprimir("Executando: " + comando);
-                    analizarComando(comando);
-                }
-            }
-        } catch (java.io.FileNotFoundException e) {
-            //ERROR CHEQUEABLE
-            consol.imprimir("Non se atopou o arquivo: " + nomeArquivo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            consol.imprimir("Error ao ler o arquivo: " + e.getMessage());
+    }@Override
+@SuppressWarnings("ConvertToTryWithResources")
+public void leerArquivo(String nomeArquivo){
+    this.comandos = true;
+    try {
+        java.io.File archivo = new java.io.File(nomeArquivo);
+        Scanner lector = new Scanner(archivo);
+        ArrayList<String> comandos = new ArrayList<>();
+
+        while(lector.hasNextLine()) {
+            comandos.add(lector.nextLine());
         }
-        this.comandos = false;
+        lector.close();
+
+        for(String comando : comandos) {
+            if(!comando.trim().isEmpty()) {
+
+                consol.imprimir(Valor.BLUE+"-Executando desde arquivo: "+Valor.RESET + comando);
+
+                try {
+                    analizarComando(comando);  // ← pode fallar
+                } catch (Exception eComando) {
+                    consol.imprimir(eComando.getMessage());
+                    // SEGUIMOS co seguinte comando
+                }
+
+            }
+        }
+
+    } catch (java.io.FileNotFoundException e) {
+        consol.imprimir("Non se atopou o arquivo: " + nomeArquivo);
+    } catch (Exception e) {
+        consol.imprimir("Error ao ler o arquivo: " + e.getMessage());
     }
+
+    this.comandos = false;
+}
+
     private boolean finalizarPartida(){
         Jugador ganhador = jugadores.get(0);
         consol.imprimir("\nO Gañador da partida foi "+ganhador.getNombre() + ", felicidades!\n");
