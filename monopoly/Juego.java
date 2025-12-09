@@ -6,9 +6,12 @@ import casillas.*;
 import exception.Excepcion;
 import exception.valorInvalido.ExcepcionOOR;
 import exception.ExcepcionNoExiste;
-import exception.ExcepcionPartida;
+import exception.ExcepcionLoxicaPartida;
 import exception.ExcepcionSintaxis;
 import exception.ExcepcionValorInvalido;
+import exception.comandoInvalido.ExcepcionPartidaNonEmpezou;
+import exception.comandoInvalido.ExcepcionPartidaXaEmpezou;
+import exception.comandoInvalido.ExcepcionXaTirachesDados;
 import exception.valorInvalido.ExcepcionOOR;
 import exception.valorInvalido.ExcepcionSinCartos;
 import java.util.ArrayList;
@@ -65,20 +68,9 @@ public class Juego implements Comando{
                     comando = consol.leer("\033[1m$:\033[0m");
                 }
                 analizarComando(comando);
-            } catch (ExcepcionSintaxis e) //aquí hai que facer multicatch
+            } catch (Excepcion e) //aquí hai que facer multicatch
             {
                 consol.imprimir(e.getMessage());
-            }catch(ExcepcionNoExiste e){
-
-            }catch(ExcepcionOOR e)
-            {
-                
-            } catch (ExcepcionSinCartos e) {
-                
-            } catch (ExcepcionPartida e) {
-                
-            } catch (ExcepcionValorInvalido e) {
-                
             }
             
             
@@ -97,7 +89,7 @@ public class Juego implements Comando{
      * Método que analiza el comando introducido por el usuario y llama a los métodos correspondientes.
      * Parámetro: cadena de caracteres con el comando introducido.
     */
-    private void analizarComando(String comando) throws ExcepcionSintaxis, ExcepcionNoExiste, ExcepcionValorInvalido,  ExcepcionOOR, ExcepcionSinCartos, ExcepcionPartida{
+    private void analizarComando(String comando) throws Excepcion{
         String[] cmdseparado = comando.split(" "); //Separamos el comando por espacios para analizarlo mejor, .split(" ") separa en cada espacio
         switch (cmdseparado[0]){
             case "crear":
@@ -162,7 +154,7 @@ public class Juego implements Comando{
                 break;
             case "estadisticas":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non hai estatísticas que mostrar.");
+                    throw new ExcepcionPartidaNonEmpezou("non hai estatísticas que mostrar.");
                 }
                 if (cmdseparado.length < 2){
                     estadisticasPartida();
@@ -175,7 +167,7 @@ public class Juego implements Comando{
                 break;
             case "edificar":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden edificar edificios.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden edificar edificios.");
                 }
                 if(cmdseparado.length<2){
                     throw new ExcepcionSintaxis("Uso: edificar <propiedad>");
@@ -185,7 +177,7 @@ public class Juego implements Comando{
                 break;
             case "vender":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden vender edificios.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden vender edificios.");
                 }
                 if(cmdseparado.length<4){
                     throw new ExcepcionSintaxis("Uso: vender <tipo> <solar> <cantidade>");
@@ -195,7 +187,7 @@ public class Juego implements Comando{
                 break;
             case "hipotecar":
                 if (!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden hipotecar propiedades.");
                 }
                 if (cmdseparado.length < 2){
                     throw new ExcepcionSintaxis("Uso: hipotecar <propiedad>");
@@ -205,7 +197,7 @@ public class Juego implements Comando{
                 break;
             case "deshipotecar":
                 if (!partidaIniciada){
-                       throw new ExcepcionPartida("A partida aínda non comezou, non se poden hipotecar propiedades.");
+                       throw new ExcepcionPartidaNonEmpezou("non se poden hipotecar propiedades.");
                         
                     }
                 if (cmdseparado.length < 2){
@@ -216,7 +208,7 @@ public class Juego implements Comando{
                 break;
             case "trato":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden facer tratos.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden facer tratos.");
                     
                 }
                 if(cmdseparado.length!=5 && cmdseparado.length!=7){
@@ -228,7 +220,7 @@ public class Juego implements Comando{
                 break;
             case "aceptar":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden aceptar tratos.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden aceptar tratos.");
                     
                 }
                 if(cmdseparado.length!=2){
@@ -239,7 +231,7 @@ public class Juego implements Comando{
                 break;
             case "eliminar":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden eliminar tratos.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden eliminar tratos.");
                 
                 }
                 if(cmdseparado.length!=2){
@@ -251,7 +243,7 @@ public class Juego implements Comando{
                 break;
             case "tratos":
                 if(!partidaIniciada){
-                    throw new ExcepcionPartida("A partida aínda non comezou, non se poden ver tratos.");
+                    throw new ExcepcionPartidaNonEmpezou("non se poden ver tratos.");
            
                 }
                 if(cmdseparado.length!=1){ 
@@ -264,10 +256,7 @@ public class Juego implements Comando{
                 mostrarAxuda();
                 break;
             default:
-                Valor.error("\nComando introducido erróneo.\n");
-
-                break;
-
+                throw new ExcepcionSintaxis("Comando non recoñecido. Escribe 'axuda' para ver os comandos dispoñibles.");
         }
     }
 
@@ -276,7 +265,7 @@ public class Juego implements Comando{
      * Parámetro: array de cadenas de caracteres con las partes del comando. 
     */
     @Override
-    public void listar(String[] partes) throws ExcepcionSintaxis{
+    public void listar(String[] partes) throws ExcepcionSintaxis, ExcepcionLoxicaPartida {
         if(partes.length<2){
             throw new ExcepcionSintaxis("Uso: listar jugadores\nUso: listar enventa\nUso: listar edificios <opcional: colorGrupo>");
         }
@@ -298,7 +287,7 @@ public class Juego implements Comando{
      * Parámetro: array de cadenas de caracteres con las partes del comando. 
     */
     @Override
-    public void describir(String[] partes) throws ExcepcionSintaxis, ExcepcionPartida, ExcepcionValorInvalido, ExcepcionNoExiste{
+    public void describir(String[] partes) throws ExcepcionSintaxis, ExcepcionNoExiste, ExcepcionLoxicaPartida {
         if(partes.length < 2 || partes.length > 3){
             throw new ExcepcionSintaxis("Uso: describir jugador nombreJugador\nUso: describir nombreCasilla");
         }
@@ -314,9 +303,9 @@ public class Juego implements Comando{
      * Parámetro: nome do xogador a crear. 
     */
    @Override
-    public void crearxogador(String[] partes) throws ExcepcionPartida, ExcepcionSintaxis, ExcepcionOOR, ExcepcionValorInvalido{
+    public void crearxogador(String[] partes) throws ExcepcionLoxicaPartida,ExcepcionValorInvalido, ExcepcionSintaxis{
         if(partidaIniciada){
-            throw new ExcepcionPartida("A partida xa comezou. Non se poden engadir máis xogadores.");
+            throw new ExcepcionPartidaXaEmpezou("non se poden engadir máis xogadores.");
         }
         if(partes.length !=4){
             throw new ExcepcionSintaxis("Uso: crear jugador nome tipoAvatar");
@@ -347,9 +336,9 @@ public class Juego implements Comando{
      *Describe un xogador dado polo nome.
      * Parámetro: nome do xogador a describir. 
     */
-    private void descJugador(String[] partes) throws ExcepcionPartida,ExcepcionNoExiste {
+    private void descJugador(String[] partes) throws ExcepcionLoxicaPartida,ExcepcionNoExiste {
         if(jugadores.isEmpty()){
-            throw new ExcepcionPartida("Non hai xogadores aínda.");
+            throw new ExcepcionLoxicaPartida("Non hai xogadores aínda.");
             
         }
         //consol.imprimir("Nome do xogador a describir: "+partes[2] );
@@ -362,7 +351,7 @@ public class Juego implements Comando{
             }
         }
         if(!encontrado){
-            throw new ExcepcionNoExiste("Non existe un xogador co nome" + partes[2]);
+            throw new ExcepcionNoExiste("Non existe un xogador co nome " + partes[2]);
         }
     }
     
@@ -395,13 +384,13 @@ public class Juego implements Comando{
      * Parámetro: os números dos dados (opcional).
     */ 
    @Override
-    public void lanzarDados(String[] partes) throws ExcepcionPartida {
+    public void lanzarDados(String[] partes) throws ExcepcionLoxicaPartida {
         if(partidaIniciada==false && jugadores.size()>=2){
             partidaIniciada=true;
             consol.imprimir("\033[1m\nA partida comezou\033[0m\n");
         }
         else if(partidaIniciada==false && jugadores.size()<2){
-            throw new ExcepcionPartida("A partida aínda non comezou, necesítanse dous xogadores.");
+            throw new ExcepcionPartidaNonEmpezou("non se poden lanzar os dados, necesítanse dous xogadores.");
         }
 
         boolean forzar=false;
@@ -411,8 +400,7 @@ public class Juego implements Comando{
         Jugador jugadorActual= jugadores.get(turno);
         //System.out.println(jugadorActual);
         if(tirado){
-            Valor.error("Xa tirou os dados este turno.");
-            return;
+            throw new ExcepcionXaTirachesDados();
         }
 
         int valor1;
@@ -466,18 +454,16 @@ public class Juego implements Comando{
      * Parámetro: - 
     */
    @Override
-    public void salirCarcelPagando(){
+    public void salirCarcelPagando() throws ExcepcionLoxicaPartida, ExcepcionSinCartos {
         Jugador actual=jugadores.get(turno);
         if(!actual.getEnCarcel()){
-            Valor.error("Non estás no cárcere");
-            return;
+            throw new ExcepcionLoxicaPartida("Non estás no cárcere");
         }
         if(actual.getFortuna()<500000){
-            Valor.error("Non tes cartos de abondo para saír do cárcere." + "\033[1m Precisas 500000€, e tes "+String.format("%.0f", actual.getFortuna())+"€\033[0m");
-            return;
+            throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), 500000);
         }
         if(tirado){
-            Valor.error("Xa tiraches os dados");
+            throw new ExcepcionXaTirachesDados();
 
         }
         else{
@@ -494,111 +480,98 @@ public class Juego implements Comando{
      * Parámetro: nome da casilal a comprar. 
     */
    @Override
-    public void comprar(String nombre) {
+    public void comprar(String nombre) throws ExcepcionLoxicaPartida, ExcepcionNoExiste, ExcepcionValorInvalido {
         if(!solvente){
-            Valor.error("O xogador actual non é solvente, non pode facer compras ata pagar as súas débedas.");
-            return;
+            throw new ExcepcionLoxicaPartida("Non es solvente, non podes comprar propiedades ata pagar as túas débedas.");
         }
         Casilla casillaComprar = tablero.encontrar_casilla(nombre);
         if (casillaComprar == null) {
-            Valor.error("Non existe ningunha casilla co nome " + nombre);
-            return;
+            throw new ExcepcionNoExiste("Non existe ningunha casilla chamada " + nombre);
         }
         
         if (!(casillaComprar instanceof Propiedad)){
-            Valor.error("Esa casilla non é mercable, so podes comprar casillas de tipo Solar, Transporte o Servicio.");
-            return;
+            throw new ExcepcionValorInvalido("Non podes comprar esa casilla, non é unha propiedade.");
         }
         Propiedad casaux = (Propiedad)casillaComprar;
         if(casaux.getDuenho() != banca){
-            Valor.error("Esa casilla xa ten dono, é de "+casaux.getDuenho().getNombre()+".");
-            return;
+            throw new ExcepcionValorInvalido("Non podes comprar esa casilla, xa ten dono.");
         }
         
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getAvatar().getLugar() != casaux){
-            Valor.error("Non estás nesa casilla que queres comprar.");
-            return;
+            throw new ExcepcionLoxicaPartida("Non estás na casilla que queres comprar.");
+        }
+        if(casaux.getDuenho() == jugadorActual){
+            throw new ExcepcionLoxicaPartida("Xa es dono desa propiedade.");
         }
         if(jugadorActual.getFortuna() < casaux.getValor()){
-            Valor.error("Non tes suficiente fortuna para comprar a casilla, a casilla costa "+casaux.getValor()+" e ti tes aforrado "+jugadorActual.getFortuna()+"€");
-            return;
+            throw new ExcepcionSinCartos(jugadorActual.getNombre(), (int)jugadorActual.getFortuna(), (int)casaux.getValor());
         }
         casaux.comprarCasilla(jugadorActual, banca);
 
     }
     @Override
-    public  void edificar(String[] partes){
+    public  void edificar(String[] partes) throws ExcepcionValorInvalido, ExcepcionLoxicaPartida, ExcepcionSinCartos {
         Jugador jugadorActual= jugadores.get(turno);
         if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
-            Valor.error("Tipo de edificio non válido. Podes construir casa, hotel, piscina ou deporte.");
-            return;
+            throw new ExcepcionValorInvalido("Tipo de edificio non válido. Podes edificar casa, hotel, piscina ou deporte.");
         }
 
         //ERROR 
         Casilla casillaEdificar = jugadorActual.getAvatar().getLugar();
 
         if(casillaEdificar.getDuenho() != jugadorActual){
-            Valor.error("Non estás na túa propiedade.");
-            return;
+            throw new ExcepcionLoxicaPartida("Non estás na túa propiedade.");
         }
 
         if (!(casillaEdificar instanceof Solar)) {
-            Valor.error("Só podes edificar en solares.");
-            return;
+            throw new ExcepcionLoxicaPartida("Só podes edificar en solares.");
         }
         Solar solaredificar = (Solar) casillaEdificar;
         ArrayList<Solar> casillasGrupo = solaredificar.getGrupo().getMiembros();
 
         for(Propiedad aux: casillasGrupo){
             if(aux.getHipotecada()){
-                Valor.error("Non podes edificar neste grupo porque algunha casilla do grupo está hipotecada.");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes edificar cunha propiedade do grupo hipotecada.");
             }
         }
         
         if(!solaredificar.getGrupo().esDuenhoGrupo(jugadorActual)){
-            Valor.error("Necesitas comprar todas as casillas do grupo para poder edificar nesta casilla");
-            return;
+            throw new ExcepcionLoxicaPartida("Necesitas comprar todas as casillas do grupo para poder edificar nesta casilla");
         }
 
         solaredificar.edificar(partes[1], jugadorActual);
     }
 
     @Override
-    public void vender(String[] partes){
+    public void vender(String[] partes) throws ExcepcionValorInvalido, ExcepcionLoxicaPartida, ExcepcionNoExiste {
         Jugador jugadorActual= jugadores.get(turno);
 
         if(Integer.parseInt(partes[3]) <=0){
-            Valor.error("A cantidade ten que ser maior que 0.");
-            return;
+            throw new ExcepcionValorInvalido("A cantidade de edificios a vender debe ser maior que 0.");
         }
 
         if(!partes[1].equals("casa")&&!partes[1].equals("hotel")&&!partes[1].equals("piscina")&&!partes[1].equals("deporte")){
-            Valor.error("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
-            return;
+            throw new ExcepcionValorInvalido("Tipo de edificio non válido. Podes vender casa, hotel, piscina ou deporte.");
         }
         Casilla casillaex = tablero.encontrar_casilla(partes[2]);        
         
         if (casillaex == null) {
-            Valor.error("Non existe ningunha casilla co nome." + partes[2]);
-            return;
+            throw new ExcepcionNoExiste("Non existe ningunha casilla co nome." + partes[2]);
         }
         //AUÍ DEBERÍAMOS CHEQUER SE É INSTANCIA DE 
 
         
         if (!(casillaex instanceof Solar)) {
             //error chequeable
-            Valor.error("Só podes vender edificios en solares.");
-            return;
+            throw new ExcepcionLoxicaPartida("Só podes vender edificios en solares.");
         }
         Solar solarex = (Solar) casillaex;
         if (solarex.getDuenho() != jugadorActual) {
-            Valor.error("Non podes vender se non eres dueño do solar.");
+            throw new ExcepcionLoxicaPartida("Non podes vender se non eres dueño do solar.");
         }
         if(!solarex.getGrupo().esDuenhoGrupo(jugadorActual)){
-            Valor.error("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
-            return;
+            throw new ExcepcionLoxicaPartida("Non eres dueño de todas as casillas do grupo, por tanto non hai edificios que vender nelas");
         }
     
         solarex.vender(partes[1], Integer.parseInt(partes[3]), jugadorActual);
@@ -606,14 +579,13 @@ public class Juego implements Comando{
     
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     @Override
-    public void salirCarcel() {
+    public void salirCarcel() throws ExcepcionLoxicaPartida {
         if(jugadores.isEmpty()){
-            Valor.error("Non hai xogadores creados todavía.");
-            return;
+            throw new ExcepcionPartidaNonEmpezou("non hai xogadores aínda");
         }
         Jugador jugadorActual= jugadores.get(turno);
         if(!jugadorActual.getEnCarcel()){
-            Valor.error("Non estás no cárcere.");
+            throw new ExcepcionLoxicaPartida("Non estás no cárcere.");
         }
         else{
             jugadorActual.setEnCarcel(false);
@@ -640,7 +612,7 @@ public class Juego implements Comando{
             System.out.println(aux);
         }
     }
-    private void listarEdificios(){
+    private void listarEdificios() throws ExcepcionLoxicaPartida {
         boolean atopou=false;
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
         for (ArrayList<Casilla> lado : pos) {
@@ -673,11 +645,11 @@ public class Juego implements Comando{
             }
         }
         if(!atopou){
-            Valor.error("\nNon hai edificios construídos no tablero.\n");
+            throw new ExcepcionLoxicaPartida("Non hai edificios construídos no taboleiro.");
         }
     }
 
-    private void listarEdificiosGrupo(String colorGrupo){
+    private void listarEdificiosGrupo(String colorGrupo) throws ExcepcionLoxicaPartida {
         boolean atopou=false;
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
         int casas=0;
@@ -706,13 +678,13 @@ public class Juego implements Comando{
                         consol.imprimir(solaredif.getPista().toString());
                     }
                     //ERROR todo isto hai que cambialo por get instance of
+                    //non hai pq, xa temos métodos de tenhotel, tenpiscina, tenpista, por tanto sería igual...
                     atopou=true;
                 }
             }
         }
         if (!atopou) {
-            //ERROR CHEQUEABLE
-            consol.imprimir("Non hai edificios construídos neste grupo de cor ou a cor non é válida.");
+            throw new ExcepcionLoxicaPartida("Non hai edificios construídos neste grupo de propiedades.");
         }else{
             if(deporte){
                 consol.imprimir("Xa non podes construír máis edificios neste grupo.");
@@ -738,31 +710,25 @@ public class Juego implements Comando{
 
     //Hai que ter todos os edificios dun grupo para poder hipotecar unha propiedade???? no
     @Override
-    public void hipotecar(String[] partes){
+    public void hipotecar(String[] partes) throws ExcepcionNoExiste, ExcepcionLoxicaPartida {
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaHipotecar = tablero.encontrar_casilla(partes[1]);    
         if(casillaHipotecar==null){
-            Valor.error("Non existe ningunha casilla co nome."+ partes[1]);
-            return;
+            throw new ExcepcionNoExiste("Non existe ningunha casilla co nome."+ partes[1]);
         }
         if (casillaHipotecar.getDuenho() != jugadorActual) {
-            Valor.error(
-                    "A casilla " + casillaHipotecar.getNombre() + " non é da túa propiedade, non a podes hipotecar.");
-            return;
+            throw new ExcepcionLoxicaPartida("A casilla "+casillaHipotecar.getNombre()+" non é da túa propiedade, non a podes hipotecar.");
         }
         Propiedad casillaPropiedade = (Propiedad) casillaHipotecar;
         if(casillaPropiedade.getHipotecada()){
-            Valor.error("A casilla "+casillaHipotecar.getNombre()+" xa está hipotecada.");
-            return;
+            throw new ExcepcionLoxicaPartida("A casilla "+casillaPropiedade.getNombre()+" xa está hipotecada.");
         }
         if (casillaPropiedade instanceof Solar casaux) {
             if(casaux.getNumCasas()>0){
-                Valor.error("Esta propiedade ten "+casaux.getNumCasas()+" casas construídas, debes vender as casas antes de hipotecar.");
-                return;
+                throw new ExcepcionLoxicaPartida("Esta propiedade ten casas construídas, debes vendelas antes de hipotecar.");
             }
             if(casaux.tenEdificio()){
-                Valor.error("Esta propiedade ten un algún edificio construído, debes vendelo antes de hipotecar.");
-                return;
+                throw new ExcepcionLoxicaPartida("Esta propiedade ten edificios construídos, debes vendelos antes de hipotecar.");
             }
 
         }
@@ -770,27 +736,23 @@ public class Juego implements Comando{
     }   
 
     @Override
-    public void deshipotecar(String[] partes){
+    public void deshipotecar(String[] partes) throws ExcepcionNoExiste, ExcepcionLoxicaPartida, ExcepcionSinCartos {
         Jugador jugadorActual= jugadores.get(turno);
         Casilla casillaDeshipotecar = tablero.encontrar_casilla(partes[1]);    
         if(casillaDeshipotecar==null){
-            Valor.error("Non existe ningunha casilla co nome."+ partes[1]);
-            return;
+            throw new ExcepcionNoExiste("Non existe ningunha casilla co nome."+ partes[1]);
         }
 
         if(casillaDeshipotecar.getDuenho() != jugadorActual){
-            Valor.error("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
-            return;
+            throw new ExcepcionLoxicaPartida("A casilla "+casillaDeshipotecar.getNombre()+" non é da túa propiedade, non a podes deshipotecar.");
         }
         if (!(casillaDeshipotecar instanceof Propiedad)) {
-            //ERROR
-            return;
+            throw new ExcepcionLoxicaPartida("Só podes deshipotecar propiedades.");
         }
         Propiedad casdeship = (Propiedad) casillaDeshipotecar;
         
         if(casdeship.getHipotecada()==false){
-            Valor.error("A casilla "+casdeship.getNombre()+" non está hipotecada.");
-            return;
+            throw new ExcepcionLoxicaPartida("A casilla "+casdeship.getNombre()+" non está hipotecada.");
         }
         casdeship.deshipotecarCasilla();
     }
@@ -806,7 +768,7 @@ public class Juego implements Comando{
     }   
 
     @Override
-    public void tratos(String[] partes){
+    public void tratos(String[] partes) throws ExcepcionNoExiste, ExcepcionLoxicaPartida, ExcepcionValorInvalido {
         Jugador solicitante = jugadores.get(turno);
         Jugador receptor = null;
         Propiedad propiedadOfrecida= null;
@@ -822,12 +784,10 @@ public class Juego implements Comando{
             }
         }
         if(receptor == null){
-            Valor.error("Non existe un xogador co nome " + nombreReceptor);
-            return;
+            throw new ExcepcionNoExiste("Non existe ningún xogador co nome " + nombreReceptor + ".");
         }
         if(receptor == solicitante){
-            Valor.error("Non te Dineropodes facer un trato a ti mesmo.");
-            return;
+            throw new ExcepcionLoxicaPartida("Non te podes facer un trato a ti mesmo.");
         }
         if(partes.length==7){
             if(partes[4].equalsIgnoreCase("y")){ //Trato do estilo (Casilla e diñeiro, Casilla)
@@ -837,8 +797,7 @@ public class Juego implements Comando{
 
                 String argumento2 = partes[5].replace(",", "").trim(); //Aquí eliminamos a coma de despois da cantidade de diñeiro ofrecida
                 if(!esFloat(argumento2)){
-                    Valor.error("O diñeiro ofrecido non é válido.");
-                    return;
+                    throw new ExcepcionValorInvalido("O diñeiro ofrecido non é válido.");
                 }
                 dineroOfrecido = Float.parseFloat(argumento2);
 
@@ -855,8 +814,7 @@ public class Juego implements Comando{
 
                 String argumento2 = partes[6].replace(")", "").trim(); //Aquí eliminamos o paréntese de peche
                 if(!esFloat(argumento2)){
-                    Valor.error("O diñeiro solicitado non é válido.");
-                    return;
+                    throw new ExcepcionValorInvalido("O diñeiro solicitado non é válido.");
                 }
                 dineroSolicitado = Float.parseFloat(argumento2);
             }
@@ -880,22 +838,20 @@ public class Juego implements Comando{
                 dineroSolicitado = Float.parseFloat(argumento2);
             }
             else{
-                consol.imprimir("O trato non ten argumentos válidos.");
+                throw new ExcepcionValorInvalido("Os argumentos do trato non son válidos.");
             }
         }
 
 
         if(caso==1||caso==2||caso==4||caso==5){
             if(propiedadOfrecida == null){
-                Valor.error("A propiedade ofrecida non existe.");
-                return;
+                throw new ExcepcionNoExiste("A propiedade ofrecida non existe.");
             }
         }
 
         if(caso==1||caso==3||caso==4||caso==5){
             if(propiedadSolicitada == null){
-                Valor.error("A propiedade solicitada non existe.");
-                return;
+                throw new ExcepcionNoExiste("A propiedade solicitada non existe.");
             }
         }
 
@@ -905,7 +861,7 @@ public class Juego implements Comando{
     }
 
     @Override
-    public void aceptarTrato(String idTrato){
+    public void aceptarTrato(String idTrato) throws ExcepcionNoExiste, ExcepcionLoxicaPartida, ExcepcionValorInvalido {
         Jugador receptor = jugadores.get(turno);
         boolean existeTrato = false;
         Tratos trato=null;
@@ -917,24 +873,20 @@ public class Juego implements Comando{
             }
         }
         if(!existeTrato){
-            Valor.error("Non existe ningún trato con ese ID para este xogador.");
-            return;
+            throw new ExcepcionNoExiste("Non existe ningún trato co ID " + idTrato + " para ti.");
         }
 
 
         if(trato.getTipoTrato()==1||trato.getTipoTrato()==2||trato.getTipoTrato()==3||trato.getTipoTrato()==4||trato.getTipoTrato()==5){
             if(trato.getPropiedadOfrecida().getDuenho() != trato.getOfertante()){
-                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " xa non é de " + trato.getOfertante().getNombre() + ".");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " xa non pertence ao ofertante.");
             }
             if(trato.getPropiedadOfrecida().getHipotecada()){
-                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " está hipotecada.");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " está hipotecada.");
             }
             if(trato.getPropiedadOfrecida() instanceof Solar solarOfrecida){
                 if(solarOfrecida.tenEdificio() || solarOfrecida.getNumCasas()>0){
-                    Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " ten edificios construídos.");
-                    return;
+                    throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadOfrecida().getNombre() + " ten edificios construídos.");
                 }
             }
         }
@@ -942,17 +894,14 @@ public class Juego implements Comando{
 
         if(trato.getTipoTrato()==1||trato.getTipoTrato()==3||trato.getTipoTrato()==4||trato.getTipoTrato()==5){
             if(trato.getPropiedadSolicitada().getDuenho() != receptor){
-                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " xa non é túa.");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " xa non che pertence.");
             }
             if(trato.getPropiedadSolicitada().getHipotecada()){
-                Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " está hipotecada.");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " está hipotecada.");
             }
             if(trato.getPropiedadSolicitada() instanceof Solar solarSolicitada){
                 if(solarSolicitada.tenEdificio() || solarSolicitada.getNumCasas()>0){
-                    Valor.error("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " ten edificios construídos.");
-                    return;
+                    throw new ExcepcionLoxicaPartida("Non podes aceptar este trato porque a propiedade " + trato.getPropiedadSolicitada().getNombre() + " ten edificios construídos.");
                 }
             }
 
@@ -960,15 +909,13 @@ public class Juego implements Comando{
 
         if(trato.getTipoTrato()==2||trato.getTipoTrato()==4){
             if(trato.getDineroSolicitado() > receptor.getFortuna()){
-                Valor.error("Pídense " + trato.getDineroSolicitado() + "€ pero só tes " + receptor.getFortuna() + "€ para aceptar este trato.");
-                return;
+                throw new ExcepcionSinCartos(receptor.getNombre(), (int)receptor.getFortuna(), (int)trato.getDineroSolicitado());
             }
         }
 
         if(trato.getTipoTrato()==3||trato.getTipoTrato()==5){
             if(trato.getDineroOfrecido() > trato.getOfertante().getFortuna()){
-                Valor.error("Pídense " + trato.getDineroOfrecido() + "€ ao ofertante, pero só ten " + trato.getOfertante().getFortuna() + "€ para aceptar este trato.");
-                return;
+                throw new ExcepcionSinCartos(trato.getOfertante().getNombre(), (int)trato.getOfertante().getFortuna(), (int)trato.getDineroOfrecido()); 
             }
         }
 
@@ -1013,7 +960,7 @@ public class Juego implements Comando{
     }
 
     @Override
-    public void eliminarTrato(String idTrato){
+    public void eliminarTrato(String idTrato) throws ExcepcionNoExiste {
         Jugador jugadorActual = jugadores.get(turno);
         boolean existeTrato = false;
         Tratos trato=null;
@@ -1033,8 +980,7 @@ public class Juego implements Comando{
         }
 
         if(!existeTrato){
-            Valor.error("Non existe ningún trato con ese ID feito polo xogador " + jugadorActual.getNombre() + ".");
-            return;
+            throw new ExcepcionNoExiste("Non existe ningún trato co ID " + idTrato + " efectuado por ti.");
         }
 
 
@@ -1057,17 +1003,16 @@ public class Juego implements Comando{
     
     // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
     @Override
-    public void acabarTurno() {
+    public void acabarTurno() throws ExcepcionLoxicaPartida, ExcepcionSinCartos {
         //Comprobar que a partida está empezada
         if(!tirado){
-            consol.imprimir("Aínda tes que tirar os dados.");
-            return;
+            throw new ExcepcionLoxicaPartida("Non podes acabar o teu turno sen tirar os dados.");
         }
         Jugador jugadorActual= jugadores.get(turno);
         if(jugadorActual.getEnCarcel() && jugadorActual.getTiradasCarcel()==3){
             if(jugadorActual.getFortuna()<500000){
-                Valor.error("Non tes cartos para saír do cárcere (500000€) ...");
                 solvente=false;
+                throw new ExcepcionSinCartos(jugadorActual.getNombre(), (int)jugadorActual.getFortuna(), 500000);
                 //return; En futuras entregas onde podas recaudar cartos vendendo e hipotecando propiedades, non se pode facer return aquí, porque podes conseguir cartos e pagar a multa
             }else{
                 solvente=true;
@@ -1323,16 +1268,21 @@ public class Juego implements Comando{
             }
         }
     }
+
+
     @Override
-    public void estadisticasXogador(String[] comandos){
+    public void estadisticasXogador(String[] comandos) throws ExcepcionNoExiste {
         for(Jugador aux: jugadores){
             if(aux.getNombre().equalsIgnoreCase(comandos[1])){
                 consol.imprimir(aux.getEstatisticas().toString());
                 return;
             }
         }
-        Valor.error("\nNon existe ningún xogador con ese nome.");
+        throw new ExcepcionNoExiste("Non existe ningún xogador co nome "+comandos[1]+".");
     }
+
+
+    
     @Override
     public  void mostrarAxuda(){
         consol.imprimir(

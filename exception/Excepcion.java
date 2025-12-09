@@ -1,4 +1,5 @@
 package exception;
+import monopoly.Valor;
 
 public class Excepcion extends Exception {
     public Excepcion(){
@@ -6,6 +7,6 @@ public class Excepcion extends Exception {
     }
     
     public Excepcion(String mensaje){
-        super("\u001B[31m" + mensaje + "\u001B[0m");
+        super(Valor.NEGRITA + mensaje + Valor.RESET);
     }
 }

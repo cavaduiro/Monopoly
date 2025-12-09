@@ -1,11 +1,8 @@
 package casillas;
 
-import java.io.Console;
-import partida.*;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import monopoly.*;
+import partida.*;
 
 public abstract class Casilla {
     // Atributos
@@ -70,7 +67,7 @@ public abstract class Casilla {
     }
 
     //métodos a implementar
-    public abstract boolean  EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos) ;
+    public abstract boolean  EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos);
     
     public Jugador getDuenho() {
         return this.duenho;

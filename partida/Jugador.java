@@ -89,8 +89,7 @@ public class Jugador {
             return;
         }
         if(this.fortuna < casilla.getValor()) {
-            //ERROR CHEQUEABLE
-            System.out.println("\nO xogador non ten suficiente fortuna para comprar esa propiedade.\n");
+            //Xa se chequeea este error antes :3
         }
         else {
             this.propiedades.add(casilla);
@@ -102,8 +101,7 @@ public class Jugador {
         if(this.propiedades.contains(casilla)){
             this.propiedades.remove(casilla);
         }else{
-            //ERROR CHEQUEABLE
-            System.out.println("\nO xogador non ten esa propiedade.\n");
+            //En ningún caso se elimina unha propiedade do xogador, solo si perde, polo qe non fai falta excepción
         }
 
     }

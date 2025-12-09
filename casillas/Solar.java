@@ -1,5 +1,7 @@
 package casillas;
 import edificios.*;
+import exception.*;
+import exception.valorInvalido.ExcepcionSinCartos;
 import java.util.ArrayList;
 import monopoly.*;
 import partida.*;
@@ -90,7 +92,7 @@ public class Solar extends Propiedad {
 
 
 
-     public void edificar(String tipo, Jugador jugadorActual) {
+     public void edificar(String tipo, Jugador jugadorActual) throws ExcepcionValorInvalido, ExcepcionLoxicaPartida , ExcepcionSinCartos{
          boolean hotelConstruido = hotel.getTenEdificio();
          boolean piscinaConstruida = piscina.getTenEdificio();
          boolean pistaConstruida = pista.getTenEdificio();
@@ -99,18 +101,14 @@ public class Solar extends Propiedad {
              precioConstrucion = custoCasa;
              if (numCasas >= 4) {
                  //ERROR CHEQUEAABLE (hai varios)
-                 System.out.println("Xa tes o número máximo de casa permitidas na casilla");
-                 return;
+                throw new ExcepcionValorInvalido("Non podes construír máis casas nesta casilla, xa tes 4 casas construídas");
              }
              if (jugadorActual.getFortuna() < precioConstrucion) {
-                 System.out.println("Non tes suficiente fortuna para construír unha casa nesta casilla, custa "
-                         + precioConstrucion + "€");
-                 return;
-             }
+                throw new ExcepcionSinCartos(jugadorActual.getNombre(),(int)jugadorActual.getFortuna(),precioConstrucion);
+            }
              if (hotelConstruido || piscinaConstruida || pistaConstruida) {
-                 System.out.println(
+                throw new ExcepcionLoxicaPartida(
                          "Non podes construír máis casas nesta casilla, xa tes un hotel ou unha instalación deportiva ou piscina construída");
-                 return;
              }
              anhadirCasa();
          }
@@ -118,17 +116,13 @@ public class Solar extends Propiedad {
          if (tipo.equalsIgnoreCase("hotel")) {
              precioConstrucion = hotel.getCusto();
              if (hotelConstruido) {
-                 System.out.println("Xa tes un hotel construido");
-                 return;
+                throw new ExcepcionLoxicaPartida("Non podes construír un hotel nesta casilla, xa tes un hotel construido"); 
              }
              if (numCasas != 4) {
-                 System.out.println("Necesitas ter 4 casas nesta casilla para construír un hotel");
-                 return;
+                throw new ExcepcionLoxicaPartida("Necesitas ter 4 casas construídas nesta casilla para construír un hotel");
              }
              if (jugadorActual.getFortuna() < precioConstrucion) {
-                 System.out.println("Non tes suficiente fortuna para construír un hotel nesta casilla, custa "
-                         + precioConstrucion + "€");
-                 return;
+                 throw new ExcepcionSinCartos(jugadorActual.getNombre(),(int)jugadorActual.getFortuna(),precioConstrucion);
              }
              setNcasas(0);
              hotel.setTenEdificio(true);
@@ -136,42 +130,31 @@ public class Solar extends Propiedad {
          if (tipo.equals("piscina")) {
              precioConstrucion = piscina.getCusto();
              if (piscinaConstruida) {
-                 //error chequeable
-                 System.out.println("Xa tes unha piscina construída");
-                 return;
+                throw new ExcepcionLoxicaPartida("Non podes construír unha piscina nesta casilla, xa tes unha piscina construída");
              }
              if (pistaConstruida) {
-                 System.out.println(
-                         "Non podes construír unha piscina nesta casilla, xa tes unha instalación deportiva construída");
-                 return;
+                 throw new ExcepcionLoxicaPartida("Non podes construír unha piscina nesta casilla, xa tes unha instalación deportiva construída");
              }
+             
              if (!hotelConstruido) {
-                 System.out.println("Necesitas ter un hotel nesta casilla para construír unha piscina");
-                 return;
+                 throw new ExcepcionLoxicaPartida("Necesitas ter un hotel nesta casilla para construír unha piscina");
              }
              if (jugadorActual.getFortuna() < precioConstrucion) {
-                 System.out.println("Non tes suficiente fortuna para construír unha piscina nesta casilla, custa "
-                         + precioConstrucion + "€");
-                 return;
+                 throw new ExcepcionSinCartos(jugadorActual.getNombre(),(int) jugadorActual.getFortuna(),precioConstrucion);
              }
+             
              piscina.setTenEdificio(true);
          }
          if (tipo.equals("deporte")) {
              precioConstrucion = pista.getCusto();
              if (pistaConstruida) {
-                 System.out.println("Xa tes unha instalación deportiva construída");
-                 return;
+                throw new ExcepcionLoxicaPartida("Non podes construír unha instalación deportiva nesta casilla, xa tes unha instalación deportiva construída");
              }
              if (!hotelConstruido || !piscinaConstruida) {
-                 System.out.println(
-                         "Necesitas ter un hotel e unha piscina nesta casilla para construír unha instalación deportiva");
-                 return;
+                throw new ExcepcionLoxicaPartida("Necesitas ter un hotel e unha piscina nesta casilla para construír unha instalación deportiva");
              }
              if (jugadorActual.getFortuna() < precioConstrucion) {
-                 System.out.println(
-                         "Non tes suficiente fortuna para construír unha instalación deportiva nesta casilla, custa "
-                                 + precioConstrucion + "€");
-                 return;
+                throw new ExcepcionSinCartos(jugadorActual.getNombre(),(int) jugadorActual.getFortuna(),precioConstrucion);    
              }
              pista.setTenEdificio(true);
          }
@@ -188,7 +171,7 @@ public class Solar extends Propiedad {
      }
 
 
-     public void vender(String tipo, int numEdificios, Jugador jugadorActual){
+     public void vender(String tipo, int numEdificios, Jugador jugadorActual) throws ExcepcionLoxicaPartida, ExcepcionValorInvalido{
         boolean hotelConstruido = hotel.getTenEdificio();
         boolean piscinaConstruida = piscina.getTenEdificio();
         boolean pistaConstruida = pista.getTenEdificio();
@@ -196,59 +179,48 @@ public class Solar extends Propiedad {
         if (tipo.equals("casa")) {
             precioventa = custoCasa;
             if(numCasas<numEdificios){
-                System.out.println("Non tes tantas casas construídas nesta casilla, no solar "+this.getNombre()+" tes "+numCasas+" casas construídas");
-                return;
+                throw new ExcepcionValorInvalido("Non tes tantas casas construídas nesta casilla, no solar "+this.getNombre()+" tes "+numCasas+" casas construídas");
             }else if(numEdificios>numCasas){
-                System.out.println("Non tes tantas casas construídas nesta casilla, no solar "+this.getNombre()+" tes "+numCasas+" casas construídas");
-                return;
+                throw new ExcepcionValorInvalido("Non tes tantas casas construídas nesta casilla, no solar "+this.getNombre()+" tes "+numCasas+" casas construídas");
             }
             setNcasas(numCasas - numEdificios);
         }
         if (tipo.equals("hotel")) {
             precioventa = hotel.getCusto();
             if(!hotelConstruido){
-                System.out.println("Non tes un hotel construído nesta casilla");
-                return;
+                throw new ExcepcionLoxicaPartida("Non tes un hotel construída nesta casilla");
             }
             if(pistaConstruida){
-                System.out.println("Non podes vender o hotel se tes unha instalación deportiva construída");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes vender o hotel se tes unha instalación deportiva construída");
             }
             if(piscinaConstruida){
-                System.out.println("Non podes vender o hotel se tes unha piscina construída");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes vender o hotel se tes unha piscina construída");
             }
             if(numEdificios>1){
-                System.out.println("Non poder haber "+numEdificios+" construidos, só un");
-                return;
+                throw new ExcepcionValorInvalido("Non poder haber "+numEdificios+" construidos, só un");
             }
             hotel.setTenEdificio(false);
         }
         if (tipo.equals("piscina")) {
             precioventa = piscina.getCusto();
             if(!piscinaConstruida){
-                System.out.println("Non tes unha piscina construída nesta casilla");
-                return;
+                throw new ExcepcionLoxicaPartida("Non tes unha piscina construída nesta casilla");
             }
             if(pistaConstruida){
-                System.out.println("Non podes vender a piscina se tes unha instalación deportiva construída");
-                return;
+                throw new ExcepcionLoxicaPartida("Non podes vender a piscina se tes unha instalación deportiva construída");
             }
             if(numEdificios>1){
-                System.out.println("Non poder haber "+numEdificios+" construidos, só unha");
-                return;
+                throw new ExcepcionValorInvalido("Non poder haber "+numEdificios+" construidos, só unha");
             }
             piscina.setTenEdificio(false);
         }
         if (tipo.equals("deporte")) {
             precioventa = pista.getCusto();
             if(!pistaConstruida){
-                System.out.println("Non tes unha instalación deportiva construída nesta casilla");
-                return;
+                throw new ExcepcionLoxicaPartida("Non tes unha instalación deportiva construída nesta casilla");
             }
             if(numEdificios>1){
-                System.out.println("Non poder haber "+numEdificios+" construidos, só unha");
-                return;
+                throw new ExcepcionValorInvalido("Non poder haber "+numEdificios+" construidos, só unha");
             }
             pista.setTenEdificio(false);
         }
@@ -276,6 +248,7 @@ public class Solar extends Propiedad {
        @Override
         public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> posiciones)
         {
+            try{
             if(this.getDuenho() != banca && this.getDuenho() != actual && !this.getHipotecada())
             {
                 float alquilerTotal = this.getAlquiler();
@@ -302,8 +275,7 @@ public class Solar extends Propiedad {
                 Juego.consol.imprimir(actual.getNombre()+" paga "+alquilerTotal+"€ de aluguer por caer en "+this.getNombre()+" de "+this.getDuenho().getNombre());
                 if(actual.getFortuna() < alquilerTotal)
                 {
-                    Juego.consol.imprimir(actual.getNombre()+" non ten suficiente fortuna para pagar o aluguer de "+alquilerTotal+"€");
-                    return false;
+                    throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), (int)alquilerTotal);
                 }
                 actual.sumarFortuna(-alquilerTotal);
                 this.getDuenho().sumarFortuna(alquilerTotal);
@@ -316,6 +288,10 @@ public class Solar extends Propiedad {
             }
             Juego.consol.imprimir(actual.getNombre()+" non paga aluguer por caer en "+this.getNombre()  );
             return true;
+            }catch(Exception e){
+                Juego.consol.imprimir(e.getMessage());
+                return false;
+            }
         }
 
         @Override

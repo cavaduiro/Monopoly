@@ -3,7 +3,7 @@ package monopoly;
 import casillas.*;
 import java.util.ArrayList;
 import partida.Jugador;
-
+import exception.valorInvalido.ExcepcionSinCartos;
 public class Comunidade extends Carta {
 
 
@@ -19,15 +19,13 @@ public class Comunidade extends Carta {
     
     @Override
     public boolean loxica(Jugador banca, Jugador actual, ArrayList<ArrayList<Casilla>> pos) {
-
+        try{
         switch (this.index) {
             case 0:
                 this.sumar();
                 Juego.consol.imprimir("Paga unha multa de 500000 euros por un fin de semana nun balneario de 5 estrelas");
                 if(actual.getFortuna() < 500000){
-                    Juego.consol.imprimir("O xogador " + actual.getNombre() + " non pode pagar a multa de 500000, xa que só ten "
-                             + actual.getFortuna() + ".");
-                    return false;
+                    throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), 500000);
                 }
                 actual.sumarFortuna(-500000);
                 actual.getEstatisticas().acImpPagado(500000);
@@ -76,6 +74,11 @@ public class Comunidade extends Carta {
         }
         this.sumar();
         return true;
+    }
+    catch(ExcepcionSinCartos e){
+        Juego.consol.imprimir(e.getMessage());
+        return false;
+    }
     }
     
     public static synchronized Comunidade getInstance()

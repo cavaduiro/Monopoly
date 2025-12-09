@@ -1,5 +1,6 @@
 
 package casillas;
+import exception.valorInvalido.ExcepcionSinCartos;
 import java.util.ArrayList;
 import monopoly.Juego;
 import monopoly.Valor;
@@ -77,8 +78,7 @@ public abstract class Propiedad extends Casilla {
     }
 
     @Override
-    public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,
-            ArrayList<ArrayList<Casilla>> posiciones);
+    public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, ArrayList<ArrayList<Casilla>> posiciones);
         
     public void hipotecarCasilla() {
         this.hipotecada = true;
@@ -88,12 +88,10 @@ public abstract class Propiedad extends Casilla {
             Juego.consol.imprimir("Ademais, tampouco poderás construir no grupo "+Valor.getNombreColor((casaux.getGrupo().getColorGrupo())));
         }
     }
-    //HAY QUE IMPLEMENTALO ABAIXO LOL     
-    public void deshipotecarCasilla() {
-        if(this.duenho.getFortuna() < this.hipoteca) {
-            //ERROR CHEQUEABLE
-            System.out.println("\nNon tes suficiente fortuna para deshipotecar esta casilla. Tes "+this.duenho.getFortuna()+" euros, pero necesitas "+this.hipoteca+" euros.\n");
-            return;
+         
+    public void deshipotecarCasilla() throws ExcepcionSinCartos {
+        if(this.duenho.getFortuna()< this.hipoteca) {
+            throw new ExcepcionSinCartos(this.duenho.getNombre(), (int)this.duenho.getFortuna(), (int)this.hipoteca);
         }
         this.hipotecada = false;
         this.duenho.sumarFortuna(-this.hipoteca);

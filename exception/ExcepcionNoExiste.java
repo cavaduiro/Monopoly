@@ -1,4 +1,5 @@
 package exception;
+import monopoly.Valor;
 
 public class ExcepcionNoExiste extends Excepcion {
     public ExcepcionNoExiste(){
@@ -6,7 +7,7 @@ public class ExcepcionNoExiste extends Excepcion {
     }
     
     public ExcepcionNoExiste(String mensaje){
-       super("\033[1mNo existe: \033[0m" + mensaje);
+        super(Valor.RED+"Non existe: "+Valor.RESET+Valor.NEGRITA+mensaje+Valor.RESET);
     }
     
 }

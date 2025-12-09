@@ -1,6 +1,7 @@
 package casillas;
 import java.util.ArrayList;
 
+import exception.valorInvalido.ExcepcionSinCartos;
 import monopoly.Juego;
 import partida.*;
 public class Transporte extends Propiedad {
@@ -9,6 +10,7 @@ public class Transporte extends Propiedad {
     }
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada,ArrayList<ArrayList<Casilla>> pos){
+        try{
         if (perteneceAJugador(actual)){  
         }
         else if(perteneceAJugador(banca)){
@@ -23,7 +25,7 @@ public class Transporte extends Propiedad {
             }
             float impuesto = this.getAlquiler()*numTransportes;
             if(actual.getFortuna()<impuesto){ //No puede pagar
-                return false;
+                throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), (int)impuesto);
             }
             else{
             if(!this.getHipotecada()){
@@ -39,7 +41,11 @@ public class Transporte extends Propiedad {
      }
         
         return true;
+    } catch (Exception e) {
+        Juego.consol.imprimir(e.getMessage());
+        return false;
    } 
+}
    @Override
    public boolean alquiler( ){
     return true;

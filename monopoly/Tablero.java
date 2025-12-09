@@ -1,10 +1,10 @@
 package monopoly;
 
+import casillas.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import partida.*;
-import casillas.*;
 
 
 public class Tablero {

@@ -3,6 +3,7 @@ package casillas;
 import java.util.ArrayList;
 import monopoly.*;
 import partida.*;
+import exception.valorInvalido.ExcepcionSinCartos;
 
 public class Servicio extends Propiedad {
     private static final float MULTIPLICADOR_ALQUILER = 2;
@@ -20,7 +21,8 @@ public class Servicio extends Propiedad {
      */
     @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, ArrayList<ArrayList<Casilla>> pos) {
-        float impuesto = 0;
+        try {
+            float impuesto = 0;
         if (perteneceAJugador(actual)) {
         } else if (perteneceAJugador(banca)) {
 
@@ -39,8 +41,7 @@ public class Servicio extends Propiedad {
                 impuesto = this.getAlquiler() * tirada * MULTIPLICADOR_ALQUILER_DOS_SERVICIOS;
             }
             if (actual.getFortuna() < impuesto) { // No puede pagar
-                Juego.consol.imprimir("O xogador "+actual.getNombre()+" non pode pagar, debe "+impuesto+" e ten "+actual.getFortuna());
-                return false;
+                throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), (int)impuesto);
             } else {
                 if(!this.getHipotecada()){
                 actual.sumarFortuna(-impuesto);
@@ -54,6 +55,11 @@ public class Servicio extends Propiedad {
             }
         }
         return true;
+        } catch (ExcepcionSinCartos e) {
+            Juego.consol.imprimir(e.getMessage());
+            return false;
+        }
+        
     }
 
     @Override

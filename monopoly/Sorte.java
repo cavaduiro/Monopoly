@@ -4,6 +4,7 @@ import casillas.*;
 import java.util.ArrayList;
 import partida.Avatar;
 import partida.Jugador;
+import exception.valorInvalido.ExcepcionSinCartos;
 
 public class Sorte extends Carta {
 
@@ -16,7 +17,7 @@ public class Sorte extends Carta {
     }
     @Override
     public boolean loxica(Jugador banca, Jugador actual, ArrayList<ArrayList<Casilla>> pos) {
-
+        try{
         switch (this.index) {
             case 0:
                 //Moverse a la casilla solar 19
@@ -91,9 +92,7 @@ public class Sorte extends Carta {
                 Juego.consol.imprimir("Múltanche por usar o teléfono mentres conduces, paga 150000 euros");
                 //Múltanche por usar o tlf mentres conduces, paga 150000
                 if (actual.getFortuna() < 150000) {
-                    Juego.consol.imprimir("O xogador " + actual.getNombre() + " non pode pagar a multa de 150000, xa que só ten "
-                            + actual.getFortuna() + ".");
-                    return false;
+                    throw new ExcepcionSinCartos(actual.getNombre(), (int)actual.getFortuna(), 150000);
                 } else {
                     actual.sumarFortuna(-150000);
                     actual.getEstatisticas().acImpPagado(150000);
@@ -122,6 +121,11 @@ public class Sorte extends Carta {
             }
         this.sumar();
         return true;
+        }
+    catch(ExcepcionSinCartos e){
+        Juego.consol.imprimir(e.getMessage());
+        return false;
+    }
     }
         public static synchronized Sorte getInstance()
     {
